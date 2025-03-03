@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Commandes{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">📦 Mes Commandes</h1>
+
+    {% if orders is empty %}
+        <div class="alert alert-info text-center mt-4">
+            Vous n'avez encore passé aucune commande.
+        </div>
+        <div class="text-center mt-3">
+            <a href="{{ path('cart_index') }}" class="btn btn-primary">
+                🛒 Continuer mes achats
+            </a>
+        </div>
+    {% else %}
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>Commande #</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                        <td>{{ order.totalPrice|number_format(2, ',', ' ') }} €</td>
+                        <td>
+                            <a href="{{ path('order_show', {id: order.id}) }}" class="btn btn-info btn-sm">
+                                🔍 Voir détails
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

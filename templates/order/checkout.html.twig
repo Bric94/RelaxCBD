@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">🛒 Finalisation de la commande</h1>
+
+    <!-- Résumé du panier -->
+    <h3 class="mt-4">🛍️ Votre commande</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix Unitaire</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for id, item in cartItems %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.product.price|number_format(2, ',', ' ') }} €</td>
+                    <td>{{ (item.product.price * item.quantity)|number_format(2, ',', ' ') }} €</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3 class="text-end mt-3">💰 Total : {{ total|number_format(2, ',', ' ') }} €</h3>
+
+    <!-- Formulaire de paiement -->
+    <h3 class="mt-5">💳 Informations de paiement</h3>
+    <form method="post" action="{{ path('order_process_payment') }}">
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Nom et prénom</label>
+                <input type="text" name="fullname" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Adresse</label>
+                <input type="text" name="address" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <label class="form-label">Numéro de carte</label>
+                <input type="text" name="card_number" class="form-control" placeholder="**** **** **** ****" required>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Date d'expiration</label>
+                <input type="text" name="card_expiry" class="form-control" placeholder="MM/AA" required>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">CVC</label>
+                <input type="text" name="card_cvc" class="form-control" placeholder="***" required>
+            </div>
+        </div>
+
+        <!-- Boutons -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success btn-lg">💳 Payer</button>
+            <a href="{{ path('cart_index') }}" class="btn btn-danger btn-lg">❌ Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

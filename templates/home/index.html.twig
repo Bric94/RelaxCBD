@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Relax CBD Shop{% endblock %}
+
+{% block body %}
+    <!-- Header -->
+    <header class="bg-primary text-white text-center py-5">
+        <div class="container">
+            <h1 class="display-4">Bienvenue chez Relax CBD Shop</h1>
+            <p class="lead">Découvrez nos produits à base de CBD, 100% naturels et certifiés.</p>
+            <a href="{{ path('product_index') }}" class="btn btn-light btn-lg">Explorer nos Produits</a>
+        </div>
+    </header>
+
+    <!-- Sections -->
+    <div class="container mt-5">
+        <div class="row g-4">
+            <!-- Produits -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow">
+                    <img src="https://source.unsplash.com/400x300/?cbd,oil" class="card-img-top" alt="Produits CBD">
+                    <div class="card-body">
+                        <h5 class="card-title">Nos Produits</h5>
+                        <p class="card-text">Découvrez notre sélection d'huiles, tisanes et produits à base de CBD.</p>
+                        <a href="{{ path('product_index') }}" class="btn btn-primary">Voir les produits</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panier -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow">
+                    <img src="https://source.unsplash.com/400x300/?shopping,cart" class="card-img-top" alt="Panier">
+                    <div class="card-body">
+                        <h5 class="card-title">Votre Panier</h5>
+                        <p class="card-text">Gérez vos achats et passez commande en toute simplicité.</p>
+                        <a href="{{ path('cart_index') }}" class="btn btn-primary">Accéder au panier</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mon Compte -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow">
+                    <img src="https://source.unsplash.com/400x300/?user,profile" class="card-img-top" alt="Mon Compte">
+                    <div class="card-body">
+                        <h5 class="card-title">Mon Compte</h5>
+                        <p class="card-text">Connectez-vous pour suivre vos commandes et gérer vos informations.</p>
+                        {% if app.user %}
+                            <a href="{{ path('user_index') }}" class="btn btn-primary">Voir mon compte</a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="btn btn-secondary">Se connecter</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
