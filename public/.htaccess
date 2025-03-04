@@ -24,6 +24,13 @@ DirectoryIndex index.php
 
     RewriteEngine On
 
+    # Redirige toutes les requêtes vers cbd_shop/public
+    RewriteCond %{REQUEST_URI} !^/cbd_shop/public/
+    RewriteRule ^(.*)$ /cbd_shop/public/$1 [L,QSA]
+
+    # Assure que l'index du projet est bien pris en compte
+    DirectoryIndex index.php index.html
+
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the
     # project in a subdirectory, the base path will be prepended to allow proper
