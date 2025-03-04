@@ -13,4 +13,4 @@ Allow: /build/*.woff2
 Allow: /build/*.ttf
 Allow: /build/*.svg
 
-Sitemap: https://www.samihhabbani.com/sitemap.xml //remplacer par mon site
+Sitemap: https://relax-cbd-shop.eliott-bricout.fr/sitemap.xml 
