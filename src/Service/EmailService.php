@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
 class EmailService {
@@ -10,8 +11,8 @@ class EmailService {
     private string $adminEmail;
     private MailerInterface $mailer;
 
-    public function __construct(MailerInterface $mailerInterface, string $adminEmail) {
-        $this->adminEmail = $adminEmail;
+    public function __construct(MailerInterface $mailerInterface, ParameterBagInterface $params) {
+        $this->adminEmail = $params->get('admin_email');
         $this->mailer = $mailerInterface;
     }
 
