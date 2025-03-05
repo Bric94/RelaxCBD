@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% form_theme contactForm 'bootstrap_5_layout.html.twig' %}
+
+
+{% block body %}
+
+    {% include 'flash.html.twig' %}
+
+
+    {% if form_errors(contactForm) %}
+        <div class="alert alert-danger">
+            {{ form_errors(contactForm) }}
+        </div>
+    {% endif %}
+
+    <div class="row col-md-8 mx-auto mt-5"> 
+        {{ form(contactForm, {'attr' : {'class' :'row'}}) }}
+    </div>
+    
+
+{% endblock %}
