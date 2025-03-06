@@ -48,11 +48,14 @@
 							<li class="nav-item">
 								<a class="nav-link" href="{{ path('app_login') }}">🔑 Connexion</a>
 							</li>
-                            <li class="nav-item">
+							<li class="nav-item">
 								<a class="nav-link" href="{{ path('app_register') }}">🖊️ Inscription</a>
 							</li>
-                            
 						{% endif %}
+						<form id="search-form" class="search-bar">
+							<input type="text" id="search-input" placeholder="Rechercher un produit..." autocomplete="off">
+							<div id="search-results" class="search-dropdown"></div>
+						</form>
 					</ul>
 				</div>
 			</div>

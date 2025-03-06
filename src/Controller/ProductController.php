@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -69,7 +70,7 @@ class ProductController extends AbstractController
         if (!$category) {
             throw $this->createNotFoundException('Catégorie non trouvée');
         }
-        
+
         $page = max(1, $request->query->getInt('page', 1));
         $products = $this->productRepository->findPaginatedProducts($id, $page, 10);
 
@@ -78,5 +79,28 @@ class ProductController extends AbstractController
             'products' => $products,
             'page' => $page,
         ]);
+    }
+
+    #[Route('/search', name: 'product_search')]
+    public function search(Request $request): JsonResponse
+    {
+        $query = $request->query->get('q', '');
+
+        if (empty($query)) {
+            return new JsonResponse([]);
+        }
+
+        $products = $this->productRepository->searchProducts($query);
+
+        $results = array_map(function ($product) {
+            return [
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'image' => $product->getImage() ?? '/images/default-product.jpg',
+                'price' => $product->getPrice(),
+            ];
+        }, $products);
+
+        return new JsonResponse($results);
     }
 }

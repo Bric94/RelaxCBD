@@ -55,4 +55,15 @@ class ProductRepository extends ServiceEntityRepository
 
         return new Paginator($query);
     }
+
+    public function searchProducts(string $query, int $limit = 10): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.name LIKE :query')
+            ->orWhere('p.description LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

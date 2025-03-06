@@ -1,7 +1,8 @@
 @import "~bootstrap/scss/bootstrap";
 
 /* S'assurer que la page prend toute la hauteur */
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     display: flex;
@@ -15,12 +16,33 @@ main {
 
 /* Footer toujours en bas */
 footer {
-    background-color: #212529; /* Même couleur que bg-dark */
+    background-color: #212529;
+    /* Même couleur que bg-dark */
     color: white;
     text-align: center;
     padding: 10px;
     width: 100%;
 }
 
- 
+.search-bar {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
 
+.search-dropdown {
+    position: absolute;
+    background: white;
+    width: 100%;
+    border: 1px solid #ddd;
+    display: none;
+}
+
+.search-dropdown div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.search-dropdown div:hover {
+    background: #f1f1f1;
+}
