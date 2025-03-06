@@ -42,12 +42,12 @@ class ProductRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    public function findPaginatedProducts(int $id, int $page, int $limit = 10): Paginator
+    public function findPaginatedProducts(int $categoryId, int $page, int $limit = 10): Paginator
     {
         $query = $this->createQueryBuilder('p')
             ->join('p.categorie', 'c')  // Jointure avec la table catégorie
             ->where('c.id = :categoryId')
-            ->setParameter('categoryId', $id)
+            ->setParameter('categoryId', $categoryId)
             ->orderBy('p.createdAt', 'DESC')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
