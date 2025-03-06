@@ -23,26 +23,3 @@ footer {
     padding: 10px;
     width: 100%;
 }
-
-.search-bar {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-}
-
-.search-dropdown {
-    position: absolute;
-    background: white;
-    width: 100%;
-    border: 1px solid #ddd;
-    display: none;
-}
-
-.search-dropdown div {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.search-dropdown div:hover {
-    background: #f1f1f1;
-}

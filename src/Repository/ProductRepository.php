@@ -59,8 +59,10 @@ class ProductRepository extends ServiceEntityRepository
     public function searchProducts(string $query, int $limit = 10): array
     {
         return $this->createQueryBuilder('p')
+            ->leftJoin('p.category', 'c')  // Ajout de la jointure avec la catégorie
             ->where('p.name LIKE :query')
             ->orWhere('p.description LIKE :query')
+            ->orWhere('c.name LIKE :query')  // Recherche aussi dans le nom de la catégorie
             ->setParameter('query', '%' . $query . '%')
             ->setMaxResults($limit)
             ->getQuery()

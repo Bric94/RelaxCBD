@@ -1,77 +1,60 @@
 <!DOCTYPE html>
 <html lang="fr">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>
-			{% block title %}Relax CBD Shop
-			{% endblock %}
-		</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Relax CBD Shop{% endblock %}</title>
 
-		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🛒</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🛒</text></svg>">
 
-		{% block stylesheets %}
-			{{ encore_entry_link_tags('app') }}
-		{% endblock %}
-	</head>
-	<body>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+</head>
+<body>
 
-		<!-- Navbar -->
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<div class="container">
-				<a class="navbar-brand" href="{{ path('home') }}">Relax CBD Shop</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarNav">
-					<ul class="navbar-nav ms-auto">
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path('product_index') }}">🌿 Produits</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path('cart_index') }}">🛒 Panier</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path('order_index') }}">📦 Commandes</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_contact') }}">📞 Nous contacter</a>
-						</li>
-						{% if app.user %}
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('user_index') }}">👤 Mon compte</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-danger" href="{{ path('app_logout') }}">🚪 Déconnexion</a>
-							</li>
-						{% else %}
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('app_login') }}">🔑 Connexion</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('app_register') }}">🖊️ Inscription</a>
-							</li>
-						{% endif %}
-						<form id="search-form" class="search-bar">
-							<input type="text" id="search-input" placeholder="Rechercher un produit..." autocomplete="off">
-							<div id="search-results" class="search-dropdown"></div>
-						</form>
-					</ul>
-				</div>
-			</div>
-		</nav>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('home') }}">Relax CBD Shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ path('product_index') }}">🌿 Produits</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('cart_index') }}">🛒 Panier</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('order_index') }}">📦 Commandes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('app_contact') }}">📞 Nous contacter</a></li>
+                    {% if app.user %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('user_index') }}">👤 Mon compte</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger" href="{{ path('app_logout') }}">🚪 Déconnexion</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">🔑 Connexion</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}">🖊️ Inscription</a></li>
+                    {% endif %}
+                </ul>
+                
+                <!-- Barre de recherche avec Bootstrap -->
+                <form id="search-form" class="d-flex ms-3">
+                    <input class="form-control me-2" type="text" id="search-input" placeholder="Rechercher ..." autocomplete="off">
+                    <button class="btn btn-outline-light" type="button">🔍</button>
+                    <div id="search-results" class="dropdown-menu w-100"></div>
+                </form>
+            </div>
+        </div>
+    </nav>
 
-		<main class="container mt-4"> {% block body %}{% endblock %}
-			</main>
+    <main class="container mt-4">{% block body %}{% endblock %}</main>
 
-			<!-- Footer -->
-			<footer class="bg-dark text-light text-center py-3 mt-5">
-				<p>&copy; 2025 Relax CBD Shop - Tous droits réservés.</p>
-				<a href="{{ path('app_contact') }}">Nous contacter</a>
-			</footer>
+    <!-- Footer -->
+    <footer class="bg-dark text-light text-center py-3 mt-5">
+        <p>&copy; 2025 Relax CBD Shop - Tous droits réservés.</p>
+        <a href="{{ path('app_contact') }}">Nous contacter</a>
+    </footer>
 
-			{% block javascripts %}
-				{{ encore_entry_script_tags('app') }}
-			{% endblock %}
-		</body>
-	</html>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</body>
+</html>
