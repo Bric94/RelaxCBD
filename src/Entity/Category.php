@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Product;
+use App\Entity\BlogPost;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -50,10 +52,9 @@ class Category
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -65,7 +66,6 @@ class Category
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -83,19 +83,14 @@ class Category
             $this->products->add($product);
             $product->setCategory($this);
         }
-
         return $this;
     }
 
     public function removeProduct(Product $product): static
     {
-        if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getCategory() === $this) {
-                $product->setCategory(null);
-            }
+        if ($this->products->removeElement($product) && $product->getCategory() === $this) {
+            $product->setCategory(null);
         }
-
         return $this;
     }
 
@@ -113,19 +108,14 @@ class Category
             $this->blogPosts->add($blogPost);
             $blogPost->setCategory($this);
         }
-
         return $this;
     }
 
     public function removeBlogPost(BlogPost $blogPost): static
     {
-        if ($this->blogPosts->removeElement($blogPost)) {
-            // set the owning side to null (unless already changed)
-            if ($blogPost->getCategory() === $this) {
-                $blogPost->setCategory(null);
-            }
+        if ($this->blogPosts->removeElement($blogPost) && $blogPost->getCategory() === $this) {
+            $blogPost->setCategory(null);
         }
-
         return $this;
     }
 }
