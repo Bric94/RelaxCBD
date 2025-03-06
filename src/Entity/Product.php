@@ -35,7 +35,7 @@ class Product
     private ?string $image = null;
 
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\ManyToOne(targetEntity: Category::class ,inversedBy: 'products')]
     private ?Category $category = null;
 
     /**
