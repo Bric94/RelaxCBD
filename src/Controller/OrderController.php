@@ -35,47 +35,60 @@ final class OrderController extends AbstractController
 
     #[Route('/checkout/process-payment', name: 'process_payment', methods: ['POST'])]
     public function processPayment(Request $request, CartService $cartService, EntityManagerInterface $entityManager): Response
-{
-    $user = $this->getUser();
+    {
+        $user = $this->getUser();
 
-    if (!$user) {
-        return $this->redirectToRoute('app_login');
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $cartItems = $cartService->getCart();
+        $total = $cartService->getTotal();
+
+        if (empty($cartItems)) {
+            $this->addFlash('warning', 'Votre panier est vide, impossible de passer commande.');
+            return $this->redirectToRoute('cart_index');
+        }
+
+        $order = new Order();
+        $order->setUser($user);
+        $order->setTotalPrice($total);
+        $order->setCreatedAt(new \DateTime());
+        $order->setStatus('pending');
+
+        foreach ($cartItems as $item) {
+            $orderItem = new OrderItem();
+            $orderItem->setOrders($order);
+            $orderItem->setProduct($item['product']);
+            $orderItem->setQuantity($item['quantity']);
+            $orderItem->setPrice($item['price']);
+
+            // Mise à jour du stock
+            $product = $item['product'];
+            if ($product->isWeightBased()) {
+                $stockByWeight = $product->getStockByWeight();
+                if (isset($stockByWeight[$item['weight']])) {
+                    $stockByWeight[$item['weight']] -= $item['quantity'];
+                    $product->setStockByWeight($stockByWeight);
+                }
+            } else {
+                $product->setStock($product->getStock() - $item['quantity']);
+            }
+
+            $entityManager->persist($product);
+            $entityManager->persist($orderItem);
+        }
+
+        $entityManager->persist($order);
+        $entityManager->flush();
+
+        $cartService->clear();
+
+        $this->addFlash('success', 'Votre commande a été enregistrée avec succès ! 🚀');
+
+        return $this->redirectToRoute('order_index');
     }
 
-    $cartItems = $cartService->getCart();
-    $total = $cartService->getTotal();
-
-    if (empty($cartItems)) {
-        $this->addFlash('warning', 'Votre panier est vide, impossible de passer commande.');
-        return $this->redirectToRoute('cart_index');
-    }
-
-    // ✅ Création de la commande avec un statut par défaut
-    $order = new Order();
-    $order->setUser($user);
-    $order->setTotalPrice($total);
-    $order->setCreatedAt(new \DateTime());
-    $order->setStatus('pending'); // ✅ Ajout du statut
-
-    foreach ($cartItems as $id => $item) {
-        $orderItem = new OrderItem();
-        $orderItem->setOrders($order);
-        $orderItem->setProduct($item['product']);
-        $orderItem->setQuantity($item['quantity']);
-        $orderItem->setPrice($item['product']->getPrice());
-
-        $entityManager->persist($orderItem);
-    }
-
-    $entityManager->persist($order);
-    $entityManager->flush();
-
-    $cartService->clear();
-
-    $this->addFlash('success', 'Votre commande a été enregistrée avec succès ! 🚀');
-
-    return $this->redirectToRoute('order_index');
-}
 
 
     #[Route('{id}', name: 'show')]

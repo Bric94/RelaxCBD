@@ -20,19 +20,20 @@ final class CartController extends AbstractController
         ]);
     }
 
-    #[Route('/add/{id}', name: 'add')]
-    public function add(CartService $cartService, int $id): RedirectResponse
+    #[Route('/add/{id}/{weight?}', name: 'add')]
+    public function add(CartService $cartService, int $id, ?string $weight = null): RedirectResponse
     {
-        $cartService->add($id);
+        $cartService->add($id, $weight);
         return $this->redirectToRoute('cart_index');
     }
 
-    #[Route('/remove/{id}', name: 'remove')]
-    public function remove(CartService $cartService, int $id): RedirectResponse
+    #[Route('/remove/{id}/{weight?}', name: 'remove')]
+    public function remove(CartService $cartService, int $id, ?string $weight = null): RedirectResponse
     {
-        $cartService->remove($id);
+        $cartService->remove($id, $weight);
         return $this->redirectToRoute('cart_index');
     }
+
 
     #[Route('/clear', name: 'clear')]
     public function clear(CartService $cartService): RedirectResponse

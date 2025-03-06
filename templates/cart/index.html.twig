@@ -1,37 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Mon Panier</h1>
+	<h1>Mon Panier</h1>
 
-    {% if cartItems is empty %}
-        <p>Votre panier est vide.</p>
-    {% else %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Produit</th>
-                    <th>Quantité</th>
-                    <th>Prix unitaire</th>
-                    <th>Total</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in cartItems %}
-                    <tr>
-                        <td>{{ item.product.name }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>{{ item.product.price|number_format(2, ',', ' ') }} €</td>
-                        <td>{{ item.total|number_format(2, ',', ' ') }} €</td>
-                        <td>
-                            <a href="{{ path('cart_remove', { id: item.product.id }) }}" class="btn btn-danger">Supprimer</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <h3>Total : {{ total|number_format(2, ',', ' ') }} €</h3>
-        <a href="{{ path('cart_clear') }}" class="btn btn-warning">Vider le panier</a>
-        <a href="{{ path('order_checkout') }}" class="btn btn-success">Commander</a>
-    {% endif %}
+	{% if cartItems is empty %}
+		<p>Votre panier est vide.</p>
+	{% else %}
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Produit</th>
+					<th>Grammage</th>
+					<th>Quantité</th>
+					<th>Prix unitaire</th>
+					<th>Total</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in cartItems %}
+					<tr>
+						<td>{{ item.product.name }}</td>
+						<td>
+							{% if item.weight %}
+								{{ item.weight }}g
+							{% else %}
+								-
+							{% endif %}
+						</td>
+						<td>{{ item.quantity }}</td>
+						<td>{{ item.price|number_format(2, ',', ' ') }}
+							€</td>
+						<td>{{ (item.price * item.quantity)|number_format(2, ',', ' ') }}
+							€</td>
+						<td>
+							<a href="{{ path('cart_remove', { id: item.product.id, weight: item.weight }) }}" class="btn btn-danger">Supprimer</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<h3>Total :
+			{{ total|number_format(2, ',', ' ') }}
+			€</h3>
+		<a href="{{ path('cart_clear') }}" class="btn btn-warning">Vider le panier</a>
+		<a href="{{ path('order_checkout') }}" class="btn btn-success">Commander</a>
+	{% endif %}
 {% endblock %}

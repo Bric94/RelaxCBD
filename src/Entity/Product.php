@@ -35,7 +35,7 @@ class Product
     private ?string $image = null;
 
 
-    #[ORM\ManyToOne(targetEntity: Category::class ,inversedBy: 'products')]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
     private ?Category $category = null;
 
     /**
@@ -55,6 +55,16 @@ class Product
      */
     #[ORM\ManyToMany(targetEntity: Discount::class, mappedBy: 'products')]
     private Collection $discounts;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isWeightBased = false; // Indique si le produit est vendu au poids (ex: fleurs de CBD)
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $priceByWeight = null;  // Prix par grammage (ex: {"1g": 10, "3g": 25, "5g": 40})
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $stockByWeight = null; // Stock par grammage (ex: {"1g": 50, "3g": 30, "5g": 20})
+
 
     public function __construct()
     {
@@ -236,6 +246,50 @@ class Product
             $discount->removeProduct($this);
         }
 
+        return $this;
+    }
+
+    public function isWeightBased(): bool
+    {
+        return $this->isWeightBased;
+    }
+
+    public function setIsWeightBased(bool $isWeightBased): static
+    {
+        $this->isWeightBased = $isWeightBased;
+        return $this;
+    }
+
+    public function getPriceByWeight(): ?array
+    {
+        return $this->priceByWeight;
+    }
+
+    public function setPriceByWeight(?array $priceByWeight): static
+    {
+        $this->priceByWeight = $priceByWeight;
+        return $this;
+    }
+
+    public function getStockByWeight(): ?array
+    {
+        return $this->stockByWeight;
+    }
+
+    public function setStockByWeight(?array $stockByWeight): static
+    {
+        $this->stockByWeight = $stockByWeight;
+        return $this;
+    }
+
+    public function updateStockForWeight(string $weight, int $quantity): static
+    {
+        if (isset($this->stockByWeight[$weight])) {
+            $this->stockByWeight[$weight] -= $quantity;
+            if ($this->stockByWeight[$weight] < 0) {
+                $this->stockByWeight[$weight] = 0; // Évite un stock négatif
+            }
+        }
         return $this;
     }
 }
