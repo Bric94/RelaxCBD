@@ -34,6 +34,8 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $discountByWeight = null; // Réductions par grammage (ex: {"3g": 5, "5g": 10})
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
     private ?Category $category = null;
@@ -161,6 +163,23 @@ class Product
 
         return $this;
     }
+
+    public function getDiscountByWeight(): ?array
+    {
+        return $this->discountByWeight;
+    }
+
+    public function setDiscountByWeight(?array $discountByWeight): static
+    {
+        $this->discountByWeight = $discountByWeight;
+        return $this;
+    }
+
+    public function getDiscountForWeight(string $weight): int
+    {
+        return $this->discountByWeight[$weight] ?? 0;
+    }
+
 
     /**
      * @return Collection<int, OrderItem>

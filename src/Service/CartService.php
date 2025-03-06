@@ -59,16 +59,21 @@ class CartService
                 continue;
             }
 
-            // Vérifier si c'est un produit au poids et récupérer le bon prix
+            // Récupérer le prix et la réduction
             $price = $product->isWeightBased() && isset($product->getPriceByWeight()[$weight])
                 ? $product->getPriceByWeight()[$weight]
                 : $product->getPrice();
+
+            $discount = $product->getDiscountForWeight($weight);
+            $discountedPrice = $price - ($price * $discount / 100);
 
             $cartItems[] = [
                 'product' => $product,
                 'quantity' => $quantity,
                 'weight' => $weight,
-                'price' => $price
+                'price' => $discountedPrice,
+                'original_price' => $price,
+                'discount' => $discount
             ];
         }
 

@@ -1,55 +1,56 @@
 {% extends '@EasyAdmin/layout.html.twig' %}
 
-{% block title %}📊 Tableau de bord - Admin{% endblock %}
+{% block title %}📊 Tableau de bord - Admin
+{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    <h1 class="text-center mb-4">📊 Tableau de Bord - Relax CBD Shop 🌿</h1>
+	<div class="container mt-4">
+		<h1 class="text-center mb-4">📊 Tableau de Bord - Relax CBD Shop 🌿</h1>
 
-    <div class="row text-center">
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5>Produits</h5>
-                </div>
-                <div class="card-body">
-                    <h2>{{ productCount }}</h2>
-                    <p>Produits en vente</p>
-                    <a href="{{ path('admin_dashboard', {crudController: 'App\\Controller\\Admin\\ProductCrudController'}) }}" class="btn btn-primary btn-sm">Gérer les produits</a>
-                </div>
-            </div>
-        </div>
+		<div class="row text-center">
+			<div class="col-md-4">
+				<div class="card shadow-sm">
+					<div class="card-header bg-primary text-white">
+						<h5>Produits</h5>
+					</div>
+					<div class="card-body">
+						<h2>{{ productCount }}</h2>
+						<p>Produits en vente</p>
+						<a href="{{ path('admin_dashboard', {crudController: 'App\\Controller\\Admin\\ProductCrudController'}) }}" class="btn btn-primary btn-sm">Gérer les produits</a>
+					</div>
+				</div>
+			</div>
 
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-success text-white">
-                    <h5>Commandes</h5>
-                </div>
-                <div class="card-body">
-                    <h2>{{ orderCount }}</h2>
-                    <p>Commandes en cours</p>
-                    <a href="{{ path('admin_dashboard', {crudController: 'App\\Controller\\Admin\\OrderCrudController'}) }}" class="btn btn-success btn-sm">Voir les commandes</a>
-                </div>
-            </div>
-        </div>
+			<div class="col-md-4">
+				<div class="card shadow-sm">
+					<div class="card-header bg-success text-white">
+						<h5>Commandes</h5>
+					</div>
+					<div class="card-body">
+						<h2>{{ orderCount }}</h2>
+						<p>Commandes en cours</p>
+						<a href="{{ path('admin_dashboard', {crudController: 'App\\Controller\\Admin\\OrderCrudController'}) }}" class="btn btn-success btn-sm">Voir les commandes</a>
+					</div>
+				</div>
+			</div>
 
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-warning text-dark">
-                    <h5>Utilisateurs</h5>
-                </div>
-                <div class="card-body">
-                    <h2>{{ userCount }}</h2>
-                    <p>Clients enregistrés</p>
-                    <a href="{{ path('admin_dashboard', {crudController: 'App\\Controller\\Admin\\UserCrudController'}) }}" class="btn btn-warning btn-sm">Gérer les utilisateurs</a>
-                </div>
-            </div>
-        </div>
-    </div>
+			<div class="col-md-4">
+				<div class="card shadow-sm">
+					<div class="card-header bg-warning text-dark">
+						<h5>Utilisateurs</h5>
+					</div>
+					<div class="card-body">
+						<h2>{{ userCount }}</h2>
+						<p>Clients enregistrés</p>
+						<a href="{{ path('admin_dashboard', {crudController: 'App\\Controller\\Admin\\UserCrudController'}) }}" class="btn btn-warning btn-sm">Gérer les utilisateurs</a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <div class="mt-4 text-center">
-        <a href="{{ path('home') }}" class="btn btn-outline-secondary">🏠 Retour à la boutique</a>
-        <a href="{{ path('app_logout') }}" class="btn btn-danger">🚪 Déconnexion</a>
-    </div>
-</div>
+		<div class="mt-4 text-center">
+			<a href="{{ path('home') }}" class="btn btn-outline-secondary">🏠 Retour à la boutique</a>
+			<a href="{{ path('app_logout') }}" class="btn btn-danger">🚪 Déconnexion</a>
+		</div>
+	</div>
 {% endblock %}

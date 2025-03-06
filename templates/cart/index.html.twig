@@ -13,6 +13,7 @@
 					<th>Grammage</th>
 					<th>Quantité</th>
 					<th>Prix unitaire</th>
+					<th>Réduction</th>
 					<th>Total</th>
 					<th>Action</th>
 				</tr>
@@ -29,8 +30,19 @@
 							{% endif %}
 						</td>
 						<td>{{ item.quantity }}</td>
-						<td>{{ item.price|number_format(2, ',', ' ') }}
-							€</td>
+						<td>
+							{% if item.discount > 0 %}
+								<s>{{ item.original_price|number_format(2, ',', ' ') }}
+									€</s>
+								<br>
+								<strong>{{ item.price|number_format(2, ',', ' ') }}
+									€</strong>
+							{% else %}
+								{{ item.price|number_format(2, ',', ' ') }}
+								€
+							{% endif %}
+						</td>
+						<td>{{ item.discount > 0 ? '-' ~ item.discount ~ '%' : '-' }}</td>
 						<td>{{ (item.price * item.quantity)|number_format(2, ',', ' ') }}
 							€</td>
 						<td>
