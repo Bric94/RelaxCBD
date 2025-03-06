@@ -51,7 +51,8 @@ class ProductRepository extends ServiceEntityRepository
             ->orderBy('p.createdAt', 'DESC')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
 
         return new Paginator($query);
     }
@@ -68,4 +69,13 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /* public function findPublishedProducts(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.id = true')  // Assurez-vous que cette colonne existe
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    } */
 }
