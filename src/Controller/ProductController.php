@@ -64,20 +64,19 @@ class ProductController extends AbstractController
      * Liste des produits d'une catégorie
      */
     #[Route('/category/{id}', name: 'by_category')]
-    public function byCategory(int $id, Request $request): Response
+    public function byCategory(int $id): Response
     {
         $category = $this->categoryRepository->find($id);
         if (!$category) {
             throw $this->createNotFoundException('Catégorie non trouvée');
         }
 
-        $page = max(1, $request->query->getInt('page', 1));
-        $products = $this->productRepository->findPaginatedProducts($id, $page, 10);
+        $products = $this->productRepository->findByCategory($id);
+
 
         return $this->render('product/category.html.twig', [
             'category' => $category,
             'products' => $products,
-            'page' => $page,
         ]);
     }
 
