@@ -25,11 +25,11 @@ class ProductController extends AbstractController
     /**
      * Liste paginée des produits
      */
-    #[Route('/', name: 'list')]
+    #[Route('/products', name: 'list')]
     public function list(Request $request): Response
     {
         $page = max(1, $request->query->getInt('page', 1)); // Assure que la page est toujours >= 1
-        $products = $this->productRepository->findPaginatedProducts($page, 10);
+        $products = $this->productRepository->findPaginatedProducts(null, $page, 10);
 
         return $this->render('product/list.html.twig', [
             'products' => $products,
