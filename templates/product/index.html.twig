@@ -19,17 +19,17 @@
 	</style>
 
 	<div class="pagination text-center mt-4">
-		{% if currentPage > 1 %}
-			<a href="{{ path('product_index', { page: currentPage - 1 }) }}" class="btn btn-primary">⬅️ Précédent</a>
+		{% if page > 1 %}
+			<a href="{{ path('product_index', { page: page - 1 }) }}" class="btn btn-primary">⬅️ Précédent</a>
 		{% endif %}
 
 		<span class="btn btn-light">Page
-			{{ currentPage }}
+			{{ page }}
 			/
 			{{ totalPages }}</span>
 
-		{% if currentPage < totalPages %}
-			<a href="{{ path('product_index', { page: currentPage + 1 }) }}" class="btn btn-primary">Suivant ➡️</a>
+		{% if page < totalPages %}
+			<a href="{{ path('product_index', { page: page + 1 }) }}" class="btn btn-primary">Suivant ➡️</a>
 		{% endif %}
 	</div>
 
