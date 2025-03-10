@@ -37,6 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime')]
     private ?\DateTime $createdAt = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $profilePicture = null;
+
     /**
      * @var Collection<int, Order>
      */
@@ -64,7 +67,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->reviews = new ArrayCollection();
         $this->blogPosts = new ArrayCollection();
         $this->createdAt = new \DateTime();
+
+        // Vérifier que le dossier des avatars existe
+        $defaultAvatarDir = __DIR__ . '/../../public/images/default/';
+        if (!is_dir($defaultAvatarDir)) {
+            $this->profilePicture = 'default-avatar.webp';
+            return;
+        }
+
+        // Récupérer les fichiers images dans le dossier
+        $defaultAvatars = array_diff(scandir($defaultAvatarDir), ['.', '..']);
+
+        // Filtrer uniquement les images valides (webp, png, jpg, jpeg)
+        $defaultAvatars = array_filter($defaultAvatars, function ($file) {
+            return preg_match('/\.(webp|png|jpg|jpeg)$/i', $file);
+        });
+
+        // Réindexation du tableau pour éviter les erreurs d'accès
+        $defaultAvatars = array_values($defaultAvatars);
+
+        // Sélectionner un avatar aléatoire ou utiliser une image par défaut
+        $this->profilePicture = !empty($defaultAvatars)
+            ? array_values($defaultAvatars)[array_rand($defaultAvatars)]
+            : 'default-avatar.webp';
     }
+
 
     public function getId(): ?int
     {
@@ -143,6 +170,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?string $profilePicture): static
+    {
+        $this->profilePicture = $profilePicture;
+        return $this;
+    }
+
 
     public function getUserIdentifier(): string
     {

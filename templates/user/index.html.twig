@@ -4,8 +4,20 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-5">
-		<h1 class="text-center">👤 Mon Compte</h1>
+	<div
+		class="container mt-5">
+
+		<!-- Affichage de la photo de profil avec upload en un clic -->
+		<div class="text-center">
+			<form method="post" action="{{ path('user_edit') }}" enctype="multipart/form-data">
+				<label for="profilePictureUpload" style="cursor: pointer;">
+					<img src="{% if user.profilePicture and user.profilePicture|length > 1 %} {{ asset('images/profiles/' ~ user.profilePicture) }} {% elseif asset('images/default/default-avatar.webp') is not empty %} {{ asset('images/default/default-avatar.webp') }} {% else %} {{ asset('images/default/default-avatar.png') }} {% endif %}" alt="Photo de profil" class="rounded-circle shadow" style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #4CAF50;" title="Cliquez pour modifier votre photo de profil">
+				</label>
+				<input type="file" id="profilePictureUpload" name="profilePicture" style="display: none;" onchange="this.form.submit();">
+			</form>
+		</div>
+
+		<h1 class="text-center mt-3">👤 Mon Compte</h1>
 		<p class="text-center text-muted">Bienvenue sur votre espace personnel,
 			{{ user.firstName }}
 			!</p>

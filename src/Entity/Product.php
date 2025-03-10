@@ -175,10 +175,15 @@ class Product
         return $this;
     }
 
-    public function getDiscountForWeight(string $weight): int
+    public function getDiscountForWeight(?string $weight): int
     {
+        if ($weight === null) {
+            return 0; // Pas de réduction si aucun poids n'est spécifié
+        }
+
         return $this->discountByWeight[$weight] ?? 0;
     }
+
 
 
     /**

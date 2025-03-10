@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier ma photo de profil{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">✏️ Modifier ma photo de profil</h1>
+
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        <div class="form-group">
+            {{ form_label(form.profilePicture) }}
+            {{ form_widget(form.profilePicture, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.profilePicture) }}
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">📸 Mettre à jour</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

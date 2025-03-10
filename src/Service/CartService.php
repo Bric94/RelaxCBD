@@ -68,7 +68,7 @@ class CartService
                 ? $product->getPriceByWeight()[$weight]
                 : $product->getPrice();
 
-            $discount = $product->getDiscountForWeight($weight);
+            $discount = $product->getDiscountForWeight($weight ?? '');
             $discountedPrice = $price - ($price * $discount / 100);
 
             $cartItems[] = [
