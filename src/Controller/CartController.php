@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,12 +21,17 @@ final class CartController extends AbstractController
         ]);
     }
 
-    #[Route('/add/{id}/{weight?}', name: 'add')]
-    public function add(CartService $cartService, int $id, ?string $weight = null): RedirectResponse
+    #[Route('/add/{id}/{weight?}', name: 'add', methods: ['POST'])]
+    public function add(Request $request, CartService $cartService, int $id, ?string $weight = null): RedirectResponse
     {
-        $cartService->add($id, $weight);
+        $quantity = max(1, (int) $request->request->get('quantity', 1)); // Récupérer la quantité depuis le formulaire
+
+        $cartService->add($id, $quantity, $weight);
+
         return $this->redirectToRoute('cart_index');
     }
+
+
 
     #[Route('/remove/{id}/{weight?}', name: 'remove')]
     public function remove(CartService $cartService, int $id, ?string $weight = null): RedirectResponse
