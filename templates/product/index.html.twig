@@ -34,14 +34,15 @@
 			{% for product in products %}
 				<div class="col-md-4 mb-4">
 					<div class="card shadow-sm border-0">
-						<img src="{{ product.image ?? '/images/default-product.jpg' }}" class="card-img-top" alt="{{ product.name }}">
+						<img src="{{ asset('uploads/products/' ~ product.image) }}" class="card-img-top" alt="{{ product.name }}">
 						<div class="card-body text-center">
 							<h5 class="card-title">{{ product.name }}</h5>
 							<p class="card-text font-weight-bold text-success">{{ product.price|number_format(2, ',', ' ') }}
 								€</p>
+							<a href="{{ path('product_show', { id: product.id }) }}" class="btn btn-light w-100 mb-2">Informations sur le produit</a>
 							<form method="post" action="{{ path('cart_add', { id: product.id }) }}">
-								<div class="input-group mb-3">
-									<label class="sr-only" for="quantity_{{ product.id }}">Quantité :</label>
+								<div class="input-group mb-2">
+									<span class="input-group-text">Quantité :</span>
 									<input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
 								</div>
 								<button type="submit" class="btn btn-primary w-100">🛒 Ajouter au panier</button>
@@ -55,26 +56,6 @@
 				</div>
 			{% endfor %}
 		</div>
-
-		{% if products is empty %}
-			<p class="text-muted text-center">Aucun produit trouvé.</p>
-		{% else %}
-			<div class="row">
-				{% for product in products %}
-					<div class="col-md-4">
-						<div class="card shadow-sm">
-							<img src="{{ asset('images/products/' ~ product.image) }}" class="card-img-top" alt="{{ product.name }}">
-							<div class="card-body">
-								<h5 class="card-title">{{ product.name }}</h5>
-								<p class="card-text">{{ product.price|number_format(2, ',', ' ') }}
-									€</p>
-								<a href="{{ path('product_show', { id: product.id }) }}" class="btn btn-primary">Voir le produit</a>
-							</div>
-						</div>
-					</div>
-				{% endfor %}
-			</div>
-		{% endif %}
 
 
 		{% set totalPages = totalPages ?? 1 %}

@@ -59,7 +59,7 @@ class ProductRepository extends ServiceEntityRepository
     }
 
 
-    public function searchProducts(?string $query, ?int $category, ?string $sort)
+    public function searchProducts(?string $query, ?int $category, ?string $sort, int $page = 1, int $limit = 10)
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -81,14 +81,18 @@ class ProductRepository extends ServiceEntityRepository
                 $qb->orderBy('p.price', 'DESC');
                 break;
             case 'newest':
+            default:
                 $qb->orderBy('p.createdAt', 'DESC');
                 break;
-            default:
-                $qb->orderBy('p.name', 'ASC');
         }
 
-        return $qb->getQuery()->getResult();
+        return $qb
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
     }
+
 
 
     /* public function findPublishedProducts(): array

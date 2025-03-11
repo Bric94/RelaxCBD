@@ -23,58 +23,35 @@ class ProductController extends AbstractController
     }
 
     /**
-     * Liste paginée des produits
+     * Liste paginée des produits avec recherche et tri
      */
-    #[Route('/list', name: 'list')]
-    public function list(Request $request): Response
-    {
-        $page = max(1, $request->query->getInt('page', 1)); // Assure que la page est toujours >= 1
-        $products = $this->productRepository->findPaginatedProducts(null, $page, 10);
-
-        return $this->render('product/list.html.twig', [
-            'products' => $products,
-            'page' => $page,
-        ]);
-    }
-
-    /**
-     * Page d'accueil des produits avec pagination
-     */
-    // src/Controller/ProductController.php
-
     #[Route('/', name: 'index')]
-    public function index(Request $request, ProductRepository $productRepository): Response
+    public function index(Request $request): Response
     {
-        $page = max(1, $request->query->getInt('page', 1)); // Récupération du numéro de page
-        $productsPerPage = 10; // Nombre de produits par page
-        $totalProducts = $productRepository->count([]); // Nombre total de produits
-        $totalPages = ceil($totalProducts / $productsPerPage); // Calcul du nombre total de pages
+        $query = $request->query->get('q');
+        $categoryId = $request->query->getInt('category');
+        $sort = $request->query->get('sort', 'newest');
+        $page = max(1, $request->query->getInt('page', 1));
+        $productsPerPage = 10;
 
-        $products = $productRepository->findBy([], [], $productsPerPage, ($page - 1) * $productsPerPage);
+        // Récupération des produits selon les critères
+        $products = $this->productRepository->searchProducts($query, $categoryId, $sort, $page, $productsPerPage);
+        $totalProducts = count($products);
+        $totalPages = ceil($totalProducts / $productsPerPage);
+
+        // Récupération des catégories pour le filtre
+        $categories = $this->categoryRepository->findAll();
 
         return $this->render('product/index.html.twig', [
             'products' => $products,
+            'categories' => $categories,
             'page' => $page,
-            'totalPages' => $totalPages, // On passe bien totalPages à la vue
-        ]);
-    }
-
-
-    /**
-     * Liste des best-sellers
-     */
-    #[Route('/best-sellers', name: 'best_sellers')]
-    public function bestSellers(): Response
-    {
-        $products = $this->productRepository->findBestSellers(5);
-
-        return $this->render('product/best_sellers.html.twig', [
-            'products' => $products,
+            'totalPages' => $totalPages,
         ]);
     }
 
     /**
-     * Liste des produits d'une catégorie avec pagination
+     * Liste des produits d'une catégorie spécifique avec pagination
      */
     #[Route('/category/{id}', name: 'by_category')]
     public function byCategory(int $id, Request $request): Response
@@ -86,14 +63,40 @@ class ProductController extends AbstractController
 
         $page = max(1, $request->query->getInt('page', 1)); // Gestion de la pagination
         $productsPerPage = 10;
-        $products = $this->productRepository->findByCategory($id, $page, $productsPerPage);
+
+        $products = $this->productRepository->findBy(
+            ['category' => $id], // Filtrer par catégorie
+            ['name' => 'ASC'],   // Tri par nom
+            $productsPerPage,    // Limite
+            ($page - 1) * $productsPerPage // Offset
+        );
 
         return $this->render('product/category.html.twig', [
             'category' => $category,
             'products' => $products,
-            'page' => $page, // Ajout de la variable page pour éviter l'erreur
+            'page' => $page,
         ]);
     }
+
+    /**
+     * Affiche les détails d'un produit
+     */
+    #[Route('/{id}', name: 'show', requirements: ['id' => '\d+'])]
+    public function show(int $id): Response
+    {
+        $product = $this->productRepository->find($id);
+
+        if (!$product) {
+            throw $this->createNotFoundException('Produit non trouvé');
+        }
+
+        return $this->render('product/show.html.twig', [
+            'product' => $product,
+        ]);
+    }
+
+
+
 
     /**
      * Recherche de produits en AJAX
