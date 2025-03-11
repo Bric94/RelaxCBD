@@ -15,14 +15,14 @@ class ProfilePictureType extends AbstractType
     {
         $builder
             ->add('profilePicture', FileType::class, [
-                'label' => 'Photo de profil (JPG ou PNG)',
+                'label' => 'Photo de profil (JPG, PNG ou WebP)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '2M',
-                        'mimeTypes' => ['image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPG ou PNG).',
+                        'maxSize' => '10M',
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
+                        'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPG, PNG ou WebP).',
                     ])
                 ],
             ]);

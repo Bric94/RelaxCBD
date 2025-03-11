@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -61,35 +62,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: BlogPost::class, mappedBy: 'author')]
     private Collection $blogPosts;
 
-    public function __construct()
+    public function __construct(KernelInterface $kernel)
     {
         $this->orders = new ArrayCollection();
         $this->reviews = new ArrayCollection();
         $this->blogPosts = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->roles = ['ROLE_USER'];
 
-        // Vérifier que le dossier des avatars existe
-        $defaultAvatarDir = __DIR__ . '/../../public/images/default/';
+        /* // 📌 Ajout automatique d'un avatar WebP aléatoire
+        $defaultAvatarDir = $kernel->getProjectDir() . '/public/images/default/';
+
         if (!is_dir($defaultAvatarDir)) {
             $this->profilePicture = 'default-avatar.webp';
             return;
         }
 
-        // Récupérer les fichiers images dans le dossier
-        $defaultAvatars = array_diff(scandir($defaultAvatarDir), ['.', '..']);
+        // Récupérer les images WebP dans le dossier
+        $defaultAvatars = glob($defaultAvatarDir . '*.webp');
 
-        // Filtrer uniquement les images valides (webp, png, jpg, jpeg)
-        $defaultAvatars = array_filter($defaultAvatars, function ($file) {
-            return preg_match('/\.(webp|png|jpg|jpeg)$/i', $file);
-        });
-
-        // Réindexation du tableau pour éviter les erreurs d'accès
-        $defaultAvatars = array_values($defaultAvatars);
-
-        // Sélectionner un avatar aléatoire ou utiliser une image par défaut
+        // Sélectionner une image aléatoire ou mettre une image par défaut
         $this->profilePicture = !empty($defaultAvatars)
-            ? array_values($defaultAvatars)[array_rand($defaultAvatars)]
-            : 'default-avatar.webp';
+            ? basename($defaultAvatars[array_rand($defaultAvatars)]) // Nom du fichier uniquement
+            : 'default-avatar.webp'; */ 
     }
 
 
@@ -178,6 +173,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setProfilePicture(?string $profilePicture): static
     {
+        if ($profilePicture !== null && !preg_match('/\.(webp|png|jpg|jpeg)$/i', $profilePicture)) {
+            throw new \InvalidArgumentException("Format d'image non supporté.");
+        }
+
         $this->profilePicture = $profilePicture;
         return $this;
     }
