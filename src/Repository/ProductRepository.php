@@ -59,18 +59,37 @@ class ProductRepository extends ServiceEntityRepository
     }
 
 
-    public function searchProducts(string $query, int $limit = 10): array
+    public function searchProducts(?string $query, ?int $category, ?string $sort)
     {
-        return $this->createQueryBuilder('p')
-            ->leftJoin('p.category', 'c')  // Ajout de la jointure avec la catégorie
-            ->where('p.name LIKE :query')
-            ->orWhere('p.description LIKE :query')
-            ->orWhere('c.name LIKE :query')  // Recherche aussi dans le nom de la catégorie
-            ->setParameter('query', '%' . $query . '%')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
+        $qb = $this->createQueryBuilder('p');
+
+        if ($query) {
+            $qb->andWhere('p.name LIKE :query OR p.description LIKE :query')
+                ->setParameter('query', '%' . $query . '%');
+        }
+
+        if ($category) {
+            $qb->andWhere('p.category = :category')
+                ->setParameter('category', $category);
+        }
+
+        switch ($sort) {
+            case 'price_asc':
+                $qb->orderBy('p.price', 'ASC');
+                break;
+            case 'price_desc':
+                $qb->orderBy('p.price', 'DESC');
+                break;
+            case 'newest':
+                $qb->orderBy('p.createdAt', 'DESC');
+                break;
+            default:
+                $qb->orderBy('p.name', 'ASC');
+        }
+
+        return $qb->getQuery()->getResult();
     }
+
 
     /* public function findPublishedProducts(): array
     {
