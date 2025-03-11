@@ -19,10 +19,31 @@ class UserController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function index(): Response
     {
+        $user = $this->getUser();
+
+        // Liste des avatars par défaut
+        $defaultAvatars = [
+            'avatar1.webp',
+            'avatar2.webp',
+            'avatar3.webp',
+            'avatar4.webp',
+            'avatar5.webp',
+            'avatar6.webp',
+            'avatar7.webp',
+            'avatar8.webp',
+            'avatar9.webp',
+            'avatar10.webp'
+        ];
+
+        // Sélection d’un avatar aléatoire si l’utilisateur n’a pas uploadé de photo
+        $randomAvatar = $defaultAvatars[array_rand($defaultAvatars)];
+
         return $this->render('user/index.html.twig', [
-            'user' => $this->getUser(),
+            'user' => $user,
+            'randomAvatar' => $randomAvatar // Passe l'avatar par défaut à Twig
         ]);
     }
+
 
     #[Route('/edit', name: 'edit')]
     public function editProfile(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response

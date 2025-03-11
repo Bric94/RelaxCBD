@@ -4,23 +4,17 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
-use App\Security\AppCustomAuthenticator;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
-
-#[Route('/register', name: 'app_register')]
 class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
@@ -30,13 +24,14 @@ class RegistrationController extends AbstractController
         $this->emailVerifier = $emailVerifier;
     }
 
+    #[Route('/register', name: 'app_register')]
     public function register(
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface $entityManager,
         KernelInterface $kernel
     ): Response {
-        $user = new User();
+        $user = new User(); // ✅ Plus de problème d'argument
 
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -58,7 +53,7 @@ class RegistrationController extends AbstractController
                 ? basename($defaultAvatars[array_rand($defaultAvatars)]) // Nom du fichier uniquement
                 : 'default-avatar.webp';
 
-            $user->setProfilePicture($randomAvatar); // Affectation de l'image aléatoire
+            $user->setProfilePicture($randomAvatar); // ✅ Affecte l'image ici
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -71,12 +66,13 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // validate email confirmation link, sets User::isVerified=true and persists
+        // Validate email confirmation link, sets User::isVerified=true and persists
         try {
             /** @var User $user */
             $user = $this->getUser();

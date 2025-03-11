@@ -62,30 +62,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: BlogPost::class, mappedBy: 'author')]
     private Collection $blogPosts;
 
-    public function __construct(KernelInterface $kernel)
+    public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->reviews = new ArrayCollection();
         $this->blogPosts = new ArrayCollection();
         $this->createdAt = new \DateTime();
-        $this->roles = ['ROLE_USER'];
 
-        /* // 📌 Ajout automatique d'un avatar WebP aléatoire
-        $defaultAvatarDir = $kernel->getProjectDir() . '/public/images/default/';
+        // Liste des avatars par défaut
+        $defaultAvatars = [
+            'Avatar1.webp',
+            'Avatar2.webp',
+            'Avatar3.webp',
+            'Avatar4.webp',
+            'Avatar5.webp',
+            'Avatar6.webp',
+            'Avatar7.webp',
+            'Avatar8.webp',
+            'Avatar9.webp',
+            'Avatar10.webp'
+        ];
 
-        if (!is_dir($defaultAvatarDir)) {
-            $this->profilePicture = 'default-avatar.webp';
-            return;
+        // Vérifier si profilePicture est vide et lui attribuer un avatar par défaut
+        if (empty($this->profilePicture)) {
+            $this->profilePicture = $defaultAvatars[array_rand($defaultAvatars)];
         }
-
-        // Récupérer les images WebP dans le dossier
-        $defaultAvatars = glob($defaultAvatarDir . '*.webp');
-
-        // Sélectionner une image aléatoire ou mettre une image par défaut
-        $this->profilePicture = !empty($defaultAvatars)
-            ? basename($defaultAvatars[array_rand($defaultAvatars)]) // Nom du fichier uniquement
-            : 'default-avatar.webp'; */ 
     }
+
+
+
 
 
     public function getId(): ?int
