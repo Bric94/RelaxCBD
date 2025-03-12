@@ -22,6 +22,26 @@ class ProductController extends AbstractController
         $this->categoryRepository = $categoryRepository;
     }
 
+    #[Route('/', name: 'index')]
+    public function index(ProductRepository $productRepository, Request $request): Response
+    {
+        $page = max(1, $request->query->getInt('page', 1)); // S'assure que la page est au moins 1
+        $limit = 10; // Nombre de produits par page
+
+        // Récupérer les produits paginés
+        $paginator = $productRepository->findPaginatedProducts(null, $page, $limit);
+
+        // Calculer le nombre total de pages
+        $totalProducts = count($paginator); // Nombre total de produits
+        $totalPages = max(1, ceil($totalProducts / $limit)); // Nombre total de pages
+
+        return $this->render('product/index.html.twig', [
+            'products' => $paginator,
+            'page' => $page,
+            'totalPages' => $totalPages, // ✅ Ajout de totalPages
+        ]);
+    }
+
     /**
      * Liste paginée des produits
      */
@@ -34,16 +54,6 @@ class ProductController extends AbstractController
         return $this->render('product/list.html.twig', [
             'products' => $products,
             'page' => $page,
-        ]);
-    }
-
-    #[Route('/', name: 'index')]
-    public function index(ProductRepository $productRepository): Response
-    {
-        $products = $productRepository->findAll();
-
-        return $this->render('product/index.html.twig', [
-            'products' => $products,
         ]);
     }
 
