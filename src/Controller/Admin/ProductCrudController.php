@@ -36,7 +36,7 @@ class ProductCrudController extends AbstractCrudController
             TextField::new('name', 'Nom du produit'),
             MoneyField::new('price', 'Prix')->setStoredAsCents(false)->setCurrency('EUR'),
             AssociationField::new('category', 'Catégorie')->setRequired(true),
-            TextEditorField::new('description', 'Description'),
+            TextareaField::new('description', 'Description')->renderAsHtml(),
             BooleanField::new('isWeightBased', "Basé sur le poids <br> (en grammes)"), // Ajout du switch pour activer/désactiver le mode poids
             IntegerField::new('stock', 'Stock'),
 
