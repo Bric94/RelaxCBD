@@ -316,4 +316,16 @@ class Product
         }
         return $this;
     }
+
+    public function calculateDiscountedPrice(string $weight): float
+    {
+        if (!$this->isWeightBased || !isset($this->discountByWeight[$weight])) {
+            return $this->price; // Pas de réduction
+        }
+
+        $discountPercentage = $this->discountByWeight[$weight] ?? 0;
+        $discountedPrice = $this->priceByWeight[$weight] * ((100 - $discountPercentage) / 100);
+
+        return round($discountedPrice, 2);
+    }
 }

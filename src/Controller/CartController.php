@@ -22,14 +22,20 @@ final class CartController extends AbstractController
     }
 
     #[Route('/add/{id}/{weight?}', name: 'add', methods: ['POST'])]
-    public function add(Request $request, CartService $cartService, int $id, ?string $weight = null): RedirectResponse
+    public function add(Request $request, CartService $cartService, int $id): RedirectResponse
     {
-        $quantity = max(1, (int) $request->request->get('quantity', 1)); // Récupérer la quantité depuis le formulaire
+        $selectedWeight = $request->request->get('selectedWeight'); // Récupère le poids sélectionné
+        $quantity = (int) $request->request->get('quantity', 1); // Récupère la quantité uniquement si ce n'est pas un produit au poids
 
-        $cartService->add($id, $quantity, $weight);
+        if ($selectedWeight) {
+            $quantity = (int) $selectedWeight; // La quantité devient le grammage sélectionné
+        }
+
+        $cartService->add($id, $quantity, $selectedWeight); // Ajout au panier
 
         return $this->redirectToRoute('cart_index');
     }
+
 
 
 

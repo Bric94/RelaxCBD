@@ -1,19 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ product.name }}{% endblock %}
+{% block title %}
+	{{ product.name }}
+{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-            <img src="{{ asset('uploads/products/' ~ product.image) }}" class="img-fluid" alt="{{ product.name }}">
-        </div>
-        <div class="col-md-6">
-            <h1>{{ product.name }}</h1>
-            <p class="text-success fs-4">{{ (product.price)|number_format(2, ',', ' ') }} €</p>
-            <p>{{ product.description|raw }}</p>
-            <a href="{{ path('product_index') }}" class="btn btn-secondary">⬅️ Retour aux produits</a>
-        </div>
-    </div>
-</div>
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-md-6">
+				<img src="{{ asset('uploads/products/' ~ product.image) }}" class="img-fluid" alt="{{ product.name }}">
+			</div>
+			<div class="col-md-6">
+				<h1>{{ product.name }}</h1>
+				<p class="text-success fs-4">{{ (product.price)|number_format(2, ',', ' ') }}
+					€</p>
+				<p>{{ product.description|raw }}</p>
+				<form method="post" action="{{ path('cart_add', { id: product.id }) }}">
+					{% if product.isWeightBased %}
+						<div class="input-group mb-2">
+							<span class="input-group-text">Poids :</span>
+							<select name="selectedWeight" class="form-select" required>
+								{% for weight, price in product.priceByWeight %}
+									<option value="{{ weight }}">{{ weight }}g -
+										{{ price|number_format(2, ',', ' ') }}
+										€</option>
+								{% endfor %}
+							</select>
+						</div>
+					{% else %}
+						<div class="input-group mb-2">
+							<span class="input-group-text">Quantité :</span>
+							<input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
+						</div>
+					{% endif %}
+					<div class="d-flex justify-content-between">
+						<a href="{{ path('product_index') }}" class="btn btn-secondary">⬅️ Retour aux produits</a>
+						<button type="submit" class="btn btn-primary">🛒 Ajouter au panier</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 {% endblock %}
