@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -37,6 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime')]
     private ?\DateTime $createdAt = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $profilePicture = null;
+
     /**
      * @var Collection<int, Order>
      */
@@ -64,7 +68,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->reviews = new ArrayCollection();
         $this->blogPosts = new ArrayCollection();
         $this->createdAt = new \DateTime();
+
+        // Liste des avatars par défaut
+        $defaultAvatars = [
+            'Avatar1.webp',
+            'Avatar2.webp',
+            'Avatar3.webp',
+            'Avatar4.webp',
+            'Avatar5.webp',
+            'Avatar6.webp',
+            'Avatar7.webp',
+            'Avatar8.webp',
+            'Avatar9.webp',
+            'Avatar10.webp'
+        ];
+
+        // Vérifier si profilePicture est vide et lui attribuer un avatar par défaut
+        if (empty($this->profilePicture)) {
+            $this->profilePicture = $defaultAvatars[array_rand($defaultAvatars)];
+        }
     }
+
+
+
+
 
     public function getId(): ?int
     {
@@ -143,6 +170,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?string $profilePicture): static
+    {
+        if ($profilePicture !== null && !preg_match('/\.(webp|png|jpg|jpeg)$/i', $profilePicture)) {
+            throw new \InvalidArgumentException("Format d'image non supporté.");
+        }
+
+        $this->profilePicture = $profilePicture;
+        return $this;
+    }
+
 
     public function getUserIdentifier(): string
     {

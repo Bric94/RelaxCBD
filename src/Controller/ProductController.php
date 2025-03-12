@@ -43,8 +43,9 @@ class ProductController extends AbstractController
     }
 
     /**
-     * Liste paginée des produits
+     * Liste paginée des produits avec recherche et tri
      */
+<<<<<<< HEAD
     #[Route('/products', name: 'list')]
     public function list(Request $request): Response
     {
@@ -54,43 +55,85 @@ class ProductController extends AbstractController
         return $this->render('product/list.html.twig', [
             'products' => $products,
             'page' => $page,
-        ]);
-    }
-
-    /**
-     * Liste des best-sellers
-     */
-    #[Route('/best-sellers', name: 'best_sellers')]
-    public function bestSellers(): Response
+=======
+    #[Route('/', name: 'index')]
+    public function index(Request $request): Response
     {
-        $products = $this->productRepository->findBestSellers(5);
+        $query = $request->query->get('q');
+        $categoryId = $request->query->getInt('category');
+        $sort = $request->query->get('sort', 'newest');
+        $page = max(1, $request->query->getInt('page', 1));
+        $productsPerPage = 10;
 
-        return $this->render('product/best_sellers.html.twig', [
+        // Récupération des produits selon les critères
+        $products = $this->productRepository->searchProducts($query, $categoryId, $sort, $page, $productsPerPage);
+        $totalProducts = count($products);
+        $totalPages = ceil($totalProducts / $productsPerPage);
+
+        // Récupération des catégories pour le filtre
+        $categories = $this->categoryRepository->findAll();
+
+        return $this->render('product/index.html.twig', [
             'products' => $products,
+            'categories' => $categories,
+            'page' => $page,
+            'totalPages' => $totalPages,
+>>>>>>> 70ffb3eb2a9077ee84d0e13537363d9b228ebea0
         ]);
     }
 
     /**
-     * Liste des produits d'une catégorie
+     * Liste des produits d'une catégorie spécifique avec pagination
      */
     #[Route('/category/{id}', name: 'by_category')]
-    public function byCategory(int $id): Response
+    public function byCategory(int $id, Request $request): Response
     {
         $category = $this->categoryRepository->find($id);
         if (!$category) {
             throw $this->createNotFoundException('Catégorie non trouvée');
         }
 
-        $products = $this->productRepository->findByCategory($id);
+        $page = max(1, $request->query->getInt('page', 1)); // Gestion de la pagination
+        $productsPerPage = 10;
 
+        $products = $this->productRepository->findBy(
+            ['category' => $id], // Filtrer par catégorie
+            ['name' => 'ASC'],   // Tri par nom
+            $productsPerPage,    // Limite
+            ($page - 1) * $productsPerPage // Offset
+        );
 
         return $this->render('product/category.html.twig', [
             'category' => $category,
             'products' => $products,
+            'page' => $page,
         ]);
     }
 
-    #[Route('/search', name: 'product_search')]
+    /**
+     * Affiche les détails d'un produit
+     */
+    #[Route('/{id}', name: 'show', requirements: ['id' => '\d+'])]
+    public function show(int $id): Response
+    {
+        $product = $this->productRepository->find($id);
+
+        if (!$product) {
+            throw $this->createNotFoundException('Produit non trouvé');
+        }
+
+        return $this->render('product/show.html.twig', [
+            'product' => $product,
+        ]);
+    }
+
+
+
+
+    /**
+     * Recherche de produits en AJAX
+     */
+    #[Route('/search', name: 'search')]
     public function search(Request $request): JsonResponse
     {
         $query = $request->query->get('q', '');

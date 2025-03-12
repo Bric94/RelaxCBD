@@ -4,8 +4,33 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-5">
-		<h1 class="text-center">👤 Mon Compte</h1>
+	<div
+		class="container mt-5">
+
+		<!-- Affichage de la photo de profil avec upload en un clic -->
+		<div class="text-center">
+			<form method="post" action="{{ path('user_edit') }}" enctype="multipart/form-data">
+				<label for="profilePictureUpload" style="cursor: pointer;">
+					{% set defaultAvatars = [
+    'Avatar1.webp', 'Avatar2.webp', 'Avatar3.webp', 'Avatar4.webp', 'Avatar5.webp',
+    'Avatar6.webp', 'Avatar7.webp', 'Avatar8.webp', 'Avatar9.webp', 'Avatar10.webp'
+] %}
+
+					{% if user.profilePicture is not empty and user.profilePicture not in defaultAvatars %}
+						{% set profilePicture = 'images/profiles/' ~ user.profilePicture %}
+					{% else %}
+						{% set profilePicture = 'images/default/' ~ user.profilePicture %}
+					{% endif %}
+
+					<img src="{{ asset(profilePicture) }}" alt="Photo de profil" class="rounded-circle shadow" style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #4CAF50;">
+
+
+				</label>
+				<input type="file" id="profilePictureUpload" name="profilePicture" style="display: none;" onchange="this.form.submit();">
+			</form>
+		</div>
+
+		<h1 class="text-center mt-3">Mon Compte</h1>
 		<p class="text-center text-muted">Bienvenue sur votre espace personnel,
 			{{ user.firstName }}
 			!</p>

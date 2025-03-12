@@ -20,17 +20,21 @@ class CartService
     {
         $cart = $this->session->get('cart', []);
 
+        // Assurer que $quantity est toujours un entier valide
+        $quantity = max(1, $quantity);
+
         // Générer une clé unique pour les produits avec grammage (ex: "12_3g")
         $key = $weight ? "{$productId}_{$weight}" : (string)$productId;
 
-        if (isset($cart[$key])) {
-            $cart[$key] += $quantity;
-        } else {
-            $cart[$key] = $quantity;
+        // Ajouter au panier
+        if (!isset($cart[$key])) {
+            $cart[$key] = 0;
         }
+        $cart[$key] += $quantity;
 
         $this->session->set('cart', $cart);
     }
+
 
     public function remove(int $productId, ?string $weight = null)
     {
@@ -64,7 +68,7 @@ class CartService
                 ? $product->getPriceByWeight()[$weight]
                 : $product->getPrice();
 
-            $discount = $product->getDiscountForWeight($weight);
+            $discount = $product->getDiscountForWeight($weight ?? '');
             $discountedPrice = $price - ($price * $discount / 100);
 
             $cartItems[] = [

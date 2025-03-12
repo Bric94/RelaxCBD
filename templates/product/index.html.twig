@@ -1,36 +1,75 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	Produits
+{% block title %}Produits
 {% endblock %}
 
 {% block body %}
-	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
-		}
-	</style>
+	<div class="container mt-5">
+		<h1 class="text-center mb-4">Nos Produits</h1>
 
-	<div class="pagination text-center mt-4">
-		{% if page > 1 %}
-			<a href="{{ path('product_index', { page: page - 1 }) }}" class="btn btn-primary">⬅️ Précédent</a>
-		{% endif %}
+		<form method="GET" action="{{ path('product_index') }}" class="d-flex mb-4">
+			<input type="text" name="q" class="form-control me-2" placeholder="Rechercher un produit..." value="{{ app.request.get('q') }}">
 
-		<span class="btn btn-light">Page
-			{{ page }}
-			/
-			{{ totalPages }}</span>
+			<select name="category" class="form-select me-2">
+				<option value="">Toutes les catégories</option>
+				{% for category in categories %}
+					<option value="{{ category.id }}" {% if app.request.get('category') == category.id %} selected {% endif %}>
+						{{ category.name }}
+					</option>
+				{% endfor %}
+			</select>
 
-		{% if page < totalPages %}
-			<a href="{{ path('product_index', { page: page + 1 }) }}" class="btn btn-primary">Suivant ➡️</a>
-		{% endif %}
+			<select name="sort" class="form-select me-2">
+				<option value="">Trier par...</option>
+				<option value="price_asc" {% if app.request.get('sort') == 'price_asc' %} selected {% endif %}>Prix croissant</option>
+				<option value="price_desc" {% if app.request.get('sort') == 'price_desc' %} selected {% endif %}>Prix décroissant</option>
+				<option value="newest" {% if app.request.get('sort') == 'newest' %} selected {% endif %}>Nouveautés</option>
+			</select>
+
+			<button type="submit" class="btn btn-success">🔍 Rechercher</button>
+		</form>
+
+
+		<div class="row">
+			{% for product in products %}
+				<div class="col-md-4 mb-4">
+					<div class="card shadow-sm border-0">
+						<img src="{{ asset('uploads/products/' ~ product.image) }}" class="card-img-top" alt="{{ product.name }}">
+						<div class="card-body text-center">
+							<h5 class="card-title">{{ product.name }}</h5>
+							<p class="card-text font-weight-bold text-success">{{ product.price|number_format(2, ',', ' ') }}
+								€</p>
+							<a href="{{ path('product_show', { id: product.id }) }}" class="btn btn-light w-100 mb-2">Informations sur le produit</a>
+							<form method="post" action="{{ path('cart_add', { id: product.id }) }}">
+								<div class="input-group mb-2">
+									<span class="input-group-text">Quantité :</span>
+									<input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
+								</div>
+								<button type="submit" class="btn btn-primary w-100">🛒 Ajouter au panier</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<div class="col-12">
+					<p class="text-center">Aucun produit trouvé.</p>
+				</div>
+			{% endfor %}
+		</div>
+
+
+		{% set totalPages = totalPages ?? 1 %}
+		<div class="d-flex justify-content-center mt-4">
+			{% if page > 1 %}
+				<a href="{{ path('product_index', { page: page - 1 }) }}" class="btn btn-outline-primary mx-1">⬅️ Précédent</a>
+			{% endif %}
+			<span class="btn btn-light mx-1">Page
+				{{ page }}
+				/
+				{{ totalPages }}</span>
+			{% if page < totalPages %}
+				<a href="{{ path('product_index', { page: page + 1 }) }}" class="btn btn-outline-primary mx-1">Suivant ➡️</a>
+			{% endif %}
+		</div>
 	</div>
-
 {% endblock %}

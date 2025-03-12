@@ -6,6 +6,7 @@
 parameters:
     stripe_secret_key: "%env(STRIPE_SECRET_KEY)%"
     admin_email: 'rocketbric@gmail.com'
+    profiles_directory: '%kernel.project_dir%/public/images/profiles'
 services:
     App\Service\EmailService:
         arguments:
