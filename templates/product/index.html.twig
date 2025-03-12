@@ -29,12 +29,11 @@
 			<button type="submit" class="btn btn-success">🔍 Rechercher</button>
 		</form>
 
-
 		<div class="row">
 			{% for product in products %}
 				<div class="col-md-4 mb-4">
 					<div class="card shadow-sm border-0">
-						<img src="{{ asset('uploads/products/' ~ product.image) }}" class="card-img-top" alt="{{ product.name }}">
+						<img src="{{ asset('uploads/products/' ~ product.image) }}" class="card-img-top img-thumbnail" alt="{{ product.name }}" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal{{ product.id }}">
 						<div class="card-body text-center">
 							<h5 class="card-title">{{ product.name }}</h5>
 							<p class="card-text font-weight-bold text-success">{{ product.price|number_format(2, ',', ' ') }}
@@ -50,13 +49,46 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- Modal pour afficher l'image en grand avec description et scroll -->
+				<div class="modal fade" id="imageModal{{ product.id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ product.id }}" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="imageModalLabel{{ product.id }}">{{ product.name }}</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div
+									class="row">
+									<!-- Image du produit avec taille fixe -->
+									<div class="col-md-6 d-flex align-items-center justify-content-center">
+										<img src="{{ asset('uploads/products/' ~ product.image) }}" class="img-fluid rounded" alt="{{ product.name }}" style="max-height: 500px; object-fit: cover;">
+									</div>
+									<!-- Détails du produit avec scroll -->
+									<div class="col-md-6 d-flex flex-column" style="max-height: 500px; overflow-y: auto;">
+										<h5 class="text-success">{{ product.price|number_format(2, ',', ' ') }}
+											€</h5>
+										<p>{{ product.description|raw }}</p>
+										<form method="post" action="{{ path('cart_add', { id: product.id }) }}">
+											<div class="input-group mb-3">
+												<span class="input-group-text">Quantité :</span>
+												<input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
+											</div>
+											<button type="submit" class="btn btn-primary w-100">🛒 Ajouter au panier</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			{% else %}
 				<div class="col-12">
 					<p class="text-center">Aucun produit trouvé.</p>
 				</div>
 			{% endfor %}
 		</div>
-
 
 		{% set totalPages = totalPages ?? 1 %}
 		<div class="d-flex justify-content-center mt-4">
