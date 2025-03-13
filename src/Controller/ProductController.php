@@ -63,10 +63,6 @@ class ProductController extends AbstractController
         // Récupération des catégories pour le filtre
         $categories = $this->categoryRepository->findAll();
 
-        foreach ($products as $product) {
-            dump($product->getId(), $product->getName(), $product->getPriceByWeight());
-        }
-
         return $this->render('product/index.html.twig', [
             'products' => $products,
             'categories' => $categories,
@@ -114,9 +110,6 @@ class ProductController extends AbstractController
         if (!$product) {
             throw $this->createNotFoundException('Produit non trouvé');
         }
-
-        // 📌 Vérifie si `priceByWeight` est bien récupéré pour ce produit
-        dump($product->getId(), $product->getName(), $product->getPriceByWeight());
 
         return $this->render('product/show.html.twig', [
             'product' => $product,
