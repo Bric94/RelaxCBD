@@ -16,6 +16,19 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+    public function findOrderWithProducts(int $orderId): ?Order
+    {
+        return $this->createQueryBuilder('o')
+            ->leftJoin('o.orderItems', 'oi')
+            ->leftJoin('oi.product', 'p')
+            ->addSelect('oi', 'p')
+            ->where('o.id = :id')
+            ->setParameter('id', $orderId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
     //    /**
     //     * @return Order[] Returns an array of Order objects
     //     */

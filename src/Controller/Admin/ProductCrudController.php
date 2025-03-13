@@ -50,7 +50,7 @@ class ProductCrudController extends AbstractCrudController
 
         // 🔥 Ajouter discountByWeight seulement si c'est un produit au poids
         if ($pageName === 'edit' || $pageName === 'new') {
-            $fields[] = ArrayField::new('discountByWeight', 'Réductions par poids (ex: {"3g":5, "5g":10})');
+            $fields[] = TextField::new('priceByWeight', 'Prix par poids (JSON)')->setHelp('Ex: {"3g": 5, "5g": 10}');
         }
 
         return $fields;

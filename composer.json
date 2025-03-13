@@ -49,6 +49,7 @@
         "symfony/yaml": "6.4.*",
         "symfonycasts/verify-email-bundle": "^1.17",
         "twbs/bootstrap": "^5.3",
+        "twig/cache-extra": "^3.20",
         "twig/extra-bundle": "^3.20",
         "twig/twig": "^2.12|^3.0",
         "vich/uploader-bundle": "^2.5"

@@ -1,7 +1,9 @@
 <div class="row col-md-8 mx-auto mt-5">
-	{% for message in app.flashes('success') %}
-		<div class="alert alert-success">
-			{{message}}
+	{% for label, messages in app.flashes %}
+		<div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }}">
+			{% for message in messages %}
+				{{ message }}
+			{% endfor %}
 		</div>
 	{% endfor %}
 </div>

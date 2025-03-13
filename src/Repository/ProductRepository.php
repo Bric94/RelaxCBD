@@ -17,6 +17,7 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+
     //    /**
     //     * @return Product[] Returns an array of Product objects
     //     */
@@ -92,6 +93,28 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getPaginatedProducts(int $page, int $limit = 10)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+
+        return new Paginator($query);
+    }
+
+    public function findTopSellingProducts(int $limit = 5)
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.orderItems', 'oi')
+            ->select('p, COUNT(oi.id) as sales')
+            ->groupBy('p.id')
+            ->orderBy('sales', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
 
 
 

@@ -6,7 +6,6 @@
 {% block body %}
 	<div class="container mt-5">
 		<h1 class="text-center mb-4">Nos Produits</h1>
-
 		<form method="GET" action="{{ path('product_index') }}" class="d-flex mb-4">
 			<input type="text" name="q" class="form-control me-2" placeholder="Rechercher un produit..." value="{{ app.request.get('q') }}">
 
@@ -30,7 +29,11 @@
 		</form>
 
 		<div class="row">
+			{% cache 'product_list' %}
 			{% for product in products %}
+			
+				<pre>{{ dump(product.priceByWeight) }}</pre>
+
 				<div class="col-md-4 mb-4">
 					<div class="card shadow-sm border-0">
 						<img src="{{ asset('uploads/products/' ~ product.image) }}" class="card-img-top img-thumbnail" alt="{{ product.name }}" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal{{ product.id }}">
@@ -40,10 +43,23 @@
 								€</p>
 							<a href="{{ path('product_show', { id: product.id }) }}" class="btn btn-light w-100 mb-2">Informations sur le produit</a>
 							<form method="post" action="{{ path('cart_add', { id: product.id }) }}">
-								<div class="input-group mb-2">
-									<span class="input-group-text">Quantité :</span>
-									<input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
-								</div>
+								{% if product.isWeightBased %}
+									<div class="input-group mb-2">
+										<span class="input-group-text">Poids :</span>
+										<select name="selectedWeight" class="form-select" required>
+											{% for weight, price in product.priceByWeight %}
+												<option value="{{ weight }}">{{ weight }}g -
+													{{ price|number_format(2, ',', ' ') }}
+													€</option>
+											{% endfor %}
+										</select>
+									</div>
+								{% else %}
+									<div class="input-group mb-2">
+										<span class="input-group-text">Quantité :</span>
+										<input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
+									</div>
+								{% endif %}
 								<button type="submit" class="btn btn-primary w-100">🛒 Ajouter au panier</button>
 							</form>
 						</div>
@@ -118,4 +134,5 @@
 			{% endif %}
 		</div>
 	</div>
+	{% endcache %}
 {% endblock %}

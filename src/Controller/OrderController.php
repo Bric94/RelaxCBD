@@ -50,41 +50,51 @@ final class OrderController extends AbstractController
             return $this->redirectToRoute('cart_index');
         }
 
-        $order = new Order();
-        $order->setUser($user);
-        $order->setTotalPrice($total);
-        $order->setCreatedAt(new \DateTime());
-        $order->setStatus('pending');
+        try {
+            $order = new Order();
+            $order->setUser($user);
+            $order->setTotalPrice($total);
+            $order->setCreatedAt(new \DateTime());
+            $order->setStatus('pending');
 
-        foreach ($cartItems as $item) {
-            $orderItem = new OrderItem();
-            $orderItem->setOrders($order);
-            $orderItem->setProduct($item['product']);
-            $orderItem->setQuantity($item['quantity']);
-            $orderItem->setPrice($item['price']);
-
-            // Mise à jour du stock
-            $product = $item['product'];
-            if ($product->isWeightBased()) {
-                $stockByWeight = $product->getStockByWeight();
-                if (isset($stockByWeight[$item['weight']])) {
-                    $stockByWeight[$item['weight']] -= $item['quantity'];
-                    $product->setStockByWeight($stockByWeight);
+            foreach ($cartItems as $item) {
+                if (!$item['product']) {
+                    throw new \LogicException('Produit introuvable dans le panier');
                 }
-            } else {
-                $product->setStock($product->getStock() - $item['quantity']);
+
+                $orderItem = new OrderItem();
+                $orderItem->setOrders($order);
+                $orderItem->setProduct($item['product']);
+                $orderItem->setQuantity($item['quantity']);
+                $orderItem->setPrice($item['price']);
+
+                // Mise à jour du stock
+                $product = $item['product'];
+                if ($product->isWeightBased()) {
+                    $stockByWeight = $product->getStockByWeight();
+                    if (isset($stockByWeight[$item['weight']])) {
+                        $stockByWeight[$item['weight']] -= $item['quantity'];
+                        $product->setStockByWeight($stockByWeight);
+                    } else {
+                        throw new \LogicException('Le poids selectionné n\'a pas de stock associé');
+                    }
+                } else {
+                    $product->setStock($product->getStock() - $item['quantity']);
+                }
+
+                $entityManager->persist($product);
+                $entityManager->persist($orderItem);
             }
 
-            $entityManager->persist($product);
-            $entityManager->persist($orderItem);
+            $entityManager->persist($order);
+            $entityManager->flush();
+
+            $cartService->remove('cart');
+
+            $this->addFlash('success', 'Votre commande a été enregistrée avec succès ! ');
+        } catch (\Exception $e) {
+            $this->addFlash('danger', 'Une erreur est survenue lors de la commande: ' . $e->getMessage());
         }
-
-        $entityManager->persist($order);
-        $entityManager->flush();
-
-        $cartService->remove('cart');
-
-        $this->addFlash('success', 'Votre commande a été enregistrée avec succès ! 🚀');
 
         return $this->redirectToRoute('order_index');
     }

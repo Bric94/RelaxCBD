@@ -181,7 +181,7 @@ class Product
             return 0; // Pas de réduction si aucun poids n'est spécifié
         }
 
-        return $this->discountByWeight[$weight] ?? 0;
+        return $this->priceByWeight[$weight] ?? 0;
     }
 
 
@@ -291,7 +291,11 @@ class Product
 
     public function setPriceByWeight(?array $priceByWeight): static
     {
-        $this->priceByWeight = $priceByWeight;
+        if (is_string($priceByWeight)) {
+            $priceByWeight = json_decode($priceByWeight, true);
+        }
+
+        $this->priceByWeight = $priceByWeight ?? [];
         return $this;
     }
 
@@ -319,11 +323,11 @@ class Product
 
     public function calculateDiscountedPrice(string $weight): float
     {
-        if (!$this->isWeightBased || !isset($this->discountByWeight[$weight])) {
+        if (!$this->isWeightBased || !isset($this->priceByWeight[$weight])) {
             return $this->price; // Pas de réduction
         }
 
-        $discountPercentage = $this->discountByWeight[$weight] ?? 0;
+        $discountPercentage = $this->priceByWeight[$weight] ?? 0;
         $discountedPrice = $this->priceByWeight[$weight] * ((100 - $discountPercentage) / 100);
 
         return round($discountedPrice, 2);
