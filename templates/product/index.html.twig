@@ -31,9 +31,6 @@
 		<div class="row">
 			{% cache 'product_list' %}
 			{% for product in products %}
-			
-				<pre>{{ dump(product.priceByWeight) }}</pre>
-
 				<div class="col-md-4 mb-4">
 					<div class="card shadow-sm border-0">
 						<img src="{{ asset('uploads/products/' ~ product.image) }}" class="card-img-top img-thumbnail" alt="{{ product.name }}" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal{{ product.id }}">
