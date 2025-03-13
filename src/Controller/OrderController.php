@@ -82,7 +82,7 @@ final class OrderController extends AbstractController
         $entityManager->persist($order);
         $entityManager->flush();
 
-        $cartService->clear();
+        $cartService->remove('cart');
 
         $this->addFlash('success', 'Votre commande a été enregistrée avec succès ! 🚀');
 

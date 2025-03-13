@@ -50,7 +50,7 @@ final class CartController extends AbstractController
     #[Route('/clear', name: 'clear')]
     public function clear(CartService $cartService): RedirectResponse
     {
-        $cartService->clear();
+        $cartService->remove('cart');
         return $this->redirectToRoute('cart_index');
     }
 }
