@@ -55,9 +55,9 @@ class ContactType extends AbstractType
             ->add('object', ChoiceType::class, [
                 'label' => 'Sélectionner un motif',
                 'choices' => [
-                    'Je souhaite devenir formateur' => 'Je souhaite devenir formateur',
-                    'Je souhaite devenir développeur' => 'Je souhaite devenir développeur',
-                    'Je souhaite postuler' => 'Je souhaite postuler'
+                    'Bonjour' => 'Bonjour',
+                    'Au revoir' => 'Au revoir',
+                    'Pourquoi pas ?' => 'Pourquoi pas ?'
                 ],
                 'row_attr' => [
                     'class' => 'col-md-6', 'id' => '...',
