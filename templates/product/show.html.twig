@@ -12,8 +12,16 @@
 			</div>
 			<div class="col-md-6">
 				<h1>{{ product.name }}</h1>
-				<p class="text-success fs-4">{{ (product.price)|number_format(2, ',', ' ') }}
-					€</p>
+				<p class="text-success fs-4">
+					{% if product.isWeightBased and selectedWeight %}
+						{{ product.calculateDiscountedPrice(selectedWeight)|number_format(2, ',', ' ') }}
+						€
+					{% else %}
+						{{ product.price|number_format(2, ',', ' ') }}
+						€
+					{% endif %}
+				</p>
+
 				<p>{{ product.description|raw }}</p>
 				<form method="post" action="{{ path('cart_add', { id: product.id }) }}">
 					{% if product.isWeightBased %}

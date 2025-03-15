@@ -30,13 +30,15 @@ class ProductCrudController extends AbstractCrudController
         return Product::class;
     }
 
+
+
     public function configureFields(string $pageName): iterable
     {
         $fields = [
             TextField::new('name', 'Nom du produit'),
             MoneyField::new('price', 'Prix')->setStoredAsCents(false)->setCurrency('EUR'),
             AssociationField::new('category', 'Catégorie')->setRequired(true),
-            TextareaField::new('description', 'Description')->renderAsHtml(),
+            TextareaField::new('description', 'Description'),
             BooleanField::new('isWeightBased', "Basé sur le poids <br> (en grammes)"), // Ajout du switch pour activer/désactiver le mode poids
             IntegerField::new('stock', 'Stock'),
 
@@ -50,26 +52,56 @@ class ProductCrudController extends AbstractCrudController
 
         // 🔥 Ajouter discountByWeight seulement si c'est un produit au poids
         if ($pageName === 'edit' || $pageName === 'new') {
-            $fields[] = TextField::new('priceByWeight', 'Prix par poids (JSON)')->setHelp('Ex: {"3g": 5, "5g": 10}');
+            $fields[] = ArrayField::new('priceByWeight', 'Prix par poids (JSON)')
+                ->setHelp('Ex: {"1": 10, "5": 9, "10": 8}');
         }
+
 
         return $fields;
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        /** @var Product $product */
+
         $product = $entityInstance;
 
+        // 🔥 Vérification et conversion JSON pour priceByWeight
+        if (!empty($product->getPriceByWeight())) {
+            $data = $product->getPriceByWeight();
+        
+            // Vérifie si c'est une chaîne JSON
+            if (is_string($data)) {
+                $decoded = json_decode($data, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $product->setPriceByWeight($decoded);
+                }
+            }
+        
+            // Vérifie si c'est un tableau contenant une seule chaîne JSON
+            if (is_array($data) && isset($data[0]) && is_string($data[0])) {
+                $decoded = json_decode($data[0], true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $product->setPriceByWeight($decoded);
+                }
+                /* dump($product->getPriceByWeight());
+                die(); */
+            }
+        
+        }
+
+        // Gestion de l'upload d'image
         $imageFile = $this->getContext()->getRequest()->files->get('Product')['imageFile'] ?? null;
         if ($imageFile instanceof UploadedFile) {
             $newFilename = $this->uploadImage($imageFile);
             $product->setImage($newFilename);
         }
 
+
         $entityManager->persist($product);
         $entityManager->flush();
+
     }
+
 
     private function uploadImage(UploadedFile $file): string
     {

@@ -36,8 +36,18 @@
 						<img src="{{ asset('uploads/products/' ~ product.image) }}" class="card-img-top img-thumbnail" alt="{{ product.name }}" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal{{ product.id }}">
 						<div class="card-body text-center">
 							<h5 class="card-title">{{ product.name }}</h5>
-							<p class="card-text font-weight-bold text-success">{{ product.price|number_format(2, ',', ' ') }}
-								€</p>
+							<p class="card-text font-weight-bold text-success">
+								{% if product.isWeightBased %}
+									<small>À partir de</small>
+									{% set minWeight = product.priceByWeight|keys|first %}
+									{{ product.calculateDiscountedPrice(minWeight)|number_format(2, ',', ' ') }}
+									€
+
+								{% else %}
+									{{ product.price|number_format(2, ',', ' ') }}
+									€
+								{% endif %}
+							</p>
 							<a href="{{ path('product_show', { id: product.id }) }}" class="btn btn-light w-100 mb-2">Informations sur le produit</a>
 							<form method="post" action="{{ path('cart_add', { id: product.id }) }}">
 								{% if product.isWeightBased %}
@@ -57,6 +67,7 @@
 										<input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
 									</div>
 								{% endif %}
+									{{ dump(product.priceByWeight) }}
 								<button type="submit" class="btn btn-primary w-100">🛒 Ajouter au panier</button>
 							</form>
 						</div>

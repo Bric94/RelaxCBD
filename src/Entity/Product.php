@@ -34,9 +34,6 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $discountByWeight = null; // Réductions par grammage (ex: {"3g": 5, "5g": 10})
-
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
     private ?Category $category = null;
 
@@ -164,21 +161,11 @@ class Product
         return $this;
     }
 
-    public function getDiscountByWeight(): ?array
-    {
-        return $this->discountByWeight;
-    }
-
-    public function setDiscountByWeight(?array $discountByWeight): static
-    {
-        $this->discountByWeight = $discountByWeight;
-        return $this;
-    }
 
     public function getDiscountForWeight(?string $weight): int
     {
-        if ($weight === null) {
-            return 0; // Pas de réduction si aucun poids n'est spécifié
+        if ($weight === null || empty($this->priceByWeight)) {
+            return 0;
         }
 
         return $this->priceByWeight[$weight] ?? 0;
@@ -284,10 +271,36 @@ class Product
         return $this;
     }
 
-    public function getPriceByWeight(): ?array
+    public function getPriceByWeight(): array
     {
-        return $this->priceByWeight;
+        // Si c'est déjà un tableau associatif, on le retourne directement
+        if (is_array($this->priceByWeight) && isset($this->priceByWeight[0]) === false) {
+            return $this->priceByWeight;
+        }
+
+        // Vérifie si c'est un tableau contenant une chaîne JSON
+        if (is_array($this->priceByWeight) && isset($this->priceByWeight[0]) && is_string($this->priceByWeight[0])) {
+            $decoded = json_decode($this->priceByWeight[0], true);
+
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
+        // Vérifie si c'est une chaîne JSON stockée directement
+        if (is_string($this->priceByWeight)) {
+            $decoded = json_decode($this->priceByWeight, true);
+
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
+        // Si tout échoue, retourne un tableau vide pour éviter les erreurs
+        return [];
     }
+
+
 
     public function setPriceByWeight(?array $priceByWeight): static
     {
@@ -301,7 +314,7 @@ class Product
 
     public function getStockByWeight(): ?array
     {
-        return $this->stockByWeight;
+        return $this->stockByWeight ?? [];
     }
 
     public function setStockByWeight(?array $stockByWeight): static
@@ -321,15 +334,23 @@ class Product
         return $this;
     }
 
-    public function calculateDiscountedPrice(string $weight): float
+    public function calculateDiscountedPrice(float $weight): float
     {
-        if (!$this->isWeightBased || !isset($this->priceByWeight[$weight])) {
-            return $this->price; // Pas de réduction
+        if (!$this->isWeightBased || empty($this->getPriceByWeight())) {
+            return $this->price;
         }
 
-        $discountPercentage = $this->priceByWeight[$weight] ?? 0;
-        $discountedPrice = $this->priceByWeight[$weight] * ((100 - $discountPercentage) / 100);
+        $prices = $this->getPriceByWeight();
+        ksort($prices, SORT_NUMERIC); // Trie les prix du plus petit au plus grand
 
-        return round($discountedPrice, 2);
+        $selectedPrice = reset($prices); // Par défaut, on prend le plus petit prix
+
+        foreach ($prices as $threshold => $price) {
+            if ($weight >= $threshold) {
+                $selectedPrice = $price;
+            }
+        }
+
+        return round($selectedPrice * $weight, 2);
     }
 }

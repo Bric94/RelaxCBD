@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,20 +28,20 @@ class ProductController extends AbstractController
     {
         $page = max(1, $request->query->getInt('page', 1)); // S'assure que la page est au moins 1
         $limit = 10; // Nombre de produits par page
-
+        
         // Récupérer les produits paginés
         $paginator = $productRepository->findPaginatedProducts(null, $page, $limit);
-
+        
         // Calculer le nombre total de pages
         $totalProducts = count($paginator); // Nombre total de produits
         $totalPages = max(1, ceil($totalProducts / $limit)); // Nombre total de pages
-
+        
         return $this->render('product/index.html.twig', [
             'products' => $paginator,
             'page' => $page,
             'totalPages' => $totalPages, // ✅ Ajout de totalPages
-        ]);
-    } */
+            ]);
+            } */
 
     /**
      * Liste paginée des produits avec recherche et tri
@@ -103,22 +104,24 @@ class ProductController extends AbstractController
      * Affiche les détails d'un produit
      */
     #[Route('/{id}', name: 'show', requirements: ['id' => '\d+'])]
-    public function show(int $id): Response
+    public function show(Product $product, Request $request): Response
     {
-        $product = $this->productRepository->find($id);
+        $selectedWeight = $request->query->get('weight', null);
 
-        if (!$product) {
-            throw $this->createNotFoundException('Produit non trouvé');
+        if ($product->isWeightBased() && $selectedWeight) {
+            $discountedPrice = $product->calculateDiscountedPrice($selectedWeight);
+        } else {
+            $discountedPrice = $product->getPrice();
         }
+        /* dump($product->getPriceByWeight());
+        die(); */
 
         return $this->render('product/show.html.twig', [
             'product' => $product,
+            'selectedWeight' => $selectedWeight,
+            'discountedPrice' => $discountedPrice,
         ]);
     }
-
-
-
-
 
     /**
      * Recherche de produits en AJAX
@@ -142,6 +145,7 @@ class ProductController extends AbstractController
                 'price' => $product->getPrice(),
             ];
         }, $products);
+
 
         return new JsonResponse($results);
     }
