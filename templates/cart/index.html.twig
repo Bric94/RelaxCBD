@@ -6,8 +6,8 @@
 	{% if cartItems is empty %}
 		<p>Votre panier est vide.</p>
 	{% else %}
-		<table class="table">
-			<thead>
+		<table class="table table-hover">
+			<thead class="table-light">
 				<tr>
 					<th>Produit</th>
 					<th>Grammage</th>
@@ -21,7 +21,12 @@
 			<tbody>
 				{% for item in cartItems %}
 					<tr>
-						<td>{{ item.product.name }}</td>
+						<!-- Nom du produit -->
+						<td>
+							<strong>{{ item.product.name }}</strong>
+						</td>
+
+						<!-- Grammage -->
 						<td>
 							{% if item.weight %}
 								{{ item.quantity }}
@@ -32,7 +37,11 @@
 								{{ item.quantity }}
 							{% endif %}
 						</td>
+
+						<!-- Quantité -->
 						<td>{{ item.quantity }}</td>
+
+						<!-- Prix unitaire -->
 						<td>
 							{% if item.discount > 0 %}
 								<span class="text-danger">
@@ -47,31 +56,53 @@
 								€
 							{% endif %}
 						</td>
+
+						<!-- Détails des prix et réductions -->
 						<td>
 							{% if item.weight %}
-								{% set price1g = item.product.getPriceByWeight()['1'] ?? item.product.getPrice() %}
-								{% set selectedPricePerGram = item.original_price / item.weight %}
-								{% set discountPercentage = ((1 - (selectedPricePerGram / price1g)) * 100)|round(2) %}
+								{% set priceByWeight = item.product.getPriceByWeight() %}
+								{% set price1g = priceByWeight['1'] ?? item.product.getPrice() %}
+								{% set selectedPrice = priceByWeight[item.weight] ?? item.original_price %}
+								{% set totalBasePrice = price1g * item.quantity %}
+								{% set totalFinalPrice = selectedPrice * item.quantity %}
+								{% set totalDiscount = totalBasePrice - totalFinalPrice %}
 
-								{% if discountPercentage > 0 %}
-									<span class="badge bg-success">-{{ discountPercentage|number_format(2, ',', ' ') }}%</span>
+								{% if totalDiscount > 0 %}
+									<ul class="list-unstyled">
+										<li>💰
+											<strong>Prix de base :</strong>
+											{{ totalBasePrice|number_format(2, ',', ' ') }}
+											€</li>
+										<li>🎯
+											<strong>Prix réduit :</strong>
+											<span class="text-primary">{{ totalFinalPrice|number_format(2, ',', ' ') }}
+												€</span>
+										</li>
+										<li>📉
+											<strong>Total remise :</strong>
+											<span class="text-danger">-{{ totalDiscount|number_format(2, ',', ' ') }}
+												€</span>
+										</li>
+									</ul>
 								{% else %}
-									-
+									<span class="badge bg-secondary">Aucune remise</span>
 								{% endif %}
 							{% else %}
-								-
+								<span class="badge bg-secondary">Aucune remise</span>
 							{% endif %}
 						</td>
+
+						<!-- Sous-total -->
 						<td>
 							<strong>{{ (item.price * item.quantity)|number_format(2, ',', ' ') }}
 								€</strong>
 						</td>
+
+						<!-- Actions -->
 						<td>
-							{% if item.weight %}
-								<a href="{{ path('cart_remove', { id: item.product.id, weight: item.weight }) }}" class="btn btn-danger">Supprimer</a>
-							{% else %}
-								<a href="{{ path('cart_remove', { id: item.product.id }) }}" class="btn btn-danger">Supprimer</a>
-							{% endif %}
+							<a href="{{ path('cart_remove', { id: item.product.id, weight: item.weight }) }}" class="btn btn-danger btn-sm">
+								Supprimer
+							</a>
 						</td>
 					</tr>
 				{% endfor %}
@@ -79,11 +110,13 @@
 		</table>
 
 		<!-- Total général -->
-		<h3 class="text-end">Total :
-			{{ total|number_format(2, ',', ' ') }}
-			€</h3>
+		<h3 class="text-end mt-3">
+			Total :
+			<strong>{{ total|number_format(2, ',', ' ') }}
+				€</strong>
+		</h3>
 
-		<!-- Boutons d'action centrés et bien placés -->
+		<!-- Boutons d'action -->
 		<div class="d-flex justify-content-between mt-3">
 			<a href="{{ path('cart_clear') }}" class="btn btn-warning">Vider le panier</a>
 			<a href="{{ path('order_checkout') }}" class="btn btn-success">Commander</a>

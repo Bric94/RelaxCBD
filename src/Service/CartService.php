@@ -52,7 +52,6 @@ class CartService
         $cartItems = [];
 
         foreach ($cart as $key => $quantity) {
-            // Vérifie si la clé contient un "_" (produits au poids)
             if (str_contains($key, '_')) {
                 [$productId, $weight] = explode('_', $key);
             } else {
@@ -61,46 +60,35 @@ class CartService
             }
 
             $product = $this->productRepository->find($productId);
-
             if (!$product) {
                 continue;
             }
 
-            // Récupérer le prix en fonction du poids sélectionné
-            $price = $product->isWeightBased() && $weight && isset($product->getPriceByWeight()[$weight])
-                ? $product->getPriceByWeight()[$weight]
-                : $product->getPrice();
+            // Récupération du prix du grammage sélectionné
+            $prices = $product->getPriceByWeight();
+            $selectedPrice = $prices[$weight] ?? $product->getPrice();
 
-            if ($product->isWeightBased() && $weight) {
-                $pricePerGram = $product->getPriceByWeight(); // Récupère les prix par gramme
+            // ✅ Comparaison avec le prix de 1g pour calculer la "réduction" réelle
+            $pricePerGram = $prices[1] ?? $product->getPrice();
+            $discount = 0;
 
-                $price1g = isset($pricePerGram['1']) ? $pricePerGram['1'] : reset($pricePerGram); // Prix du premier grammage
-                $selectedPrice = $pricePerGram[$weight] ?? $price1g; // Prix du grammage sélectionné
-
-                $pricePerGramSelected = $selectedPrice / $weight; // Prix au gramme du grammage sélectionné
-                $discountPercentage = round((1 - ($pricePerGramSelected / $price1g)) * 100, 2); // % de réduction par rapport à 1g
-
-                $discountedPrice = $selectedPrice; // Pas de réduction additionnelle
-                $discount = $discountPercentage;   // Affichage de la différence en %
-            } else {
-                $discount = 0;
-                $discountedPrice = $price;
+            if ($weight && isset($prices[$weight]) && $pricePerGram > 0) {
+                $discount = round((($pricePerGram - $selectedPrice) / $pricePerGram) * 100, 2);
             }
-
-
 
             $cartItems[] = [
                 'product' => $product,
-                'quantity' => $quantity, // Quantité représente le grammage si le produit est au poids
+                'quantity' => $quantity,
                 'weight' => $weight,
-                'price' => $discountedPrice,
-                'original_price' => $price,
+                'price' => $selectedPrice,
+                'original_price' => $pricePerGram,
                 'discount' => $discount
             ];
         }
 
         return $cartItems;
     }
+
 
     public function getTotal(): float
     {
