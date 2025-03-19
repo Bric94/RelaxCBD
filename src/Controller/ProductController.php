@@ -64,12 +64,15 @@ class ProductController extends AbstractController
         // Récupération des catégories pour le filtre
         $categories = $this->categoryRepository->findAll();
 
+        $selectedWeight = $request->query->get('weight', null);
+
         return $this->render('product/index.html.twig', [
             'products' => $products,
             'categories' => $categories,
             'page' => $page,
             'totalPages' => $totalPages,
         ]);
+        
     }
 
     /**
@@ -113,8 +116,8 @@ class ProductController extends AbstractController
         } else {
             $discountedPrice = $product->getPrice();
         }
-        /* dump($product->getPriceByWeight());
-        die(); */
+        dump($product->getPriceByWeight());
+        die();
 
         return $this->render('product/show.html.twig', [
             'product' => $product,

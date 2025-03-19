@@ -48,8 +48,16 @@
 							{% endif %}
 						</td>
 						<td>
-							{% if item.discount > 0 %}
-								<span class="badge bg-success">-{{ item.discount }}%</span>
+							{% if item.weight %}
+								{% set price1g = item.product.getPriceByWeight()['1'] ?? item.product.getPrice() %}
+								{% set selectedPricePerGram = item.original_price / item.weight %}
+								{% set discountPercentage = ((1 - (selectedPricePerGram / price1g)) * 100)|round(2) %}
+
+								{% if discountPercentage > 0 %}
+									<span class="badge bg-success">-{{ discountPercentage|number_format(2, ',', ' ') }}%</span>
+								{% else %}
+									-
+								{% endif %}
 							{% else %}
 								-
 							{% endif %}

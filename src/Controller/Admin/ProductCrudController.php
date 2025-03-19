@@ -62,31 +62,21 @@ class ProductCrudController extends AbstractCrudController
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+        if ($entityInstance instanceof Product) {
+            $priceByWeight = $entityInstance->getPriceByWeight();
 
-        $product = $entityInstance;
+            // Assurer que les données sont bien encodées et propres
+            if (is_array($priceByWeight)) {
+                $entityInstance->setPriceByWeight(array_map('floatval', $priceByWeight));
+            }
 
-        // 🔥 Vérification et conversion JSON pour priceByWeight
-        if (!empty($product->getPriceByWeight())) {
-            $data = $product->getPriceByWeight();
-        
-            // Vérifie si c'est une chaîne JSON
-            if (is_string($data)) {
-                $decoded = json_decode($data, true);
-                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-                    $product->setPriceByWeight($decoded);
+            // Si c'est une chaîne JSON stockée dans un tableau, corriger
+            if (is_array($priceByWeight) && isset($priceByWeight[0]) && is_string($priceByWeight[0])) {
+                $decoded = json_decode($priceByWeight[0], true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $entityInstance->setPriceByWeight(array_map('floatval', $decoded));
                 }
             }
-        
-            // Vérifie si c'est un tableau contenant une seule chaîne JSON
-            if (is_array($data) && isset($data[0]) && is_string($data[0])) {
-                $decoded = json_decode($data[0], true);
-                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-                    $product->setPriceByWeight($decoded);
-                }
-                /* dump($product->getPriceByWeight());
-                die(); */
-            }
-        
         }
 
         // Gestion de l'upload d'image
@@ -99,7 +89,6 @@ class ProductCrudController extends AbstractCrudController
 
         $entityManager->persist($product);
         $entityManager->flush();
-
     }
 
 

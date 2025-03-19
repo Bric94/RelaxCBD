@@ -71,8 +71,23 @@ class CartService
                 ? $product->getPriceByWeight()[$weight]
                 : $product->getPrice();
 
-            $discount = $weight ? ($product->getDiscountForWeight($weight) ?? 0) : 0;
-            $discountedPrice = $price - ($price * $discount / 100);
+            if ($product->isWeightBased() && $weight) {
+                $pricePerGram = $product->getPriceByWeight(); // Récupère les prix par gramme
+
+                $price1g = isset($pricePerGram['1']) ? $pricePerGram['1'] : reset($pricePerGram); // Prix du premier grammage
+                $selectedPrice = $pricePerGram[$weight] ?? $price1g; // Prix du grammage sélectionné
+
+                $pricePerGramSelected = $selectedPrice / $weight; // Prix au gramme du grammage sélectionné
+                $discountPercentage = round((1 - ($pricePerGramSelected / $price1g)) * 100, 2); // % de réduction par rapport à 1g
+
+                $discountedPrice = $selectedPrice; // Pas de réduction additionnelle
+                $discount = $discountPercentage;   // Affichage de la différence en %
+            } else {
+                $discount = 0;
+                $discountedPrice = $price;
+            }
+
+
 
             $cartItems[] = [
                 'product' => $product,

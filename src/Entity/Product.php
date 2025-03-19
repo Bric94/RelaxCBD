@@ -273,30 +273,28 @@ class Product
 
     public function getPriceByWeight(): array
     {
-        // Si c'est déjà un tableau associatif, on le retourne directement
-        if (is_array($this->priceByWeight) && isset($this->priceByWeight[0]) === false) {
-            return $this->priceByWeight;
+        if (empty($this->priceByWeight)) {
+            return [];
         }
 
-        // Vérifie si c'est un tableau contenant une chaîne JSON
-        if (is_array($this->priceByWeight) && isset($this->priceByWeight[0]) && is_string($this->priceByWeight[0])) {
-            $decoded = json_decode($this->priceByWeight[0], true);
-
-            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-                return $decoded;
-            }
-        }
-
-        // Vérifie si c'est une chaîne JSON stockée directement
+        // Si c'est une chaîne JSON, la décoder
         if (is_string($this->priceByWeight)) {
             $decoded = json_decode($this->priceByWeight, true);
 
             if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-                return $decoded;
+                return array_map('floatval', $decoded);
             }
         }
 
-        // Si tout échoue, retourne un tableau vide pour éviter les erreurs
+        // Si c'est un tableau contenant une chaîne JSON, le corriger
+        if (is_array($this->priceByWeight) && isset($this->priceByWeight[0]) && is_string($this->priceByWeight[0])) {
+            $decoded = json_decode($this->priceByWeight[0], true);
+
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return array_map('floatval', $decoded);
+            }
+        }
+
         return [];
     }
 
@@ -336,21 +334,20 @@ class Product
 
     public function calculateDiscountedPrice(float $weight): float
     {
-        if (!$this->isWeightBased || empty($this->getPriceByWeight())) {
-            return $this->price;
-        }
-
         $prices = $this->getPriceByWeight();
-        ksort($prices, SORT_NUMERIC); // Trie les prix du plus petit au plus grand
 
-        $selectedPrice = reset($prices); // Par défaut, on prend le plus petit prix
-
-        foreach ($prices as $threshold => $price) {
-            if ($weight >= $threshold) {
-                $selectedPrice = $price;
-            }
+        if (!$this->isWeightBased || empty($prices)) {
+            return (float) $this->price; // ✅ Toujours retourner un float
         }
 
-        return round($selectedPrice * $weight, 2);
+        // ✅ S'assurer que la clé de poids est bien en float
+        $weight = floatval($weight);
+
+        // ✅ Vérifie si le poids exact existe dans priceByWeight
+        if (isset($prices[$weight])) {
+            return (float) $prices[$weight];
+        }
+
+        return (float) reset($prices); // ✅ Prendre le premier prix si rien ne correspond
     }
 }
