@@ -1,59 +1,161 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil - Relax CBD Shop{% endblock %}
+{% block title %}Accueil - Relax CBD Shop
+{% endblock %}
 
 {% block body %}
-    <!-- Header -->
-    <header class="bg-primary text-white text-center py-5">
-        <div class="container">
-            <h1 class="display-4">Bienvenue chez Relax CBD Shop</h1>
-            <p class="lead">Découvrez nos produits à base de CBD, 100% naturels et certifiés.</p>
-            <a href="{{ path('product_index') }}" class="btn btn-light btn-lg">Explorer nos Produits</a>
-        </div>
-    </header>
+	<header class="hero">
+		<div class="hero-content">
+			<h1>Bienvenue chez Relax CBD Shop</h1>
+			<p>Découvrez nos produits à base de CBD, 100% naturels et certifiés.</p>
+			<a href="{{ path('product_index') }}" class="btn-primary">Explorer nos Produits</a>
+		</div>
+	</header>
 
-    <!-- Sections -->
-    <div class="container mt-5">
-        <div class="row g-4">
-            <!-- Produits -->
-            <div class="col-md-4">
-                <div class="card h-100 shadow">
-                    <img src="https://source.unsplash.com/400x300/?cbd,oil" class="card-img-top" alt="Produits CBD">
-                    <div class="card-body">
-                        <h5 class="card-title">Nos Produits</h5>
-                        <p class="card-text">Découvrez notre sélection d'huiles, tisanes et produits à base de CBD.</p>
-                        <a href="{{ path('product_index') }}" class="btn btn-primary">Voir les produits</a>
-                    </div>
-                </div>
-            </div>
+	<div class="container">
+		<div
+			class="features">
 
-            <!-- Panier -->
-            <div class="col-md-4">
-                <div class="card h-100 shadow">
-                    <img src="https://source.unsplash.com/400x300/?shopping,cart" class="card-img-top" alt="Panier">
-                    <div class="card-body">
-                        <h5 class="card-title">Votre Panier</h5>
-                        <p class="card-text">Gérez vos achats et passez commande en toute simplicité.</p>
-                        <a href="{{ path('cart_index') }}" class="btn btn-primary">Accéder au panier</a>
-                    </div>
-                </div>
-            </div>
+			<!-- Produits en vedette -->
+			<div class="feature">
+				<h3>Nos Produits</h3>
+				{% if randomProducts|length > 0 %}
+					<div class="carousel-container product-slider-container">
+						<button class="prev">‹</button>
+						<div class="carousel-wrapper">
+							{% for product in randomProducts %}
+								<div class="carousel-item">
+									<img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}" class="carousel-img">
+									<h4>{{ product.name }}</h4>
+									<a href="{{ path('product_show', { id: product.id }) }}" class="btn-secondary">Voir produit</a>
+								</div>
+							{% endfor %}
+						</div>
+						<button class="next">›</button>
+					</div>
+				{% else %}
+					<p>Aucun produit disponible.</p>
+				{% endif %}
+			</div>
 
-            <!-- Mon Compte -->
-            <div class="col-md-4">
-                <div class="card h-100 shadow">
-                    <img src="https://source.unsplash.com/400x300/?user,profile" class="card-img-top" alt="Mon Compte">
-                    <div class="card-body">
-                        <h5 class="card-title">Mon Compte</h5>
-                        <p class="card-text">Connectez-vous pour suivre vos commandes et gérer vos informations.</p>
-                        {% if app.user %}
-                            <a href="{{ path('user_index') }}" class="btn btn-primary">Voir mon compte</a>
-                        {% else %}
-                            <a href="{{ path('app_login') }}" class="btn btn-secondary">Se connecter</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+			<!-- Panier -->
+			<div class="feature">
+				<h3>Votre Panier</h3>
+				{% if cartItems|length == 0 %}
+					<p>Votre panier est vide.</p>
+				{% else %}
+					<div class="carousel-container cart-slider-container">
+						<button class="prev">‹</button>
+						<div class="carousel-wrapper">
+							{% for item in cartItems %}
+								<div class="carousel-item">
+									<img src="{{ asset('uploads/products/' ~ item.product.image) }}" alt="{{ item.product.name }}" class="carousel-img">
+									<p>
+										<strong>{{ item.product.name }}</strong>
+									</p>
+									<p>Quantité :
+										{{ item.quantity }}
+										{% if item.weight %}g
+										{% endif %}
+									</p>
+								</div>
+							{% endfor %}
+						</div>
+						<button class="next">›</button>
+					</div>
+					<p class="cart-summary">Total panier :
+						<strong>{{ total|number_format(2, ',', ' ') }}
+							€</strong>
+					</p>
+					<a href="{{ path('cart_index') }}" class="btn-secondary">Accéder au panier</a>
+				{% endif %}
+			</div>
+
+			<!-- Profil utilisateur amélioré -->
+			<div class="feature profile-feature">
+				<h3>Mon Compte</h3>
+				{% if app.user %}
+					<div class="profile-container">
+						<img src="{{ asset(profilePicture) }}" alt="Photo de profil" class="profile-image">
+						<p class="profile-name">Bienvenue,
+							<strong>{{ app.user.firstName }}</strong>
+							!</p>
+						<p class="profile-email">{{ app.user.email }}</p>
+					</div>
+					<a href="{{ path('user_index') }}" class="btn-secondary">Voir mon compte</a>
+				{% else %}
+					<p>Connectez-vous pour suivre vos commandes.</p>
+					<a href="{{ path('app_login') }}" class="btn-secondary">Se connecter</a>
+				{% endif %}
+			</div>
+
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+function setupCarousel(containerSelector) {
+const container = document.querySelector(containerSelector);
+if (! container) 
+return;
+
+
+
+const slider = container.querySelector(".carousel-wrapper");
+let slides = Array.from(slider.children);
+const totalSlides = slides.length;
+
+if (totalSlides < 2) 
+return;
+
+
+
+// Ne pas exécuter si moins de 2 éléments
+
+// Ajouter des clones pour un effet infini
+const firstClone = slides[0].cloneNode(true);
+const lastClone = slides[slides.length - 1].cloneNode(true);
+firstClone.classList.add("clone");
+lastClone.classList.add("clone");
+slider.appendChild(firstClone);
+slider.insertBefore(lastClone, slides[0]);
+
+slides = Array.from(slider.children); // Met à jour la liste avec les clones
+const slideWidth = slides[0].getBoundingClientRect().width; // Largeur d'un élément
+
+let currentIndex = 1; // Commencer après le premier clone
+
+function updateCarousel(instant = false) {
+slider.style.transition = instant ? "none" : "transform 0.4s ease-in-out";
+slider.style.transform = `translateX(-${
+currentIndex * slideWidth
+}px)`;
+}
+
+function moveSlide(step) {
+currentIndex += step;
+updateCarousel();
+
+setTimeout(() => {
+if (currentIndex >= slides.length - 1) {
+currentIndex = 1;
+updateCarousel(true);
+}
+if (currentIndex <= 0) {
+currentIndex = slides.length - 2;
+updateCarousel(true);
+}
+}, 400);
+}
+
+container.querySelector(".prev").addEventListener("click", () => moveSlide(-1));
+container.querySelector(".next").addEventListener("click", () => moveSlide(1));
+
+updateCarousel(true); // Initialiser la position
+}setupCarousel(".product-slider-container");
+setupCarousel(".cart-slider-container");
+});
+	</script>
 {% endblock %}

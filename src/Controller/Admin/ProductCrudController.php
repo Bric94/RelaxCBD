@@ -62,6 +62,8 @@ class ProductCrudController extends AbstractCrudController
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+        $product = $entityInstance;
+        
         if ($entityInstance instanceof Product) {
             $priceByWeight = $entityInstance->getPriceByWeight();
 

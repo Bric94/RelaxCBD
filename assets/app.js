@@ -4,11 +4,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.scss';
 
 /*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
+* Welcome to your app's main JavaScript file!
+*
+* This file will be included onto the page via the importmap() Twig function,
+* which should already be in your base.html.twig.
+*/
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search-input");
@@ -28,22 +28,22 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(`/search?q=${encodeURIComponent(query)}`, {
             headers: { "X-Requested-With": "XMLHttpRequest" }
         })
-        .then(response => response.json())
-        .then(data => {
-            searchResults.innerHTML = "";
-            searchResults.style.display = data.length ? "block" : "none";
+            .then(response => response.json())
+            .then(data => {
+                searchResults.innerHTML = "";
+                searchResults.style.display = data.length ? "block" : "none";
 
-            data.forEach(product => {
-                let div = document.createElement("div");
-                div.innerHTML = `
-                    <img src="${product.image}" width="50" height="50" style="margin-right: 10px;">
-                    <strong>${product.name}</strong> - ${product.price}€
-                `;
-                div.classList.add("search-item");
-                div.onclick = () => window.location.href = `/products/${product.id}`;
-                searchResults.appendChild(div);
+                data.forEach(product => {
+                    let div = document.createElement("div");
+                    div.innerHTML = `
+                        <img src="${product.image}" width="50" height="50" style="margin-right: 10px;">
+                        <strong>${product.name}</strong> - ${product.price}€
+                    `;
+                    div.classList.add("search-item");
+                    div.onclick = () => window.location.href = `/products/${product.id}`;
+                    searchResults.appendChild(div);
+                });
             });
-        });
     });
 
     document.addEventListener("click", function (event) {
@@ -52,4 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+
 

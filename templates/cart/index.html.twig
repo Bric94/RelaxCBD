@@ -1,125 +1,110 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<h1>Mon Panier</h1>
+	<section class="cart-container">
+		<h1 class="cart-title">Mon Panier</h1>
 
-	{% if cartItems is empty %}
-		<p>Votre panier est vide.</p>
-	{% else %}
-		<table class="table table-hover">
-			<thead class="table-light">
-				<tr>
-					<th>Produit</th>
-					<th>Grammage</th>
-					<th>Quantité</th>
-					<th>Prix unitaire</th>
-					<th>Réduction</th>
-					<th>Sous-total</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for item in cartItems %}
+		{% if cartItems is empty %}
+			<p class="empty-cart">Votre panier est vide.</p>
+		{% else %}
+			<table class="table-modern">
+				<thead>
 					<tr>
-						<!-- Nom du produit -->
-						<td>
-							<strong>{{ item.product.name }}</strong>
-						</td>
-
-						<!-- Grammage -->
-						<td>
-							{% if item.weight %}
-								{{ item.quantity }}
-								{% if 'g' not in item.weight %}
-									g
-								{% endif %}
-							{% else %}
-								{{ item.quantity }}
-							{% endif %}
-						</td>
-
-						<!-- Quantité -->
-						<td>{{ item.quantity }}</td>
-
-						<!-- Prix unitaire -->
-						<td>
-							{% if item.discount > 0 %}
-								<span class="text-danger">
-									<s>{{ item.original_price|number_format(2, ',', ' ') }}
-										€</s>
-								</span>
-								<br>
-								<strong class="text-success">{{ item.price|number_format(2, ',', ' ') }}
-									€</strong>
-							{% else %}
-								{{ item.price|number_format(2, ',', ' ') }}
-								€
-							{% endif %}
-						</td>
-
-						<!-- Détails des prix et réductions -->
-						<td>
-							{% if item.weight %}
-								{% set priceByWeight = item.product.getPriceByWeight() %}
-								{% set price1g = priceByWeight['1'] ?? item.product.getPrice() %}
-								{% set selectedPrice = priceByWeight[item.weight] ?? item.original_price %}
-								{% set totalBasePrice = price1g * item.quantity %}
-								{% set totalFinalPrice = selectedPrice * item.quantity %}
-								{% set totalDiscount = totalBasePrice - totalFinalPrice %}
-
-								{% if totalDiscount > 0 %}
-									<ul class="list-unstyled">
-										<li>💰
-											<strong>Prix de base :</strong>
-											{{ totalBasePrice|number_format(2, ',', ' ') }}
-											€</li>
-										<li>🎯
-											<strong>Prix réduit :</strong>
-											<span class="text-primary">{{ totalFinalPrice|number_format(2, ',', ' ') }}
-												€</span>
-										</li>
-										<li>📉
-											<strong>Total remise :</strong>
-											<span class="text-danger">-{{ totalDiscount|number_format(2, ',', ' ') }}
-												€</span>
-										</li>
-									</ul>
-								{% else %}
-									<span class="badge bg-secondary">Aucune remise</span>
-								{% endif %}
-							{% else %}
-								<span class="badge bg-secondary">Aucune remise</span>
-							{% endif %}
-						</td>
-
-						<!-- Sous-total -->
-						<td>
-							<strong>{{ (item.price * item.quantity)|number_format(2, ',', ' ') }}
-								€</strong>
-						</td>
-
-						<!-- Actions -->
-						<td>
-							<a href="{{ path('cart_remove', { id: item.product.id, weight: item.weight }) }}" class="btn btn-danger btn-sm">
-								Supprimer
-							</a>
-						</td>
+						<th>Produit</th>
+						<th>Quantité</th>
+						<th>Prix unitaire</th>
+						<th>Réduction</th>
+						<th>Sous-total</th>
+						<th>Action</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{% for item in cartItems %}
+						<tr>
+							<td class="cart-product">
+								<strong>{{ item.product.name }}</strong>
+							</td>
+							<td class="cart-quantity">{{ item.quantity }}
+							{% if item.weight %}
+								g -
+							{% endif %}</td>
+							<td class="cart-price">
+								{% if item.discount > 0 %}
+									<span class="text-danger">
+										<s>{{ item.original_price|number_format(2, ',', ' ') }}
+											€</s>
+									</span><br>
+									<strong class="text-success">{{ item.price|number_format(2, ',', ' ') }}
+										€</strong>
+								{% else %}
+									{{ item.price|number_format(2, ',', ' ') }}
+									€
+								{% endif %}
+							</td>
 
-		<!-- Total général -->
-		<h3 class="text-end mt-3">
-			Total :
-			<strong>{{ total|number_format(2, ',', ' ') }}
-				€</strong>
-		</h3>
+							<td class="cart-discount">
+								{% if item.weight %}
+									{% set priceByWeight = item.product.getPriceByWeight() %}
+									{% set price1g = priceByWeight['1'] ?? item.product.getPrice() %}
+									{% set selectedPrice = priceByWeight[item.weight] ?? item.original_price %}
+									{% set totalBasePrice = price1g * item.quantity %}
+									{% set totalFinalPrice = selectedPrice * item.quantity %}
+									{% set totalDiscount = totalBasePrice - totalFinalPrice %}
 
-		<!-- Boutons d'action -->
-		<div class="d-flex justify-content-between mt-3">
-			<a href="{{ path('cart_clear') }}" class="btn btn-warning">Vider le panier</a>
-			<a href="{{ path('order_checkout') }}" class="btn btn-success">Commander</a>
-		</div>
-	{% endif %}
+									{% if totalDiscount > 0 %}
+										<ul class="discount-details">
+											<li>
+												<strong>Prix de base :</strong>
+												{{ totalBasePrice|number_format(2, ',', ' ') }}
+												€
+											</li>
+											<li>
+												<strong>Remise :</strong>
+												<span class="text-danger">-{{ totalDiscount|number_format(2, ',', ' ') }}
+													€</span>
+											</li>
+											<li>
+												<strong>Prix réduit :</strong>
+												<span class="text-primary">{{ totalFinalPrice|number_format(2, ',', ' ') }}
+													€</span>
+											</li>
+										</ul>
+									{% else %}
+										<span class="badge">Aucune remise</span>
+									{% endif %}
+								{% else %}
+									<span class="badge">Aucune remise</span>
+								{% endif %}
+							</td>
+
+							<td class="cart-subtotal">
+								<strong>{{ (item.price * item.quantity)|number_format(2, ',', ' ') }}
+									€</strong>
+							</td>
+
+							<td class="cart-actions">
+								<a href="{{ path('cart_remove', { id: item.product.id, weight: item.weight }) }}" class="btn-remove">
+									Supprimer
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<!-- Total général -->
+			<div class="cart-summary">
+				<h3>Total :
+					<strong>{{ total|number_format(2, ',', ' ') }}
+						€</strong>
+				</h3>
+			</div>
+
+			<!-- Actions -->
+			<div class="cart-buttons">
+				<a href="{{ path('cart_clear') }}" class="btn-clear">Vider le panier</a>
+				<a href="{{ path('order_checkout') }}" class="btn-checkout">Commander</a>
+			</div>
+		{% endif %}
+	</section>
 {% endblock %}

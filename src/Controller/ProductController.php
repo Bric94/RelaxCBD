@@ -116,8 +116,6 @@ class ProductController extends AbstractController
         } else {
             $discountedPrice = $product->getPrice();
         }
-        dump($product->getPriceByWeight());
-        die();
 
         return $this->render('product/show.html.twig', [
             'product' => $product,
