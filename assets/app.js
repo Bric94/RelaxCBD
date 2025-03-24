@@ -1,18 +1,22 @@
-import 'bootstrap/dist/js/bootstrap.bundle.min'; // Ce fichier inclut déjà Popper.js
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 import './styles/app.scss';
 
+console.log("JavaScriipt chargé"); // utile pour vérifier dans la console
 /*
 * Welcome to your app's main JavaScript file!
 *
 * This file will be included onto the page via the importmap() Twig function,
 * which should already be in your base.html.twig.
 */
+document.querySelectorAll("*").forEach((el) => {
+    if (el.id === "search-input" || el.id === "search-results") {
+        console.log("Element trouvé :", el);
+    }
+});
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search-input");
     const searchResults = document.getElementById("search-results");
+
 
     if (!searchInput) return; // Vérifie que l'élément existe
 
@@ -53,5 +57,39 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const sidenav = document.getElementById("mySidenav");
+    const burgerMenu = document.querySelector(".burger-menu");
+    const closeButton = document.querySelector(".closebtn");
 
+    function toggleNav() {
+        document.body.classList.toggle('sidenav-open');
+    }
+
+    function closeNav() {
+        document.body.classList.remove('sidenav-open');
+    }
+
+    burgerMenu.addEventListener("click", function (event) {
+        event.stopPropagation();
+        toggleNav();
+    });
+
+    closeButton.addEventListener("click", closeNav);
+
+    document.addEventListener("click", function (event) {
+        if (!sidenav.contains(event.target) && !burgerMenu.contains(event.target)) {
+            closeNav();
+        }
+    });
+
+    document.querySelectorAll("#mySidenav a").forEach(link => {
+        link.addEventListener("click", closeNav);
+    });
+});
+console.log("Twig JS direct");
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOMContentLoaded dans app.js fonctionne bien !");
+});
 
