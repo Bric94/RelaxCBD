@@ -1,4 +1,5 @@
 import './styles/app.scss';
+import './js/parallaxe.js'
 
 console.log("JavaScript chargé");
 
