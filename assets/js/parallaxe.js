@@ -1,18 +1,24 @@
+const parallax = document.querySelector('.background-parallax');
+
+let lastScrollY = 0;
+let ticking = false;
+
+function updateParallax() {
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+  const scrollPercent = lastScrollY / docHeight;
+  const maxTranslate = 100;
+
+  const translateY = -scrollPercent * maxTranslate;
+  parallax.style.transform = `translateY(${translateY}px) scale(1.2)`;
+
+  ticking = false;
+}
+
 window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.body.scrollHeight - window.innerHeight;
-  
-    // 0 à 1 : combien de % du scroll est effectué
-    const scrollPercent = scrollTop / docHeight;
-  
-    const parallax = document.querySelector('.background-parallax');
-  
-    // Distance totale qu'on veut que l'image bouge (en pixels)
-    const maxTranslate = 100; // à ajuster : plus grand = effet plus visible
-  
-    // Calcule la position actuelle
-    const translateY = scrollPercent * maxTranslate;
-  
-    parallax.style.transform = `translateY(${translateY}px) scale(1.2)`;
-  });
-  
+  lastScrollY = window.scrollY;
+
+  if (!ticking) {
+    requestAnimationFrame(updateParallax);
+    ticking = true;
+  }
+});

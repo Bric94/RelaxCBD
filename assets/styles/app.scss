@@ -161,8 +161,8 @@ body {
     }
 }
 
-/* Hero Section */
-.hero {
+/* banner Section */
+.banner {
     height: 60vh;
     display: flex;
     align-items: center;
@@ -171,7 +171,7 @@ body {
     color: $white;
     padding: 20px;
 
-    .hero-content {
+    .banner-content {
         background: rgba(0, 0, 0, 0.5);
         padding: 20px 40px;
         border-radius: 1px;
@@ -851,7 +851,7 @@ body {
     }
 
     .feature {
-        background: $white;
+        background-color: color.scale($white, $alpha: -20%);
         padding: 25px;
         border-radius: 1px;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
