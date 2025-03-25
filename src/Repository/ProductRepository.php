@@ -87,11 +87,12 @@ class ProductRepository extends ServiceEntityRepository
                 break;
         }
 
-        return $qb
-            ->setFirstResult(($page - 1) * $limit)
-            ->setMaxResults($limit)
+        $results = $qb
             ->getQuery()
             ->getResult();
+
+        $offset = ($page - 1) * $limit;
+        return array_slice($results, $offset, $limit);
     }
 
     public function getPaginatedProducts(int $page, int $limit = 10)

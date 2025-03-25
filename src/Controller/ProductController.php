@@ -51,7 +51,9 @@ class ProductController extends AbstractController
     public function index(Request $request): Response
     {
         $query = $request->query->get('q');
-        $categoryId = $request->query->getInt('category');
+        $categoryId = filter_var($request->query->get('category'), FILTER_VALIDATE_INT, [
+            'options' => ['default' => null]
+        ]);
         $sort = $request->query->get('sort', 'newest');
         $page = max(1, $request->query->getInt('page', 1));
         $productsPerPage = 10;
@@ -72,7 +74,6 @@ class ProductController extends AbstractController
             'page' => $page,
             'totalPages' => $totalPages,
         ]);
-        
     }
 
     /**

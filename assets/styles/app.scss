@@ -120,51 +120,9 @@ body {
     }
 }
 
-// /* Side Navigation (Mobile) */
-// .sidenav {
-//     height: 100%;
-//     width: 0;
-//     position: fixed;
-//     z-index: 1001;
-//     top: 0;
-//     left: 0;
-//     background-color: $white;
-//     overflow-x: hidden;
-//     transform: translateX(-100%);
-//     transition: 0.5s ease;
-//     padding-top: 60px;
-//     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-
-//     a {
-//         padding: 15px 20px;
-//         text-decoration: none;
-//         font-size: 18px;
-//         color: $dark;
-//         display: block;
-//         transition: 0.3s;
-
-//         &:hover {
-//             background-color: $light;
-//         }
-//     }
-
-//     &.open {
-//         /* width: 250px; */
-//         transform: translateX(0);
-//     }
-
-//     .closebtn {
-//         position: absolute;
-//         top: 10px;
-//         right: 20px;
-//         font-size: 36px;
-//         color: $dark;
-//         cursor: pointer;
-//     }
-// }
-
 .burger-menu {
     font-size: 30px;
+    font-weight: bold;
     cursor: pointer;
     display: none;
     color: $dark;
