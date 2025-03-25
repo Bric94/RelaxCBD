@@ -1,12 +1,7 @@
 @use "sass:color";
-
-// Couleurs principales
-$primary: #2E7D32;
-$secondary: #A5D6A7;
-$dark: #1B5E20;
-$light: #F1F8E9;
-$white: #ffffff;
-$gray: #666;
+@use "caroussel.scss";
+@use "parallaxe.scss";
+@use "colors.scss" as *;
 
 /* Reset */
 * {
@@ -27,21 +22,6 @@ body {
     transition: 0.3s ease-in-out;
     padding-top: 60px;
 }
-
-.background-parallax {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 130vh; // +30% pour garder du débordement au scroll
-    background-image: url("../images/background/natural-looking-hemp.webp");
-    background-size: cover;
-    background-position: center;
-    z-index: -1; // derrière tout
-    transform: scale(1.2); // zoom de 20%
-    will-change: transform;
-  }
-  
 
 .sidenav {
     position: fixed;
@@ -130,7 +110,6 @@ body {
                 color: $primary;
             }
         }
-
     }
 
     @media screen and (max-width: 768px) {
@@ -888,76 +867,7 @@ body {
     }
 }
 
-
-///////////////////
-//// CAROUSSEL ////
-///////////////////
-
-.carousel-container {
-    width: 100%;
-    max-width: 800px; // Ajustez selon vos besoins
-    margin: 0 auto;
-    position: relative;
-    overflow: hidden;
-}
-
-.carousel-wrapper {
-    display: flex;
-    transition: transform 0.4s ease-in-out;
-}
-
-.carousel-item {
-    flex: 0 0 100%; // Chaque slide prend 100% de la largeur du conteneur
-    box-sizing: border-box;
-}
-
-.carousel-item.active {
-    opacity: 1;
-    transform: scale(1);
-    z-index: 2;
-}
-
-.carousel-item.prev {
-    margin-left: -33.33%; // Positionner l'image précédente à gauche
-    opacity: 0.4;
-    transform: scale(0.7);
-}
-
-.carousel-item.next {
-    margin-right: -33.33%; // Positionner l'image suivante à droite
-    opacity: 0.4;
-    transform: scale(0.7);
-}
-
-.carousel-img {
-    width: 50%;
-    max-width: 200px; // Ajustez selon vos besoins
-    height: auto;
-    border-radius: 1px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.prev,
-.next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 3rem;
-    cursor: pointer;
-    z-index: 10;
-}
-
-.prev {
-    left: 1px;
-}
-
-.next {
-    right: 1px;
-}
-
-
+    
 //////////////////////////
 //// FIN HOME PROFILE ////
 //////////////////////////

@@ -1,0 +1,68 @@
+///////////////////
+//// CAROUSSEL ////
+///////////////////
+@media screen and (max-width: 768px) {
+    .carousel-container {
+        width: 100%;
+        max-width: 800px; // Ajustez selon vos besoins
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .carousel-wrapper {
+        display: flex;
+        transition: transform 0.4s ease-in-out;
+    }
+    
+    .carousel-item {
+        flex: 0 0 100%; // Chaque slide prend 100% de la largeur du conteneur
+        box-sizing: border-box;
+    }
+    
+    .carousel-item.active {
+        opacity: 1;
+        transform: scale(1);
+        z-index: 2;
+    }
+    
+    .carousel-item.prev {
+        margin-left: -33.33%; // Positionner l'image précédente à gauche
+        opacity: 0.4;
+        transform: scale(0.7);
+    }
+    
+    .carousel-item.next {
+        margin-right: -33.33%; // Positionner l'image suivante à droite
+        opacity: 0.4;
+        transform: scale(0.7);
+    }
+    
+    .carousel-img {
+        width: 50%;
+        max-width: 200px; // Ajustez selon vos besoins
+        height: auto;
+        border-radius: 1px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .prev,
+    .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        font-size: 3rem;
+        cursor: pointer;
+        z-index: 10;
+    }
+    
+    .prev {
+        left: 1px;
+    }
+    
+    .next {
+        right: 1px;
+    }
+}

@@ -137,7 +137,7 @@ class ProductController extends AbstractController
             return new JsonResponse([]);
         }
 
-        $products = $this->productRepository->searchProducts($query);
+        $products = $this->productRepository->searchProducts($query, null, 1, 10);
 
         $results = array_map(function ($product) {
             return [
