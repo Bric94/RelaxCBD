@@ -27,3 +27,16 @@ window.addEventListener('scroll', () => {
         ticking = true;
     }
 });
+
+const isMobile = window.innerWidth <= 768; // ajustable
+
+if (!isMobile) {
+    window.addEventListener('scroll', () => {
+        lastScrollY = window.scrollY;
+
+        if (!ticking) {
+            requestAnimationFrame(updateParallax);
+            ticking = true;
+        }
+    });
+}
