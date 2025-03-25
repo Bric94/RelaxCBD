@@ -8,10 +8,7 @@ function updateParallax() {
     const scrollPercent = lastScrollY / docHeight;
     const maxTranslate = 100;
 
-    // 🔁 Inversion ici
     const translateY = -scrollPercent * maxTranslate;
-
-    // 🔍 Zoom qui se réduit doucement au scroll
     const scale = 1.2 - scrollPercent * 0.1;
 
     parallax.style.transform = `translateY(${translateY}px) scale(${scale})`;
@@ -27,16 +24,3 @@ window.addEventListener('scroll', () => {
         ticking = true;
     }
 });
-
-const isMobile = window.innerWidth <= 768; // ajustable
-
-if (!isMobile) {
-    window.addEventListener('scroll', () => {
-        lastScrollY = window.scrollY;
-
-        if (!ticking) {
-            requestAnimationFrame(updateParallax);
-            ticking = true;
-        }
-    });
-}
