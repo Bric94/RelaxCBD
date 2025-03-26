@@ -1,53 +1,76 @@
-///////////////////
-//// CAROUSSEL ////
-///////////////////
+@use "sass:color";
+@use "_colors.scss" as *;
+
+// Desktop : affichage en grille
+.carousel-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+
+    .carousel-wrapper {
+        display: contents;
+    }
+
+    .carousel-item {
+        flex: unset;
+        margin: 0;
+    }
+
+    .prev,
+    .next {
+        display: none; 
+    }
+}
+
 @media screen and (max-width: 768px) {
     .carousel-container {
+        display: block;
         width: 100%;
-        max-width: 800px; // Ajustez selon vos besoins
+        max-width: 800px;
         margin: 0 auto;
         position: relative;
         overflow: hidden;
     }
-    
+
     .carousel-wrapper {
         display: flex;
         transition: transform 0.4s ease-in-out;
     }
-    
+
     .carousel-item {
-        flex: 0 0 100%; // Chaque slide prend 100% de la largeur du conteneur
+        flex: 0 0 100%;
         box-sizing: border-box;
     }
-    
+
     .carousel-item.active {
         opacity: 1;
         transform: scale(1);
         z-index: 2;
     }
-    
+
     .carousel-item.prev {
-        margin-left: -33.33%; // Positionner l'image précédente à gauche
+        margin-left: -33.33%;
         opacity: 0.4;
         transform: scale(0.7);
     }
-    
+
     .carousel-item.next {
-        margin-right: -33.33%; // Positionner l'image suivante à droite
+        margin-right: -33.33%;
         opacity: 0.4;
         transform: scale(0.7);
     }
-    
+
     .carousel-img {
         width: 50%;
-        max-width: 200px; // Ajustez selon vos besoins
+        max-width: 200px;
         height: auto;
-        border-radius: 1px;
+        border-radius: 5px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
-    
+
     .prev,
     .next {
+        display: block;
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -57,11 +80,11 @@
         cursor: pointer;
         z-index: 10;
     }
-    
+
     .prev {
         left: 1px;
     }
-    
+
     .next {
         right: 1px;
     }

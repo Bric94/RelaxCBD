@@ -1,0 +1,21 @@
+@use "sass:color";
+@use "_colors.scss" as *;
+
+.product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.product-form label {
+    font-weight: bold;
+}
+
+.product-form select,
+.product-form input {
+    padding: 8px;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid $gray;
+}

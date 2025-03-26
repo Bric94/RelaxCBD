@@ -1,0 +1,29 @@
+@use "sass:color";
+@use "_colors.scss" as *;
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.page-info {
+    padding: 5px 10px;
+    background: $secondary;
+    border-radius: 5px;
+    color: $dark;
+}
+
+.btn-outline {
+    border: 2px solid $primary;
+    color: $primary;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+
+    &:hover {
+        background: $primary;
+        color: $white;
+    }
+}

@@ -1,0 +1,77 @@
+@use "sass:color";
+@use "_colors.scss" as *;
+
+.filter-container {
+    margin: 10px auto 30px;
+    padding: 10px;
+    background-color: rgba($white, 0.7);
+    border-radius: 40px 5px 5px 40px;
+    box-shadow: 0 4px 10px rgba($dark, 0.08);
+    max-width: 1250px;
+    width: calc(100% - 30px); // ← évite que le container touche les bords
+    transition: all 0.3s ease-in-out;
+
+    @media screen and (max-width: 768px) {
+        padding: 15px 20px;
+        width: calc(100% - 40px);
+    }
+    @media screen and (max-width: 1250px) {
+        border-radius: 5px;
+    }
+    
+    .filter-bar {
+        padding: 2px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        
+        .search-input,
+        .filter-select,
+        .btn-small {
+            flex: 1 1 280px;
+            max-width: 100%;
+        }
+        
+        .search-input {
+            padding: 12px 20px;
+            border-radius: 25px 5px 5px 25px;
+            border: 2px solid $primary;
+            font-size: 1rem;
+            
+            &:focus {
+                border-color: color.adjust($primary, $lightness: -10%);
+                box-shadow: 0 0 10px rgba($primary, 0.3);
+            }
+            
+            @media screen and (max-width: 1250px) {
+                border-radius: 5px;
+            }
+        }
+        
+        .filter-select {
+            padding: 10px;
+            border: 1px solid $gray;
+            border-radius: 5px;
+            background-color: $light;
+            color: $dark;
+            font-weight: bold;
+        }
+        
+        .btn-small {
+            background: linear-gradient(135deg, $primary, color.adjust($primary, $lightness: -10%));
+            color: $white;
+            padding: 10px 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            
+            &:hover {
+                background: color.adjust($primary, $lightness: -15%);
+                transform: scale(1.05);
+            }
+        }
+    }
+}

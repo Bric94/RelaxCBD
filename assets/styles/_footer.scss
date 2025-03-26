@@ -1,0 +1,28 @@
+@use "sass:color";
+@use "_colors.scss" as *;
+
+.custom-footer {
+    
+    z-index: 1;
+    background-color: $dark;
+    color: $white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+
+    a {
+        color: $secondary;
+        text-decoration: none;
+        font-weight: bold;
+        margin-left: 10px;
+
+        &:hover {
+            color: lighten($secondary, 10%);
+            text-decoration: underline;
+        }
+    }
+
+    p {
+        margin: 0;
+    }
+}

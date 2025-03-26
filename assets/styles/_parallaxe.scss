@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "_colors.scss" as *;
+
+
 .background-parallax {
     position: fixed;
     top: 0;
