@@ -1,4 +1,3 @@
-
 /*** 🖼️ CARROUSELS PRODUITS ET PANIER ***/
 function setupCarousel(containerSelector) {
     const container = document.querySelector(containerSelector);
@@ -18,7 +17,6 @@ function setupCarousel(containerSelector) {
 
     slides = Array.from(slider.children);
     const slideWidth = slides[0].getBoundingClientRect().width;
-
     let currentIndex = 1;
 
     function updateCarousel(instant = false) {
@@ -58,16 +56,34 @@ function setupCarousel(containerSelector) {
         endX = e.changedTouches[0].clientX;
         const diffX = endX - startX;
 
-        if (Math.abs(diffX) > 50) { // sensibilité minimale pour déclencher
-            if (diffX > 0) {
-                moveSlide(-1); // swipe à droite → slide précédent
-            } else {
-                moveSlide(1);  // swipe à gauche → slide suivant
-            }
+        if (Math.abs(diffX) > 50) {
+            diffX > 0 ? moveSlide(-1) : moveSlide(1);
         }
     });
-
 }
 
-setupCarousel(".product-slider-container");
-setupCarousel(".cart-slider-container");
+function isMobile() {
+    return window.innerWidth <= 768;
+}
+
+let hasRun = false;
+
+function initCarouselsIfMobile() {
+    if (isMobile() && !hasRun) {
+        setupCarousel(".product-slider-container");
+        setupCarousel(".cart-slider-container");
+        hasRun = true;
+    }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    initCarouselsIfMobile();
+});
+
+window.addEventListener("resize", () => {
+    if (isMobile() && !hasRun) {
+        initCarouselsIfMobile();
+    } else if (!isMobile()) {
+        hasRun = false; // Reset si repasse desktop
+    }
+});

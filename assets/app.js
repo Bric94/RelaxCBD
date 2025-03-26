@@ -1,9 +1,9 @@
 import './styles/app.scss';
 
 import './js/parallaxe.js';
-import './js/search_product.js';
+import './js/searchProduct.js';
 import './js/carousel.js';
-import './js/menu_burger.js';
+import './js/menuBurger.js';
 
 console.log("JavaScript chargé");
 
