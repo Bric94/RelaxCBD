@@ -1,5 +1,11 @@
 /*** 🖼️ CARROUSELS PRODUITS ET PANIER ***/
+function isMobile() {
+    return window.innerWidth <= 768;
+}
+
 function setupCarousel(containerSelector) {
+    if (!isMobile()) return; // 🚫 On ne fait rien si ce n'est pas mobile
+
     const container = document.querySelector(containerSelector);
     if (!container) return;
 
@@ -62,28 +68,10 @@ function setupCarousel(containerSelector) {
     });
 }
 
-function isMobile() {
-    return window.innerWidth <= 768;
-}
-
-let hasRun = false;
-
-function initCarouselsIfMobile() {
-    if (isMobile() && !hasRun) {
+// Mobile
+window.addEventListener("DOMContentLoaded", () => {
+    if (window.innerWidth <= 768) {
         setupCarousel(".product-slider-container");
         setupCarousel(".cart-slider-container");
-        hasRun = true;
-    }
-}
-
-window.addEventListener("DOMContentLoaded", () => {
-    initCarouselsIfMobile();
-});
-
-window.addEventListener("resize", () => {
-    if (isMobile() && !hasRun) {
-        initCarouselsIfMobile();
-    } else if (!isMobile()) {
-        hasRun = false; // Reset si repasse desktop
     }
 });
