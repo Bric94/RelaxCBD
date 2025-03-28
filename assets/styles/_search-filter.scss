@@ -15,40 +15,41 @@
         padding: 15px 20px;
         width: calc(100% - 40px);
     }
+
     @media screen and (max-width: 1250px) {
         border-radius: 5px;
     }
-    
+
     .filter-bar {
         padding: 2px;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 15px;
-        
+
         .search-input,
         .filter-select,
         .btn-small {
             flex: 1 1 280px;
             max-width: 100%;
         }
-        
+
         .search-input {
             padding: 12px 20px;
             border-radius: 25px 5px 5px 25px;
             border: 2px solid $primary;
             font-size: 1rem;
-            
+
             &:focus {
                 border-color: color.adjust($primary, $lightness: -10%);
-                box-shadow: 0 0 10px rgba($primary, 0.3);
+                box-shadow: 0 0 10px $primary;
             }
-            
+
             @media screen and (max-width: 1250px) {
                 border-radius: 5px;
             }
         }
-        
+
         .filter-select {
             padding: 10px;
             border: 1px solid $gray;
@@ -57,19 +58,24 @@
             color: $dark;
             font-weight: bold;
         }
-        
+
         .btn-small {
-            background: linear-gradient(135deg, $primary, color.adjust($primary, $lightness: -10%));
+            background: linear-gradient(135deg, $primary 60%, color.adjust($secondary, $lightness: -20%));
             color: $white;
             padding: 10px 20px;
             font-weight: bold;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            
+
+            // On ne peut pas transitionner d’un dégradé vers une couleur => on reste en dégradé !
+            background-size: 100%;
+            background-position: center;
+            transition: transform 0.3s ease, filter 0.3s ease;
+
             &:hover {
-                background: color.adjust($primary, $lightness: -15%);
+                // 💡 On assombrit avec un filtre (plus fluide que changer le background lui-même)
+                filter: brightness(90%);
                 transform: scale(1.05);
             }
         }
