@@ -55,7 +55,11 @@ Encore
     })
 
     // enables Sass/SCSS support
-    .enableSassLoader()
+    .enableSassLoader(options => {
+        options.sassOptions = {
+            includePaths: ['assets/styles'],
+        };
+    })
     .enablePostCssLoader()
 
     // uncomment if you use TypeScript

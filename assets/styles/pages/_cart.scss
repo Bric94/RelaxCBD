@@ -1,0 +1,36 @@
+@use "sass:color";
+@use "../abstracts/colors" as *;
+
+.cart-container {
+    max-width: 900px;
+    margin: 50px auto;
+    background: $white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cart-title {
+    text-align: center;
+    font-size: 2rem;
+    color: $primary;
+}
+
+.empty-cart {
+    text-align: center;
+    font-size: 1.2rem;
+    color: $gray;
+}
+
+.cart-actions {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.cart-summary {
+    font-size: 1.3rem;
+    color: $dark;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 600;
+}

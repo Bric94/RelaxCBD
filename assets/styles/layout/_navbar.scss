@@ -1,5 +1,5 @@
 @use "sass:color";
-@use "_colors.scss" as *;
+@use "../abstracts/colors" as *;
 
 .navbar {
     position: fixed;
@@ -37,13 +37,22 @@
         gap: 20px;
 
         li a {
+            display: inline-block;
+            padding: 0.5rem 1rem;
             text-decoration: none;
-            color: $black;
+            color: $dark;
             font-weight: 600;
-            transition: 0.3s;
+            border: 2px solid $dark;
+            border-radius: 0.25rem;
+            transition:
+                color 0.3s,
+                background-color 0.3s;
 
-            &:hover {
-                color: $primary;
+            &:hover,
+            &:focus {
+                color: $light;
+                background-color: $primary;
+                outline: none;
             }
         }
     }

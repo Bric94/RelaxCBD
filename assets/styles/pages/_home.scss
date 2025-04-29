@@ -1,0 +1,71 @@
+@use "sass:color";
+@use "../abstracts/colors" as *;
+
+.promo-banner {
+    background: url('../images/ui/bg-promo.jpg') center/cover no-repeat;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 12px;
+    margin: 40px auto;
+    color: $white;
+
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: $white;
+    }
+
+    .btn-primary {
+        margin-top: 10px;
+    }
+}
+
+.floating-popup {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    animation: fadein 0.5s, slideup 0.5s ease 5s forwards;
+
+    @keyframes slideup {
+        to {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+    }
+}
+
+.home-collection {
+    max-width: 1280px;
+    margin: 60px auto;
+    padding: 0 20px;
+
+    .section-title {
+        font-size: 2rem;
+        text-align: center;
+        color: $primary;
+        margin-bottom: 30px;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+}
+
+.featured-blocks {
+    max-width: 1280px;
+    margin: 60px auto;
+    padding: 0 20px;
+}

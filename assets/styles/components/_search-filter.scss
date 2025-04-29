@@ -1,5 +1,5 @@
 @use "sass:color";
-@use "_colors.scss" as *;
+@use "../abstracts/colors" as *;
 
 .filter-container {
     margin: 10px auto 30px;

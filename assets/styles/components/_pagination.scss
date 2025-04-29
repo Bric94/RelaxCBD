@@ -1,5 +1,5 @@
 @use "sass:color";
-@use "_colors.scss" as *;
+@use "../abstracts/colors" as *;
 
 .pagination {
     display: flex;

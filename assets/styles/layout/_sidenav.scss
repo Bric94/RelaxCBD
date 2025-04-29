@@ -1,0 +1,40 @@
+@use "sass:color";
+@use "../abstracts/colors" as *;
+
+.sidenav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: $white;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1001;
+    padding-top: 60px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+
+    &.open {
+        transform: translateX(0);
+    }
+
+    a {
+        display: block;
+        padding: 15px 20px;
+        color: $dark;
+        text-decoration: none;
+
+        &:hover {
+            background: $light;
+        }
+    }
+
+    .closebtn {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 36px;
+        cursor: pointer;
+        color: $dark;
+    }
+}
