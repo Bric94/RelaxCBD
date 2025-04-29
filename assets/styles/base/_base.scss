@@ -1,7 +1,9 @@
 @use "sass:color";
 @use "./reset";
 @use "./general";
+@use "./alert";
 @use "../abstracts/colors" as *;
+@use "../abstracts/responsive";
 @use "../layout/sidebar";
 @use "../layout/footer";
 @use "../layout/navbar";

@@ -15,12 +15,9 @@
 	<body>
 		<div class="page-wrapper">
 			<div class="background-parallax"></div>
-			<!-- Navbar principale -->
 			<nav class="navbar">
 				<div class="container">
 					<a class="logo" href="{{ path('home') }}">🌿 Relax CBD Shop</a>
-
-					<!-- Navigation desktop -->
 					<ul class="nav-links">
 						<li>
 							<a href="{{ path('product_index') }}">Produits</a>
@@ -28,55 +25,56 @@
 						<li>
 							<a href="{{ path('cart_index') }}">Panier</a>
 						</li>
-						<li>
+						<li data-bp="800">
 							<a href="{{ path('order_index') }}">Commandes</a>
 						</li>
-						<li>
+						<li data-bp="950">
 							<a href="{{ path('app_contact') }}">Contact</a>
 						</li>
 						{% if app.user %}
-							<li>
+							<li data-bp="1133">
 								<a href="{{ path('user_index') }}">Mon compte</a>
 							</li>
-							<li>
-								<a href="{{ path('app_logout') }}" class="logout">Déconnexion</a>
+							<li data-bp="1133">
+								<a href="{{ path('app_logout') }}">Déconnexion</a>
 							</li>
 						{% else %}
-							<li>
+							<li data-bp="1133">
 								<a href="{{ path('app_login') }}">Connexion</a>
 							</li>
-							<li>
+							<li data-bp="1133">
 								<a href="{{ path('app_register') }}">Inscription</a>
 							</li>
 						{% endif %}
+
+						<li class="nav-more">
+							<button aria-label="Plus de liens">…Plus</button>
+							<ul class="more-menu"></ul>
+						</li>
 					</ul>
 
-					<!-- Menu burger mobile -->
-					<span class="burger-menu">☰</span>
+					<button class="burger-menu" aria-label="Menu mobile">☰</button>
 				</div>
 			</nav>
 
-			<!-- 🌿 Navigation mobile -->
-			<div id="mySidenav" class="sidenav">
-				<a href="javascript:void(0)" class="closebtn">&times;</a>
+			<aside id="mySidenav" class="sidenav" aria-hidden="true">
+				<button class="closebtn" aria-label="Fermer le menu">&times;</button>
 				<a href="{{ path('product_index') }}">Produits</a>
 				<a href="{{ path('cart_index') }}">Panier</a>
 				<a href="{{ path('order_index') }}">Commandes</a>
 				<a href="{{ path('app_contact') }}">Contact</a>
 				{% if app.user %}
 					<a href="{{ path('user_index') }}">Mon compte</a>
-					<a href="{{ path('app_logout') }}" class="logout">Déconnexion</a>
+					<a href="{{ path('app_logout') }}">Déconnexion</a>
 				{% else %}
 					<a href="{{ path('app_login') }}">Connexion</a>
 					<a href="{{ path('app_register') }}">Inscription</a>
 				{% endif %}
-			</div>
-
+			</aside>
 			<main class="main-content"> {% block body %}{% endblock %}
 				</main>
-
 				<footer class="custom-footer">
-					<p>&copy; 2025 Relax CBD Shop - Tous droits réservés.</p>
+					<p>&copy; 2025 Relax CBD Shop – Tous droits réservés.</p>
 					<a href="{{ path('app_contact') }}">Nous contacter</a>
 				</footer>
 			</div>

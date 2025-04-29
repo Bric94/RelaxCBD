@@ -23,16 +23,16 @@ class UserController extends AbstractController
 
         // Liste des avatars par défaut
         $defaultAvatars = [
-            'avatar1.webp',
-            'avatar2.webp',
-            'avatar3.webp',
-            'avatar4.webp',
-            'avatar5.webp',
-            'avatar6.webp',
-            'avatar7.webp',
-            'avatar8.webp',
-            'avatar9.webp',
-            'avatar10.webp'
+            'Avatar1.webp',
+            'Avatar2.webp',
+            'Avatar3.webp',
+            'Avatar4.webp',
+            'Avatar5.webp',
+            'Avatar6.webp',
+            'Avatar7.webp',
+            'Avatar8.webp',
+            'Avatar9.webp',
+            'Avatar10.webp'
         ];
 
         // Sélection d’un avatar aléatoire si l’utilisateur n’a pas uploadé de photo
