@@ -7,7 +7,7 @@
   left: 0;
   width: 100%;
   height: 4rem;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba($white, 0.2);
   backdrop-filter: blur(10px);
   padding: 0.75rem 0;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -20,7 +20,6 @@
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
-    overflow: visible; // on veut voir le dropdown
   }
 
   .logo {
@@ -30,67 +29,57 @@
     font-weight: bold;
     color: $dark;
     text-decoration: none;
-    margin-right: 1rem;
   }
 
   .nav-links {
-    flex: 1 1 auto;
     display: flex;
     align-items: center;
-    flex-wrap: nowrap;
-    overflow: visible; // dropdown & bouton visibles
-    white-space: nowrap;
+    gap: 1rem;
+    margin-left: auto; // pousse les liens à droite
     list-style: none;
-    margin: 0;
     padding: 0;
-    gap: 0.5rem;
-    position: relative;
+    margin: 0;
 
     li {
       flex: 0 0 auto;
+      position: relative;
     }
 
     a {
-      flex-shrink: 0;
       display: inline-block;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 0;
       color: $dark;
+      font-size: large;
       font-weight: 600;
       text-decoration: none;
-      border: 2px solid $dark;
-      border-radius: 0.25rem;
-      transition: color 0.2s, background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
 
       &:hover,
       &:focus {
-        background: $primary;
-        color: $light;
-        border-color: $primary;
-        box-shadow: 0 0 0 3px rgba($primary, 0.3);
+        color: $primary;
+        border-bottom-color: $primary;
         outline: none;
       }
     }
 
     .nav-more {
-      flex: 0 0 auto;
-      display: none;
-      position: relative;
+      display: none; // caché tant qu’il n’y a pas de overflow
 
       button {
-        white-space: nowrap;
-        background: transparent;
-        border: 2px solid $dark;
-        border-radius: 0.25rem;
+        background: none;
+        border: none;
+        padding: 0.5rem 0;
         color: $dark;
         font-weight: 600;
-        padding: 0.5rem 1rem;
+        border-bottom: 2px solid transparent;
         cursor: pointer;
-        transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+        transition: color 0.2s, border-color 0.2s;
 
-        &:hover {
-          background: $primary;
-          color: $light;
-          border-color: $primary;
+        &:hover,
+        &:focus {
+          color: $primary;
+          border-bottom-color: $primary;
         }
       }
 
@@ -100,13 +89,12 @@
         top: 110%;
         right: 0;
         background: $light;
-        border: 1px solid $dark;
-        border-radius: 0.25rem;
         box-shadow: 0 2px 6px rgba($dark, 0.2);
+        border-radius: 0.25rem;
         list-style: none;
-        margin: 0;
         padding: 0.5rem 0;
-        min-width: 10rem;
+        margin: 0;
+        min-width: 8rem;
         z-index: 1001;
 
         li a {
@@ -114,11 +102,12 @@
           padding: 0.5rem 1rem;
           color: $dark;
           text-decoration: none;
-          transition: background 0.2s;
+          border-bottom: none;
 
-          &:hover {
-            background: $primary;
-            color: $light;
+          &:hover,
+          &:focus {
+            background: rgba($primary, 0.1);
+            color: $primary;
           }
         }
       }
@@ -139,7 +128,7 @@
   }
 }
 
-// sous 576px ⇒ burger seul
+// Navbar
 @media (max-width: 576px) {
   .navbar {
 

@@ -1,0 +1,116 @@
+@use "sass:color";
+@use "../abstracts/colors" as *;
+
+.modal {
+    &-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        z-index: 2000;
+    }
+
+    &.open {
+        .modal-backdrop {
+            display: block;
+        }
+
+        .modal-dialog {
+            display: flex;
+        }
+    }
+
+    &-dialog {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 2001;
+    }
+
+    .newsletter-popup {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 6px 24px rgba($dark, 0.2);
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            line-height: 1;
+            color: $dark;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .newsletter-content {
+            position: relative;
+            z-index: 1;
+            max-width: 360px;
+            margin: 0 auto;
+            background: rgba($light, 0.95);
+            padding: 2rem;
+            border-radius: 0.5rem;
+
+            h3.section-title {
+                margin-bottom: 0.5rem;
+                color: $dark;
+                font-size: 1.5rem;
+            }
+
+            p.lead {
+                margin-bottom: 1.5rem;
+                color: $gray;
+            }
+
+            .product-form {
+                .form-group {
+                    margin-bottom: 1rem;
+
+                    input[type="email"] {
+                        width: 100%;
+                        padding: 0.75rem 1rem;
+                        border: 1px solid $dark;
+                        border-radius: 0.25rem;
+                        font-size: 1rem;
+                        background: $white;
+                        color: $dark;
+                    }
+                }
+
+                .form-actions {
+                    text-align: center;
+
+                    .btn-primary {
+                        background: $primary;
+                        border-color: $primary;
+                        padding: 0.75rem;
+                        margin: 0;
+                        font-size: 1rem;
+                        color: $white;
+                        transition: background 0.2s;
+
+                        &:hover {
+                            background: color.adjust($primary, $lightness: -10%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

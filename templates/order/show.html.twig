@@ -1,34 +1,62 @@
+{# templates/order/show.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails de la Commande{% endblock %}
+{% block title %}Détails de la Commande - Relax CBD Shop
+{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1 class="text-center">📦 Commande #{{ order.id }}</h1>
-    <h3>Date : {{ order.createdAt|date('d/m/Y H:i') }}</h3>
-    <h3>Total : {{ order.totalPrice|number_format(2, ',', ' ') }} €</h3>
+	<div class="container table-container">
+		<h1 class="section-title text-center">
+			Commande
+			{{ order.orderNumber }}
+		</h1>
 
-    <table class="table table-striped mt-4">
-        <thead>
-            <tr>
-                <th>Produit</th>
-                <th>Quantité</th>
-                <th>Prix Unitaire</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in order.orderItems %}
-                <tr>
-                    <td>{{ item.product.name }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.price|number_format(2, ',', ' ') }} €</td>
-                    <td>{{ (item.price * item.quantity)|number_format(2, ',', ' ') }} €</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+		<div class="order-meta">
+			<p>
+				<strong>Date :</strong>
+				{{ order.createdAt|date('d/m/Y H:i') }}</p>
+			<p>
+				<strong>Total :</strong>
+				{{ order.totalPrice|number_format(2, ',', ' ') }}
+				€</p>
+		</div>
 
-    <a href="{{ path('order_index') }}" class="btn btn-secondary mt-3">Retour à mes commandes</a>
-</div>
+		<div class="orders-table-wrapper">
+			<table class="orders-table">
+				<thead>
+					<tr>
+						<th>Produit</th>
+						<th>Quantité</th>
+						<th>Prix unitaire <br> (ou au gramme)</th>
+						<th>Sous-total</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in order.orderItems %}
+						<tr>
+							<td>{{ item.product.name }}</td>
+							<td>
+								{% if item.product.isWeightBased %}
+									{{ item.quantity }}
+									g
+								{% else %}
+									{{ item.quantity }}
+								{% endif %}
+							</td>
+							<td>{{ item.price|number_format(2, ',', ' ') }}
+								€</td>
+							<td>{{ (item.price * item.quantity)|number_format(2, ',', ' ') }}
+								€</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="text-center">
+			<a href="{{ path('order_index') }}" class="btn-secondary">
+				← Retour à mes commandes
+			</a>
+		</div>
+	</div>
 {% endblock %}

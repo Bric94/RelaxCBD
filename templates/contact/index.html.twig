@@ -1,24 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contact{% endblock %}
-
-{% form_theme contactForm 'bootstrap_5_layout.html.twig' %}
-
+{% block title %}Contact - Relax CBD Shop
+{% endblock %}
 
 {% block body %}
+	<section class="register-container">
+		<div class="register-box">
+			<h1 class="register-title">Nous contacter</h1>
 
-    {% include 'flash.html.twig' %}
+			{# Flash messages #}
+			{% include 'flash.html.twig' %}
 
+			{# Formulaire #}
+			{{ form_start(contactForm, { attr: { class: 'register-form' } }) }}
 
-    {% if form_errors(contactForm) %}
-        <div class="alert alert-danger">
-            {{ form_errors(contactForm) }}
-        </div>
-    {% endif %}
+			<div class="form-group">
+				{{ form_label(contactForm.firstName, 'Prénom') }}
+				{{ form_widget(contactForm.firstName, {
+            attr: { class: 'form-input', placeholder: 'Votre prénom' }
+        }) }}
+				{{ form_errors(contactForm.firstName) }}
+			</div>
 
-    <div class="row col-md-8 mx-auto mt-5"> 
-        {{ form(contactForm, {'attr' : {'class' :'row'}}) }}
-    </div>
-    
+			<div class="form-group">
+				{{ form_label(contactForm.lastName, 'Nom') }}
+				{{ form_widget(contactForm.lastName, {
+            attr: { class: 'form-input', placeholder: 'Votre nom' }
+        }) }}
+				{{ form_errors(contactForm.lastName) }}
+			</div>
 
+			<div class="form-group">
+				{{ form_label(contactForm.email, 'Email') }}
+				{{ form_widget(contactForm.email, {
+            attr: { class: 'form-input', placeholder: 'Votre adresse e-mail' }
+        }) }}
+				{{ form_errors(contactForm.email) }}
+			</div>
+
+			<div class="form-group">
+				{{ form_label(contactForm.object, 'Motif') }}
+				{{ form_widget(contactForm.object, {
+            attr: { class: 'form-input' }
+        }) }}
+				{{ form_errors(contactForm.object) }}
+			</div>
+
+			<div class="form-group">
+				{{ form_label(contactForm.message, 'Message') }}
+				{{ form_widget(contactForm.message, {
+            attr: { class: 'form-input', rows: 6, placeholder: 'Votre message' }
+        }) }}
+				{{ form_errors(contactForm.message) }}
+			</div>
+
+			<button type="submit" class="btn-primary w-100">Nous contacter</button>
+
+			{{ form_end(contactForm, { render_rest: false }) }}
+		</div>
+	</section>
 {% endblock %}

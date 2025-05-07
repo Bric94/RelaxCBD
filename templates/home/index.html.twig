@@ -1,3 +1,4 @@
+{# templates/home/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Accueil - Relax CBD Shop
@@ -7,15 +8,13 @@
 	<header class="banner">
 		<div class="banner-content">
 			<h1>Bienvenue chez Relax CBD Shop</h1>
-			<p>Découvrez nos produits à base de CBD, 100% naturels et certifiés.</p>
+			<p>Découvrez nos produits à base de CBD, 100 % naturels et certifiés.</p>
 			<a href="{{ path('product_index') }}" class="btn-primary">Explorer nos Produits</a>
 		</div>
 	</header>
 
 	<div class="container">
-		<div
-			class="features">
-			<!-- Produits en vedette -->
+		<div class="features">
 			<div class="feature">
 				<h3>Nos Produits</h3>
 				{% if randomProducts|length > 0 %}
@@ -37,10 +36,9 @@
 				{% endif %}
 			</div>
 
-			<!-- Panier -->
 			<div class="feature">
 				<h3>Votre Panier</h3>
-				{% if cartItems|length == 0 %}
+				{% if cartItems is empty %}
 					<p>Votre panier est vide.</p>
 				{% else %}
 					<div class="carousel-container cart-slider-container">
@@ -54,7 +52,8 @@
 									</p>
 									<p>Quantité :
 										{{ item.quantity }}
-										{% if item.weight %}g
+										{% if item.weight %}
+											g
 										{% endif %}
 									</p>
 								</div>
@@ -70,7 +69,6 @@
 				{% endif %}
 			</div>
 
-			<!-- Profil utilisateur amélioré -->
 			<div class="feature profile-feature">
 				<h3>Mon Compte</h3>
 				{% if app.user %}
@@ -87,7 +85,58 @@
 					<a href="{{ path('app_login') }}" class="btn-secondary">Se connecter</a>
 				{% endif %}
 			</div>
-
 		</div>
 	</div>
+
+	{# Modal Newsletter #}
+	<div id="newsletter-modal" class="modal">
+		<div class="modal-backdrop"></div>
+		<div class="modal-dialog">
+			<section class="feature newsletter-popup" style="background-image: url('{{ asset('images/background/bg-newsletter.png') }}');">
+				<button type="button" class="modal-close">&times;</button>
+				<div class="newsletter-content">
+					<h3 class="section-title">Inscrivez-vous à la Newsletter</h3>
+					<p class="lead">
+						Recevez nos offres exclusives et conseils bien-être directement dans votre boîte mail.
+					</p>
+					{{ form_start(newsletterForm, { attr: { class: 'product-form' } }) }}
+					{{ form_row(newsletterForm.email) }}
+					<div class="form-actions">
+						{{ form_row(newsletterForm.submit) }}
+					</div>
+					{{ form_end(newsletterForm) }}
+				</div>
+			</section>
+		</div>
+	</div>
+
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+const modal = document.getElementById('newsletter-modal');
+const backdrop = modal.querySelector('.modal-backdrop');
+const closeBtn = modal.querySelector('.modal-close');
+const form = modal.querySelector('form');
+const dismissed = localStorage.getItem('newsletterDismissed') === 'true';
+const subscribed = localStorage.getItem('newsletterSubscribed') === 'true';
+
+// Si déjà fermé ou inscrit, on n'affiche pas
+if (! dismissed && ! subscribed) {
+modal.classList.add('open');
+}
+
+// Au clic sur la croix ou le fond
+function closeModal() {
+modal.classList.remove('open');
+localStorage.setItem('newsletterDismissed', 'true');
+}
+closeBtn.addEventListener('click', closeModal);
+backdrop.addEventListener('click', closeModal);
+
+// Lors de la soumission, on marque "inscrit"
+form.addEventListener('submit', function () {
+localStorage.setItem('newsletterSubscribed', 'true');
+});
+});
+	</script>
 {% endblock %}

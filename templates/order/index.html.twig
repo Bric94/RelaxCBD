@@ -1,45 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mes Commandes{% endblock %}
+{% block title %}Mes Commandes – Relax CBD Shop
+{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1 class="text-center">📦 Mes Commandes</h1>
+	<div class="container table-container">
+		<h1 class="section-title">Mes Commandes</h1>
 
-    {% if orders is empty %}
-        <div class="alert alert-info text-center mt-4">
-            Vous n'avez encore passé aucune commande.
-        </div>
-        <div class="text-center mt-3">
-            <a href="{{ path('cart_index') }}" class="btn btn-primary">
-                🛒 Continuer mes achats
-            </a>
-        </div>
-    {% else %}
-        <table class="table table-striped mt-4">
-            <thead>
-                <tr>
-                    <th>Commande #</th>
-                    <th>Date</th>
-                    <th>Total</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in orders %}
-                    <tr>
-                        <td>#{{ order.id }}</td>
-                        <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
-                        <td>{{ order.totalPrice|number_format(2, ',', ' ') }} €</td>
-                        <td>
-                            <a href="{{ path('order_show', {id: order.id}) }}" class="btn btn-info btn-sm">
-                                Voir détails
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
-</div>
+		{% if orders is empty %}
+			<div class="alert alert-info text-center">
+				Vous n'avez encore passé aucune commande.
+			</div>
+			<div class="text-center" style="margin-top: 1rem;">
+				<a href="{{ path('cart_index') }}" class="btn-primary">
+					🛒 Continuer mes achats
+				</a>
+			</div>
+		{% else %}
+			<div class="orders-table-wrapper">
+				<table class="orders-table">
+					<thead>
+						<tr>
+							<th>Commande #</th>
+							<th>Date</th>
+							<th>Total</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for order in orders %}
+							<tr>
+								<td>{{ order.orderNumber }}</td>
+								<td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+								<td>{{ order.totalPrice|number_format(2, ',', ' ') }}
+									€</td>
+								<td>
+									<a href="{{ path('order_show', {id: order.id}) }}">
+										Voir détails
+									</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		{% endif %}
+	</div>
 {% endblock %}

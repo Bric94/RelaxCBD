@@ -111,6 +111,13 @@ class Order
         return $this;
     }
 
+    public function getOrderNumber(): string
+    {
+        $date = $this->getCreatedAt()->format('Ymd');
+        $seq  = $this->getId();
+        return sprintf('relax-%s-%d', $date, $seq);
+    }
+
     public function removeOrderItem(OrderItem $orderItem): static
     {
         if ($this->orderItems->removeElement($orderItem)) {

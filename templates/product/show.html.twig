@@ -1,18 +1,24 @@
+{# templates/product/show.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}
 	{{ product.name }}
+	– Relax CBD Shop
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-5">
-		<div class="row">
-			<div class="col-md-6">
-				<img src="{{ asset('uploads/products/' ~ product.image) }}" class="img-fluid" alt="{{ product.name }}">
+	<section class="product-detail">
+		<div
+			class="product-detail__inner container">
+			{# — Photo — #}
+			<div class="product-detail__image-wrapper">
+				<img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}" class="product-detail__image">
 			</div>
-			<div class="col-md-6">
-				<h1>{{ product.name }}</h1>
-				<p class="text-success fs-4">
+
+			{# — Infos — #}
+			<div class="product-detail__info">
+				<h1 class="product-detail__title">{{ product.name }}</h1>
+				<p class="product-detail__price">
 					{% if product.isWeightBased and selectedWeight %}
 						{{ product.calculateDiscountedPrice(selectedWeight)|number_format(2, ',', ' ') }}
 						€
@@ -22,31 +28,42 @@
 					{% endif %}
 				</p>
 
-				<p>{{ product.description|raw }}</p>
-				<form method="post" action="{{ path('cart_add', { id: product.id }) }}">
+				<div class="product-detail__description">
+					{{ product.description|raw }}
+				</div>
+
+				<form action="{{ path('cart_add', {id: product.id}) }}" method="post" class="product-detail__form">
 					{% if product.isWeightBased %}
-						<div class="input-group mb-2">
-							<span class="input-group-text">Poids :</span>
-							<select name="selectedWeight" class="form-select" required>
+						<div class="form-group">
+							<label for="weight_{{ product.id }}">Poids</label>
+							<select id="weight_{{ product.id }}" name="selectedWeight" required>
 								{% for weight, price in product.priceByWeight %}
-									<option value="{{ weight }}">{{ weight }}g -
+									<option value="{{ weight }}">
+										{{ weight }}
+										g –
 										{{ price|number_format(2, ',', ' ') }}
-										€</option>
+										€
+									</option>
 								{% endfor %}
 							</select>
 						</div>
 					{% else %}
-						<div class="input-group mb-2">
-							<span class="input-group-text">Quantité :</span>
-							<input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
+						<div class="form-group">
+							<label for="quantity_{{ product.id }}">Quantité</label>
+							<input id="quantity_{{ product.id }}" name="quantity" type="number" min="1" max="{{ product.stock }}" value="1">
 						</div>
 					{% endif %}
-					<div class="d-flex justify-content-between">
-						<a href="{{ path('product_index') }}" class="btn btn-secondary">⬅️ Retour aux produits</a>
-						<button type="submit" class="btn btn-primary">🛒 Ajouter au panier</button>
+
+					<div class="product-detail__actions">
+						<a href="{{ path('product_index') }}" class="btn-secondary">
+							← Retour
+						</a>
+						<button type="submit" class="btn-primary">
+							🛒 Ajouter
+						</button>
 					</div>
 				</form>
 			</div>
 		</div>
-	</div>
+	</section>
 {% endblock %}

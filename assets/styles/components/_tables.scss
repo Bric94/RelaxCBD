@@ -1,0 +1,61 @@
+@use "sass:color";
+@use "../abstracts/colors" as *;
+
+.table-container {
+    margin: 3rem auto;
+    background: rgba($light, 0.8);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 10px rgba($dark, 0.1);
+
+    .text-center {
+        margin-top: 1rem;
+    }
+}
+
+.orders-table-wrapper {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+        padding: 0.75rem 1rem;
+        text-align: center;
+        border-bottom: 1px solid rgba($dark, 0.2);
+    }
+
+    thead {
+        th {
+            background: rgba($primary, 0.1);
+            color: $dark;
+        }
+    }
+
+    tbody
+    tr {
+        transition: background 0.2s;
+
+        &:hover {
+            background: rgba($primary, 0.05);
+        }
+
+        a {
+            color: $dark;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+      
+            &:hover,
+            &:focus {
+              color: $primary;
+              border-bottom-color: $primary;
+              outline: none;
+            }
+          }
+    }
+}

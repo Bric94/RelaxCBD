@@ -33,7 +33,8 @@
         "symfony/yaml": "^7.2",
         "symfony/mailer": "^7.2",
         "symfony/messenger": "^7.2",
-        "symfony/notifier": "^7.2"
+        "symfony/notifier": "^7.2",
+        "symfony/twig-pack": "^1.0"
     },
     "config": {
         "allow-plugins": {
