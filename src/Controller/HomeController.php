@@ -1,7 +1,5 @@
 <?php
 
-// src/Controller/HomeController.php
-
 namespace App\Controller;
 
 use App\Entity\User;
@@ -19,7 +17,6 @@ class HomeController extends AbstractController
     {
         $randomProducts = $productRepository->findBy([], [], 5);
 
-        // 🔄 Utilise le CartService comme dans CartController
         $cartItems = $cartService->getCart();
         $total = $cartService->getTotal();
 
