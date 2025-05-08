@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contact - Relax CBD Shop
+{% block title %}Contact – Relax CBD Shop
 {% endblock %}
 
 {% block body %}
@@ -9,7 +9,7 @@
 			<h1 class="register-title">Nous contacter</h1>
 
 			{# Flash messages #}
-			{% include 'flash.html.twig' %}
+			{{ include('flash.html.twig') }}
 
 			{# Formulaire #}
 			{{ form_start(contactForm, { attr: { class: 'register-form' } }) }}
@@ -54,9 +54,12 @@
 				{{ form_errors(contactForm.message) }}
 			</div>
 
+			{# Très important : rend tous les champs “restants” (CSRF, etc.) #}
+			{{ form_rest(contactForm) }}
+
 			<button type="submit" class="btn-primary w-100">Nous contacter</button>
 
-			{{ form_end(contactForm, { render_rest: false }) }}
+			{{ form_end(contactForm) }}
 		</div>
 	</section>
 {% endblock %}

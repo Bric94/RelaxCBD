@@ -12,32 +12,32 @@ echo "📍 Répertoire du projet : $PROJECT_DIR"
 
 # Vérifier si le dossier contient déjà un dépôt Git
 if [ -d "$PROJECT_DIR/.git" ]; then
-            echo "📥 Le projet existe déjà, mise à jour avec Git pull..."
-                cd "$PROJECT_DIR"
-
-                    # Sauvegarder temporairement les modifications locales
-                        git stash push -m "Sauvegarde temporaire" --keep-index
-
-                            # Mettre à jour le repo sans toucher au fichier .env
-                                git pull origin main
-
-                                    # Restaurer les modifications locales
-                                        git stash pop || echo "ℹ️ Aucun changement à restaurer"
-                                else
-                                            echo "🆕 Le dossier existe mais n'est pas un repo Git."
-
-                                                # Option 1 : Supprimer et re-cloner (⚠️ SUPPRIME TOUT)
-                                                    # echo "⚠️ Suppression du dossier existant et clonage du projet..."
-                                                        # rm -rf "$PROJECT_DIR"
-                                                            # git clone "$GIT_REPO" "$PROJECT_DIR"
-
-                                                                # Option 2 : Ajouter Git si nécessaire
-                                                                    echo "📦 Initialisation Git et récupération du dépôt..."
-                                                                        cd "$PROJECT_DIR"
-                                                                            git init
-                                                                                git remote add origin "$GIT_REPO"
-                                                                                    git fetch origin
-                                                                                        git checkout -t origin/main
+    echo "📥 Le projet existe déjà, mise à jour avec Git pull..."
+    cd "$PROJECT_DIR"
+    
+    # Sauvegarder temporairement les modifications locales
+    git stash push -m "Sauvegarde temporaire" --keep-index
+    
+    # Mettre à jour le repo sans toucher au fichier .env
+    git pull origin main
+    
+    # Restaurer les modifications locales
+    git stash pop || echo "ℹ️ Aucun changement à restaurer"
+else
+    echo "🆕 Le dossier existe mais n'est pas un repo Git."
+    
+    # Option 1 : Supprimer et re-cloner (⚠️ SUPPRIME TOUT)
+    # echo "⚠️ Suppression du dossier existant et clonage du projet..."
+    # rm -rf "$PROJECT_DIR"
+    # git clone "$GIT_REPO" "$PROJECT_DIR"
+    
+    # Option 2 : Ajouter Git si nécessaire
+    echo "📦 Initialisation Git et récupération du dépôt..."
+    cd "$PROJECT_DIR"
+    git init
+    git remote add origin "$GIT_REPO"
+    git fetch origin
+    git checkout -t origin/main
 fi
 
 # Mise à jour des dépendances PHP
@@ -62,10 +62,10 @@ echo "🔍 Vérification de l'existence de la base de données $DB_NAME..."
 
 # Vérifier si la base de données existe avec MySQL
 if mysql -u "$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" -e "USE $DB_NAME;" 2>/dev/null; then
-            echo "✅ La base de données existe déjà."
-    else
-                echo "🚀 La base de données n'existe pas, création en cours..."
-                    php bin/console doctrine:database:create --no-interaction
+    echo "✅ La base de données existe déjà."
+else
+    echo "🚀 La base de données n'existe pas, création en cours..."
+    php bin/console doctrine:database:create --no-interaction
 fi
 
 # Exécuter les migrations
