@@ -27,8 +27,9 @@ class ContactType extends AbstractType
                 // 'required' => false,
                 // 'empty_data' => 'John Doe'
                 'row_attr' => [
-                    'class' => 'col-md-6', 'id' => '...',
-                ] 
+                    'class' => 'col-md-6',
+                    'id' => '...',
+                ]
             ])
             ->add('lastName', TextType::class, [
                 'label' => 'Nom',
@@ -40,8 +41,9 @@ class ContactType extends AbstractType
                 // 'required' => false,
                 // 'empty_data' => 'John Doe'
                 'row_attr' => [
-                    'class' => 'col-md-6', 'id' => '...',
-                ] 
+                    'class' => 'col-md-6',
+                    'id' => '...',
+                ]
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
@@ -49,8 +51,9 @@ class ContactType extends AbstractType
                     'placeholder' => 'Votre email'
                 ],
                 'row_attr' => [
-                    'class' => 'col-md-6', 'id' => '...',
-                ] 
+                    'class' => 'col-md-6',
+                    'id' => '...',
+                ]
             ])
             ->add('object', ChoiceType::class, [
                 'label' => 'Sélectionner un motif',
@@ -60,8 +63,9 @@ class ContactType extends AbstractType
                     'Pourquoi pas ?' => 'Pourquoi pas ?'
                 ],
                 'row_attr' => [
-                    'class' => 'col-md-6', 'id' => '...',
-                ] 
+                    'class' => 'col-md-6',
+                    'id' => '...',
+                ]
             ])
             ->add('message', TextareaType::class, [
                 'label' => 'Votre message',
@@ -70,7 +74,10 @@ class ContactType extends AbstractType
                 ]
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Nous contacter'
+                'label' => 'Nous contacter',
+                'attr'  => [
+                    'class' => 'btn-primary w-100',
+                ],
             ])
         ;
     }
