@@ -54,10 +54,9 @@
 				{{ form_errors(contactForm.message) }}
 			</div>
 
-			{# Très important : rend tous les champs “restants” (CSRF, etc.) #}
-			{{ form_rest(contactForm) }}
+			{{ form_widget(contactForm._token) }}
+			{{ form_row(contactForm.save) }}
 
-			
 			{{ form_end(contactForm, { render_rest: false }) }}
 		</div>
 	</section>
