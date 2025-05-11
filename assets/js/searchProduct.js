@@ -39,3 +39,15 @@ if (searchInput) {
         }
     });
 }
+
+document.querySelectorAll('.filter-select').forEach(select => {
+    // Au clic, on ajoute .open juste avant l'ouverture native du menu
+    select.addEventListener('mousedown', () => {
+        select.classList.add('open');
+    });
+    // Dès qu'on perd le focus (le menu se ferme), on retire .open
+    select.addEventListener('blur', () => {
+        select.classList.remove('open');
+    });
+});
+

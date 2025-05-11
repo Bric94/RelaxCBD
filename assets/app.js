@@ -1,6 +1,7 @@
 import './styles/app.scss';
 
 import './js/carousel.js';
+import './js/flashMessage.js';
 import './js/home.js';
 import './js/menuBurger.js';
 import './js/parallaxe.js';

@@ -12,7 +12,7 @@
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
 	</head>
-	<body>
+	<body class="{% block body_class %}{% endblock %}">
 		<div class="page-wrapper">
 			<div class="background-parallax"></div>
 			<nav class="navbar">
@@ -71,13 +71,27 @@
 					<a href="{{ path('app_register') }}">Inscription</a>
 				{% endif %}
 			</aside>
-			<main class="main-content"> {% block body %}{% endblock %}
-				</main>
-				<footer class="custom-footer">
-					<p>&copy; 2025 Relax CBD Shop - Tous droits réservés.</p>
-					<a href="{{ path('app_contact') }}">Nous contacter</a>
-				</footer>
+			<main class="main-content">
+				{{ include('flash.html.twig') }}
+				{% block body %}{% endblock %}
+			</main>
+
+			<div class="cart-popup" id="js-cart-popup">
+				<div class="cart-popup__backdrop"></div>
+				<div class="cart-popup__dialog">
+					<p id="js-cart-popup-message"></p>
+					<div class="cart-popup__actions">
+						<button class="btn-secondary" id="js-cart-popup-continue">Continuer mes achats</button>
+						<button class="btn-primary" id="js-cart-popup-view">Voir mon panier</button>
+					</div>
+				</div>
 			</div>
-			{{ encore_entry_script_tags('app') }}
-		</body>
-	</html>
+			
+			<footer class="custom-footer">
+				<p>&copy; 2025 Relax CBD Shop - Tous droits réservés.</p>
+				<a href="{{ path('app_contact') }}">Nous contacter</a>
+			</footer>
+		</div>
+		{{ encore_entry_script_tags('app') }}
+	</body>
+</html>

@@ -1,19 +1,24 @@
+{# templates/product/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Nos Produits
+{% block title %}Nos Produits - Relax CBD Shop
+{% endblock %}
+
+{# permet de cibler cette page en CSS #}
+{% block body_class %}page-product
 {% endblock %}
 
 {% block body %}
 	<section class="products-container">
 		<h1 class="section-title">DÉCOUVREZ NOS PRODUITS</h1>
 
-		<!-- Barre de recherche et filtres -->
+		{# Barre de recherche et filtres #}
 		<div class="filter-container">
 			<form method="GET" action="{{ path('product_index') }}" class="filter-bar">
 				<input type="text" name="q" class="search-input" placeholder="Rechercher..." value="{{ app.request.get('q') }}">
 
 				<select name="category" id="category" class="filter-select">
-					<option value="">Toutes les catégories</option>
+					<option value="">Catégories</option>
 					{% for category in categories %}
 						<option value="{{ category.id }}" {% if app.request.get('category') == category.id %} selected {% endif %}>
 							{{ category.name }}
@@ -28,11 +33,11 @@
 					<option value="newest" {% if app.request.get('sort') == 'newest' %} selected {% endif %}>Nouveautés</option>
 				</select>
 
-				<button type="submit" class="btn-small">Appliquer</button>
+				<button type="submit" class="btn-small-filter">Appliquer</button>
 			</form>
 		</div>
 
-		<!-- Grille des produits -->
+		{# Grille des produits #}
 		<div class="product-grid">
 			{% for product in products %}
 				<div class="product-card">
@@ -44,7 +49,7 @@
 						<h2 class="product-title">{{ product.name }}</h2>
 						<p class="product-price">
 							{% if product.isWeightBased and product.priceByWeight is not empty %}
-								À partir de <br>
+								À partir de<br>
 								{% set firstWeight = product.priceByWeight|keys|last %}
 								{{ product.calculateDiscountedPrice(firstWeight)|number_format(2, ',', ' ') }}
 								€/g
@@ -55,23 +60,34 @@
 						</p>
 
 						<div class="product-actions">
-							<a href="{{ path('product_show', { id: product.id }) }}" class="btn-secondary">Voir détails</a>
-
-							<form method="post" action="{{ path('cart_add', { id: product.id }) }}" class="product-form">
+							<form
+								method="post" action="{{ path('cart_add', { id: product.id }) }}" class="product-form js-add-to-cart">
+								{# Sélecteur de poids ou quantité #}
 								{% if product.isWeightBased and product.getPriceByWeight() is not empty %}
 									<select name="selectedWeight" id="selectedWeight_{{ product.id }}" class="weight-select" required>
 										{% for weight, price in product.getPriceByWeight() %}
-											<option value="{{ weight }}">{{ weight }}g -
+											<option value="{{ weight }}">
+												{{ weight }}
+												g -
 												{{ price|number_format(2, ',', ' ') }}
-												€/g</option>
+												€/g
+											</option>
 										{% endfor %}
 									</select>
 								{% else %}
-									<div class="quantity-wrapper">
-										<input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" class="quantity-input">
-									</div>
+									<input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" class="quantity-input">
 								{% endif %}
-								<button type="submit" class="btn-primary">Ajouter</button>
+
+								<div class="actions">
+									<button type="submit" class="btn-add">Ajouter au panier</button>
+									<a href="{{ path('product_show', { id: product.id }) }}" class="btn-info" aria-label="Plus d'informations">
+										<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+											<circle cx="12" cy="12" r="10"/>
+											<circle cx="12" cy="8" r="1"/>
+											<line x1="12" y1="11" x2="12" y2="16"/>
+										</svg>
+									</a>
+								</div>
 							</form>
 						</div>
 					</div>

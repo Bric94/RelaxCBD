@@ -1,124 +1,105 @@
+{# templates/user/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}👤 Mon Compte - Relax CBD Shop
+{% block title %}Mon Compte - Relax CBD Shop
 {% endblock %}
 
 {% block body %}
-	<div
-		class="container mt-5">
-
-		<!-- Affichage de la photo de profil avec upload en un clic -->
-		<div class="text-center">
-			<form method="post" action="{{ path('user_edit') }}" enctype="multipart/form-data">
-				<label for="profilePictureUpload" style="cursor: pointer;">
-					{% set defaultAvatars = [
+	{# Liste des avatars par défaut #}
+	{% set defaultAvatars = [
     'Avatar1.webp', 'Avatar2.webp', 'Avatar3.webp', 'Avatar4.webp', 'Avatar5.webp',
     'Avatar6.webp', 'Avatar7.webp', 'Avatar8.webp', 'Avatar9.webp', 'Avatar10.webp'
-] %}
+  ] %}
 
-					{% if user.profilePicture is not empty and user.profilePicture not in defaultAvatars %}
-						{% set profilePicture = 'images/profiles/' ~ user.profilePicture %}
+	{# 
+	    Si l’utilisateur a uploadé une photo (et qu’elle n’est pas dans la liste par défaut),
+	    on l’affiche. Sinon on mélange la liste et on prend le premier élément. 
+	  #}
+	{% if user.profilePicture and user.profilePicture not in defaultAvatars %}
+		{% set src = 'images/profiles/' ~ user.profilePicture %}
+	{% else %}
+		{% set shuffled = defaultAvatars|shuffle %}
+		{% set pick   = shuffled[0] %}
+		{% set src    = 'images/default/' ~ pick %}
+	{% endif %}
+
+	<div class="container">
+		<section class="profile-section">
+			<div class="profile-feature">
+				<div class="profile-container">
+					<img id="profile-picture" src="{{ asset(src) }}" alt="Photo de profil de {{ user.firstName }}" class="profile-image">
+					<div class="profile-name">{{ user.firstName }}
+						{{ user.lastName }}</div>
+					<div class="profile-email">{{ user.email }}</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="profile-section">
+			<div class="profile-feature">
+				<h2>Mes Informations</h2>
+				<div class="profile-container">
+					<p>
+						<strong>Prénom :</strong>
+						{{ user.firstName }}</p>
+					<p>
+						<strong>Nom :</strong>
+						{{ user.lastName }}</p>
+					<p>
+						<strong>Email :</strong>
+						{{ user.email }}</p>
+					<p>
+						<strong>Date d'inscription :</strong>
+						{{ user.createdAt|date('d/m/Y') }}</p>
+					<a href="{{ path('user_edit') }}" class="btn-secondary">Modifier mes infos</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="profile-section">
+			<div class="profile-feature">
+				<h2>Mes Commandes</h2>
+				<div class="orders-table-wrapper">
+					{% if user.orders is empty %}
+						<p>Aucune commande passée pour le moment.</p>
+						<a href="{{ path('product_index') }}" class="btn-primary-auth">Faire du shopping</a>
 					{% else %}
-						{% set profilePicture = 'images/default/' ~ user.profilePicture %}
-					{% endif %}
-
-					<img src="{{ asset(profilePicture) }}" alt="Photo de profil" class="rounded-circle shadow" style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #4CAF50;">
-
-
-				</label>
-				<input type="file" id="profilePictureUpload" name="profilePicture" style="display: none;" onchange="this.form.submit();">
-			</form>
-		</div>
-
-		<h1 class="text-center mt-3">Mon Compte</h1>
-		<p class="text-center text-muted">Bienvenue sur votre espace personnel,
-			{{ user.firstName }}
-			!</p>
-
-		<div
-			class="row">
-			<!-- Informations utilisateur -->
-			<div class="col-md-4">
-				<div class="card shadow-sm">
-					<div class="card-header bg-success text-white">
-						<h5 class="mb-0">🛠 Mes Informations</h5>
-					</div>
-					<div class="card-body">
-						<p>
-							<strong>Prénom :</strong>
-							{{ user.firstName }}</p>
-						<p>
-							<strong>Nom :</strong>
-							{{ user.lastName }}</p>
-						<p>
-							<strong>Email :</strong>
-							{{ user.email }}</p>
-						<p>
-							<strong>Date d'inscription :</strong>
-							{{ user.createdAt|date('d/m/Y') }}</p>
-						<a href="#" class="btn btn-warning btn-sm w-100">✏️ Modifier mes infos</a>
-					</div>
-				</div>
-			</div>
-
-			<!-- Historique des commandes -->
-			<div class="col-md-8">
-				<div class="card shadow-sm">
-					<div class="card-header bg-primary text-white">
-						<h5 class="mb-0">📦 Mes Commandes</h5>
-					</div>
-					<div class="card-body">
-						{% if user.orders is empty %}
-							<p class="text-muted text-center">Aucune commande passée pour le moment.</p>
-							<div class="text-center">
-								<a href="{{ path('product_index') }}" class="btn btn-success">🛍️ Faire du shopping</a>
-							</div>
-						{% else %}
-							<table class="table table-striped">
-								<thead class="table-dark">
+						<table class="orders-table">
+							<thead>
+								<tr>
+									<th>Numéro</th>
+									<th>Date</th>
+									<th>Total</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for order in user.orders %}
+									{% set codeDate = order.createdAt|date('Ymd') %}
 									<tr>
-										<th>ID</th>
-										<th>Date</th>
-										<th>Total</th>
-										<th>Statut</th>
-										<th>Actions</th>
+										<td>order#{{ codeDate }}-{{ order.id }}</td>
+										<td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+										<td>{{ order.totalPrice|number_format(2, ',', ' ') }}
+											€</td>
+										<td>
+											<a href="{{ path('order_show', { id: order.id }) }}" class="btn-secondary">
+												Voir
+											</a>
+										</td>
 									</tr>
-								</thead>
-								<tbody>
-									{% for order in user.orders %}
-										<tr>
-											<td>#{{ order.id }}</td>
-											<td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
-											<td>{{ order.totalPrice|number_format(2, ',', ' ') }}
-												€</td>
-											<td>
-												{% if order.status == 'pending' %}
-													<span class="badge bg-warning">En attente</span>
-												{% elseif order.status == 'shipped' %}
-													<span class="badge bg-primary">Expédiée</span>
-												{% elseif order.status == 'delivered' %}
-													<span class="badge bg-success">Livrée</span>
-												{% else %}
-													<span class="badge bg-secondary">{{ order.status }}</span>
-												{% endif %}
-											</td>
-											<td>
-												<a href="{{ path('order_show', { id: order.id }) }}" class="btn btn-sm btn-info">🔍 Voir</a>
-											</td>
-										</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-						{% endif %}
-					</div>
+								{% endfor %}
+							</tbody>
+						</table>
+					{% endif %}
 				</div>
 			</div>
-		</div>
+		</section>
 
-		<!-- Boutons d'action -->
-		<div class="mt-4 text-center">
-			<a href="{{ path('app_logout') }}" class="btn btn-danger">🚪 Déconnexion</a>
-			<a href="{{ path('product_index') }}" class="btn btn-secondary">🏠 Retour à l'accueil</a>
+		<div>
+			<a href="{{ path('product_index') }}" class="btn-secondary">Retour à l'accueil</a>
+		</div>
+		<div>
+			<a href="{{ path('app_logout') }}" class="btn-empty-center">Déconnexion</a>
 		</div>
 	</div>
 {% endblock %}

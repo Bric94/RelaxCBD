@@ -68,7 +68,7 @@ class CartService
             $prices = $product->getPriceByWeight();
             $selectedPrice = $prices[$weight] ?? $product->getPrice();
 
-            // ✅ Comparaison avec le prix de 1g pour calculer la "réduction" réelle
+            // Comparaison avec le prix de 1g pour calculer la "réduction" réelle
             $pricePerGram = $prices[1] ?? $product->getPrice();
             $discount = 0;
 
@@ -89,6 +89,10 @@ class CartService
         return $cartItems;
     }
 
+    public function clear(): void
+    {
+        $this->session->set('cart', []);
+    }
 
     public function getTotal(): float
     {

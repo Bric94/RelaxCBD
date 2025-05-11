@@ -1,12 +1,13 @@
-{# templates/cart/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Mon Panier – Relax CBD Shop
 {% endblock %}
+{% block body_class %}page-cart
+{% endblock %}
 
 {% block body %}
 	<div class="container table-container">
-		<h1 class="section-title text-center">🛒 Mon Panier</h1>
+		<h1 class="section-title text-center">Mon Panier</h1>
 
 		{% if cartItems is empty %}
 			<p class="empty-cart text-center">Votre panier est vide.</p>
@@ -30,19 +31,16 @@
 					</thead>
 					<tbody>
 						{% for item in cartItems %}
-							{# Calculs pour les produits au poids #}
 							{% if item.product.isWeightBased %}
-								{% set pricesByWeight = item.product.getPriceByWeight() %}
-								{% set unitPrice      = pricesByWeight[item.quantity] ?? item.product.getPrice() %}
-								{% set baseUnitPrice  = pricesByWeight['1']         ?? item.product.getPrice() %}
-								{% set baseTotal      = baseUnitPrice  * item.quantity %}
-								{% set finalTotal     = unitPrice      * item.quantity %}
-								{% set discount       = baseTotal - finalTotal %}
+								{% set prices    = item.product.getPriceByWeight() %}
+								{% set unitPrice = prices[item.quantity] ?? item.product.getPrice() %}
+								{% set base1g    = prices['1'] ?? item.product.getPrice() %}
+								{% set baseTotal = base1g * item.quantity %}
+								{% set finalTotal= unitPrice * item.quantity %}
+								{% set discount  = baseTotal - finalTotal %}
 							{% endif %}
-
 							<tr>
 								<td>{{ item.product.name }}</td>
-
 								<td>
 									{% if item.product.isWeightBased %}
 										{{ item.quantity }}
@@ -51,7 +49,6 @@
 										{{ item.quantity }}
 									{% endif %}
 								</td>
-
 								<td>
 									{% if item.product.isWeightBased %}
 										{{ unitPrice|number_format(2, ',', ' ') }}
@@ -61,7 +58,6 @@
 										€
 									{% endif %}
 								</td>
-
 								<td>
 									{% if item.product.isWeightBased and discount > 0 %}
 										-{{ discount|number_format(2, ',', ' ') }}
@@ -70,7 +66,6 @@
 										&ndash;
 									{% endif %}
 								</td>
-
 								<td>
 									<strong>
 										{% if item.product.isWeightBased %}
@@ -81,9 +76,8 @@
 										€
 									</strong>
 								</td>
-
 								<td>
-									<a href="{{ path('cart_remove', { id: item.product.id, weight: item.quantity }) }}" class="btn-empty">
+									<a href="{{ path('cart_remove', { id: item.product.id, weight: item.quantity }) }}" class="btn-delete">
 										Supprimer
 									</a>
 								</td>
@@ -94,7 +88,8 @@
 			</div>
 
 			<div class="cart-summary">
-				<h3>Total :
+				<h3>
+					Total :
 					<strong>{{ total|number_format(2, ',', ' ') }}
 						€</strong>
 				</h3>

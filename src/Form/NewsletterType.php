@@ -20,7 +20,7 @@ class NewsletterType extends AbstractType
                 ],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Je m’inscris',
+                'label' => 'Je m\'inscris',
                 'attr'  => [
                     'class' => 'btn-primary',
                 ],

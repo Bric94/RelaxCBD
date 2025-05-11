@@ -9,8 +9,8 @@
 @use "../layout/navbar";
 @use "../components/banner";
 @use "../components/buttons";
-@use "../components/search-filter";
-@use "../components/product-grid";
+/* @use "../components/search-filter"; */
+/* @use "../components/product-grid"; */
 @use "../components/forms";
 @use "../components/auth";
 @use "../components/pagination";
@@ -19,6 +19,8 @@
 @use "../components/carousel";
 @use "../components/popup";
 @use "../components/tables";
+@use "../components/flash";
+@use "../components/cart-popup";
 @use "../pages/cart";
 @use "../pages/profile";
 @use "../pages/product";

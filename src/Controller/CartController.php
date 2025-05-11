@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\CartService;
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,40 +18,61 @@ final class CartController extends AbstractController
     {
         return $this->render('cart/index.html.twig', [
             'cartItems' => $cartService->getCart(),
-            'total' => $cartService->getTotal() // Ajout du total
+            'total'     => $cartService->getTotal(),
         ]);
     }
 
     #[Route('/add/{id}/{weight?}', name: 'add', methods: ['POST'])]
-    public function add(Request $request, CartService $cartService, int $id): RedirectResponse
-    {
-        $selectedWeight = $request->request->get('selectedWeight'); // Récupère le poids sélectionné
-        $quantity = (int) $request->request->get('quantity', 1); // Récupère la quantité uniquement si ce n'est pas un produit au poids
+    public function add(
+        Request $request,
+        CartService $cartService,
+        ProductRepository $productRepository,
+        int $id
+    ): Response {
+        $selectedWeight = $request->request->get('selectedWeight');
+        $quantity       = (int) $request->request->get('quantity', 1);
 
         if ($selectedWeight) {
-            $quantity = (int) $selectedWeight; // La quantité devient le grammage sélectionné
+            $quantity = (int) $selectedWeight;
         }
 
-        $cartService->add($id, $quantity, $selectedWeight); // Ajout au panier
+        $product = $productRepository->find($id);
+        if (!$product) {
+            return $this->json(['error' => 'Produit introuvable.'], 404);
+        }
 
-        return $this->redirectToRoute('cart_index');
+        $cartService->add($id, $quantity, $selectedWeight);
+
+        $cartUrl = $this->generateUrl('cart_index');
+
+        // Si appel AJAX : on renvoie un JSON
+        if ($request->isXmlHttpRequest()) {
+            return $this->json([
+                'message' => sprintf('« %s » a été ajouté à votre panier.', $product->getName()),
+                'cartUrl' => $cartUrl,
+            ]);
+        }
+
+        // Sinon redirection classique
+        return $this->redirect($request->headers->get('referer') ?? $cartUrl);
     }
-
-
-
 
     #[Route('/remove/{id}/{weight?}', name: 'remove')]
-    public function remove(CartService $cartService, int $id, ?string $weight = null): RedirectResponse
-    {
+    public function remove(
+        CartService $cartService,
+        int $id,
+        ?string $weight = null
+    ): Response {
         $cartService->remove($id, $weight);
+
         return $this->redirectToRoute('cart_index');
     }
-
 
     #[Route('/clear', name: 'clear')]
     public function clear(CartService $cartService): RedirectResponse
     {
-        $cartService->remove('cart');
+        $cartService->clear();
+
         return $this->redirectToRoute('cart_index');
     }
 }

@@ -1,66 +1,182 @@
 @use "sass:color";
 @use "../abstracts/colors" as *;
 
-.cart-container {
-    max-width: 900px;
-    margin: 50px auto;
-    background: $white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+.page-cart {
 
-.cart-title {
-    text-align: center;
-    font-size: 2rem;
-    color: $primary;
-}
-
-.empty-cart {
-    text-align: center;
-    font-size: 1.2rem;
-    color: $gray;
-}
-
-.cart-actions {
-    text-align: center;
-    margin-top: 10px;
-}
-
-.cart-summary {
-    color: $dark;
-    text-align: center;
-    margin-top: 15px;
-    font-weight: 600;
-}
-
-.cart-buttons {
-    display: flex;
-    justify-content: space-between; // un à gauche, l’autre à droite
-    align-items: flex-end;
-    margin-top: 2rem;
-
-    .btn-empty {
-        background: none;
-        border: solid $error 1px;
+    // ********** Conteneur principal **********
+    .cart-container,
+    .table-container {
+        max-width: 70rem;
+        margin: 3rem auto;
+        background: $white;
+        padding: 20px;
         border-radius: 5px;
-        color: $danger;
-        font-weight: 600;
-        padding: 0.75rem 1.5rem;
-        text-decoration: none;
-        transition: color 0.2s, text-decoration 0.2s;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-        &:hover,
-        &:focus {
-            color: $error;
-            text-decoration: underline;
+    // ********** Titre de la page **********
+    .cart-title,
+    .section-title {
+        text-align: center;
+        font-size: 2rem;
+        color: $primary;
+        margin-bottom: 1.5rem;
+    }
+
+    // ********** Panier vide **********
+    .empty-cart {
+        text-align: center;
+        font-size: 1.25rem;
+        color: $gray;
+        margin-bottom: 2rem;
+    }
+
+    // ********** Wrapper scrollable de la table **********
+    .orders-table-wrapper,
+    .orders-table-wrapper {
+        overflow-x: auto;
+        margin-bottom: 1.5rem;
+    }
+
+    // ********** Table des articles **********
+    .orders-table,
+    .orders-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba($dark, $alpha: 0.8);
+            text-align: left;
+        }
+
+        th {
+            background: rgba($light, $alpha: 0.9);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            border-radius: 5px;
+            color: $danger;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s, text-decoration 0.2s;
+    
+            &:hover,
+            &:focus {
+                color: $error;
+                text-decoration: underline;
+            }
         }
     }
 
-    // Sur très petits écrans, on peut empiler
-    @media (max-width: 576px) {
-        flex-direction: column;
+
+    // ********** Résumé du total **********
+    .cart-summary {
+        text-align: right;
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+
+        h3 {
+            margin: 0;
+            font-size: 1.5rem;
+
+            strong {
+                color: $primary;
+            }
+        }
+    }
+
+    .btn-inline {
+        display: inline-block;
+        margin: 0 .25rem;
+        padding: .25rem .5rem;
+        background: $primary;
+        color: $white;
+        border-radius: .25rem;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background .2s;
+
+        &:hover {
+            background: $dark;
+        }
+    }
+
+    // ********** Boutons d’action **********
+    .cart-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-top: 2rem;
+        flex-wrap: wrap;
         gap: 1rem;
-        align-items: stretch;
+
+        .btn-primary {
+            background: $primary;
+            color: $white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            font-weight: 600;
+            transition: background 0.2s;
+
+
+            &:hover {
+                background: rgba($primary, $alpha: 0.9);
+            }
+        }
+
+        .btn-empty {
+            background: none;
+            border: solid $danger 1px;
+            border-radius: 5px;
+            color: $danger;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            transition: color 0.2s, text-decoration 0.2s;
+
+            &:hover,
+            &:focus {
+                color: $error;
+                text-decoration: underline;
+            }
+        }
+
+        .btn-secondary {
+            background: $primary;
+            color: $white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            text-decoration: none;
+            text-align: center;
+            font-size: 1rem;
+            transition: background 0.2s;
+
+            &:hover {
+                background: $dark;
+            }
+        }
+
+        // Responsive small
+        @media (max-width: 576px) {
+            flex-direction: column;
+            align-items: stretch;
+
+            .btn-secondary {
+                width: 100%; // full width on mobile
+            }
+        }
     }
 }
