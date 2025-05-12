@@ -4,7 +4,7 @@ use App\Kernel;
 
 require_once dirname(__DIR__) . '/vendor/autoload_runtime.php';
 
-ini_set('session.gc_maxlifetime', 31536000);
+ini_set('session.gc_maxlifetime', 0);
 ini_set('session.cookie_lifetime', 31536000);
 
 return function (array $context) {
