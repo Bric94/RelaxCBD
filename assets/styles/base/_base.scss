@@ -9,8 +9,6 @@
 @use "../layout/navbar";
 @use "../components/banner";
 @use "../components/buttons";
-/* @use "../components/search-filter"; */
-/* @use "../components/product-grid"; */
 @use "../components/forms";
 @use "../components/auth";
 @use "../components/pagination";
@@ -22,5 +20,7 @@
 @use "../components/flash";
 @use "../components/cart-popup";
 @use "../pages/cart";
-@use "../pages/profile";
+@use "../pages/home";
+@use "../pages/order-show";
 @use "../pages/product";
+@use "../pages/profile";

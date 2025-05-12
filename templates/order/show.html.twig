@@ -1,63 +1,58 @@
+{# templates/order/show.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{{ product.name }}
-	– Relax CBD Shop
+{% block title %}Détails de la commande #{{ order.orderNumber }}
+	- Relax CBD Shop
+{% endblock %}
+{% block body_class %}page-order-show
 {% endblock %}
 
 {% block body %}
-	<section class="product-detail">
-		<div class="product-detail__inner container">
-			<div class="product-detail__image-wrapper">
-				<img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}" class="product-detail__image">
-			</div>
-			<div class="product-detail__info">
-				<h1 class="product-detail__title">{{ product.name }}</h1>
-				<p class="product-detail__price">
-					{% if product.isWeightBased and selectedWeight %}
-						{{ product.calculateDiscountedPrice(selectedWeight)|number_format(2, ',', ' ') }}
-						€
-					{% else %}
-						{{ product.price|number_format(2, ',', ' ') }}
-						€
-					{% endif %}
-				</p>
-				<div class="product-detail__description">
-					{{ product.description|raw }}
-				</div>
+	<section class="order-details-container">
+		<h1 class="section-title">Commande #{{ order.orderNumber }}</h1>
+		<p class="order-date">Passée le
+			{{ order.createdAt|date('d/m/Y H:i') }}</p>
 
-				<form id="add-to-cart-form" action="{{ path('cart_add', { id: product.id }) }}" method="post" class="product-detail__form">
-					{% if product.isWeightBased %}
-						<div class="form-group">
-							<label for="weight_{{ product.id }}">Poids</label>
-							<select id="weight_{{ product.id }}" name="selectedWeight" required>
-								{% for weight, price in product.priceByWeight %}
-									<option value="{{ weight }}">
-										{{ weight }}
-										g –
-										{{ price|number_format(2, ',', ' ') }}
-										€/g
-									</option>
-								{% endfor %}
-							</select>
-						</div>
-					{% else %}
-						<div class="form-group">
-							<label for="quantity_{{ product.id }}">Quantité</label>
-							<input id="quantity_{{ product.id }}" name="quantity" type="number" min="1" max="{{ product.stock }}" value="1">
-						</div>
-					{% endif %}
+		<div class="order-items-wrapper">
+			<table class="order-items-table">
+				<thead>
+					<tr>
+						<th>Produit</th>
+						<th>Quantité</th>
+						<th>Prix unitaire</th>
+						<th>Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in order.orderItems %}
+						<tr>
+							<td>{{ item.product.name }}</td>
+							<td>{{ item.quantity }}</td>
+							<td>
+								{{ item.price|number_format(2, ',', ' ') }}
+								€
+								{# si le produit est weight-based, on ajoute “/g” #}
+								{% if item.product.isWeightBased %}
+									/g
+								{% endif %}
+							</td>
+							<td>{{ (item.price * item.quantity)|number_format(2, ',', ' ') }}
+								€</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
 
-					<div class="product-detail__actions">
-						<a href="{{ path('product_index') }}" class="btn-secondary">
-							Retour
-						</a>
-						<button type="submit" class="btn-primary">
-							Ajouter au panier
-						</button>
-					</div>
-				</form>
-			</div>
+		<div class="order-summary">
+			<span class="summary-label">Total :</span>
+			<span class="summary-value">{{ order.totalPrice|number_format(2, ',', ' ') }}
+				€</span>
+		</div>
+
+		<div class="order-actions">
+			<a href="{{ path('order_index') }}" class="btn-secondary">← Retour aux commandes</a>
+			<a href="{{ path('product_index') }}" class="btn-primary">Continuer mes achats</a>
 		</div>
 	</section>
 {% endblock %}

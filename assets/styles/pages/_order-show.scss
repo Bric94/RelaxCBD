@@ -1,0 +1,103 @@
+@use "sass:color";
+@use "../abstracts/colors" as *;
+
+.page-order-show {
+    .order-container {
+        max-width: 70rem;
+        margin: 3rem auto;
+        background: $white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 10px rgba($dark, 0.1);
+
+        .section-title {
+            margin-bottom: 1.5rem;
+        }
+
+        .order-header {
+            margin-bottom: 2rem;
+            font-size: 1rem;
+
+            strong {
+                color: $primary;
+            }
+        }
+
+        .orders-table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+
+            th,
+            td {
+                padding: 0.75rem 1rem;
+                border-bottom: 1px solid rgba($dark, 0.2);
+                text-align: left;
+            }
+
+            thead th {
+                background: rgba($light, 0.9);
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.9rem;
+            }
+
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+        }
+
+        .order-summary {
+            text-align: right;
+            margin-top: 1.5rem;
+
+            h3 {
+                margin: 0;
+                font-size: 1.25rem;
+
+                strong {
+                    color: $primary;
+                }
+            }
+        }
+
+        .order-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 2rem;
+
+            .btn-secondary {
+                display: inline-block;
+                padding: 10px 18px;
+                background: linear-gradient(135deg, color.adjust($primary, $lightness: -10%), $primary);
+                color: $white;
+                font-weight: bold;
+                border-radius: 5px;
+                text-decoration: none;
+                border: none;
+                transition: transform 0.2s, box-shadow 0.2s;
+                box-shadow: 0 3px 6px rgba($primary, 0.3);
+
+                &:hover {
+                    background: $secondary;
+                    color: $dark;
+                    border-color: $secondary;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 576px) {
+        .order-container {
+            padding: 1rem;
+
+            .order-actions {
+                justify-content: center;
+            }
+        }
+    }
+}

@@ -2,7 +2,7 @@
 @use "../abstracts/colors" as *;
 
 .promo-banner {
-    background: url('../images/ui/bg-promo.jpg') center/cover no-repeat;
+    background: url('../../images/background/bg-promo.jpg') center/cover no-repeat;
     min-height: 220px;
     display: flex;
     flex-direction: column;
