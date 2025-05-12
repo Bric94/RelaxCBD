@@ -1,17 +1,16 @@
 @use "sass:color";
 @use "../abstracts/colors" as *;
 
-.promo-banner {
-    background: url('../../images/background/bg-promo.jpg') center/cover no-repeat;
+.banner {
     min-height: 220px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 40px 20px;
+    padding: 5rem 0 5rem 0;
     text-align: center;
     border-radius: 12px;
-    margin: 40px auto;
+    margin: 5rem 0 5rem 0;
     color: $white;
 
     h2 {
@@ -29,11 +28,11 @@
     position: fixed;
     bottom: 20px;
     left: 20px;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba($black, 0.8);
     color: #fff;
     padding: 10px 15px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba($black, 0.3);
     z-index: 1000;
     animation: fadein 0.5s, slideup 0.5s ease 5s forwards;
 

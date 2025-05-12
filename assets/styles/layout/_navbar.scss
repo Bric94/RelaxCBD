@@ -13,7 +13,8 @@
   align-items: center;
   padding: 1rem 0;
   box-shadow: 0 4px 10px rgba($black, 0.5);
-  z-index: 1000;
+  z-index: 1002;
+  overflow: hidden;
 
   .container {
     display: flex;
@@ -30,7 +31,9 @@
     height: 5rem;
     background: url('../../images/logo/logo_relax4.png') no-repeat center/contain;
     text-indent: -9999px;
-    overflow: hidden;
+    overflow: visible;
+    position: relative;
+    z-index: 1003;
   }
 
   .nav-links {

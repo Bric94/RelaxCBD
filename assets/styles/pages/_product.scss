@@ -166,31 +166,39 @@
         gap: 1rem;
     }
 
-
-    // passage en empilé sur petits écrans
     @media (max-width: 1250px) {
         .filter-container {
             border-radius: 5px;
 
             .filter-bar {
-                flex-wrap: wrap;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr); // 2 colonnes égales
+                row-gap: 0.75rem;
+                column-gap: 0.75rem;
+            }
 
-                .search-input,
-                .filter-select {
-                    border-radius: 5px !important;
-                    border: 2px solid $primary;
-                    width: 100%;
-                }
+            // 1) La barre de recherche occupe la ligne entière (2 colonnes)
+            .search-input {
+                grid-column: 1 / -1;
+                width: 100%;
+                border: 2px solid $primary !important;
+                border-radius: 5px !important;
+            }
 
-                .filter-select {
-                    border-left: 2px solid $primary;
-                }
+            // 2) Les deux .filter-select tomberont automatiquement
+            //    l’un en colonne 1, l’autre en colonne 2
+            .filter-select {
+                width: 100%;
+                border: 2px solid $primary !important;
+                border-radius: 5px !important;
+            }
 
-                .btn-small-filter {
-                    border-radius: 5px !important;
-                    width: 100%;
-                    margin-top: 0.75rem;
-                }
+            // 3) Le bouton “Appliquer” en dessous, sur toute la largeur
+            .btn-small-filter {
+                grid-column: 1 / -1;
+                width: 100%;
+                border-radius: 5px;
+                margin-top: 0; // l’espacement vient du row-gap du grid
             }
         }
     }
