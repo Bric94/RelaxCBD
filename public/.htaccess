@@ -11,6 +11,11 @@ DirectoryIndex index.php
 # when compiling LESS/Sass/CoffeScript assets.
 # Options +SymLinksIfOwnerMatch
 
+<IfModule mod_php7.c>
+    php_value session.gc_maxlifetime    31536000
+    php_value session.cookie_lifetime   31536000
+</IfModule>
+
 # Disabling MultiViews prevents unwanted negotiation, e.g. "/index" should not resolve
 # to the front controller "/index.php" but be rewritten to "/index.php/index".
 <IfModule mod_negotiation.c>
@@ -23,6 +28,7 @@ DirectoryIndex index.php
     Options +SymLinksIfOwnerMatch
 
     RewriteEngine On
+    RewriteBase /cbd_shop/
 
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the

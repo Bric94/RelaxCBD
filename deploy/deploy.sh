@@ -6,7 +6,7 @@ set -e
 # Définir le dossier du projet (où le script est exécuté)
 PROJECT_DIR="$(pwd)"
 GIT_REPO="git@github.com:Bric94/RelaxCBD.git"
-COMPOSER_PATH="$PROJECT_DIR/../../../composer.phar"
+COMPOSER_PATH="$PROJECT_DIR/../../../composer1.phar"
 
 echo "📍 Répertoire du projet : $PROJECT_DIR"
 

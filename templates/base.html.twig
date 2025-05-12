@@ -1,3 +1,4 @@
+{# templates/base.html.twig #}
 <!DOCTYPE html>
 <html lang="fr">
 	<head>
@@ -17,7 +18,8 @@
 			<div class="background-parallax"></div>
 			<nav class="navbar">
 				<div class="container">
-					<a class="logo" href="{{ path('home') }}">🌿 Relax CBD Shop</a>
+					<a class="logo" href="{{ path('home') }}">Relax CBD Shop</a>
+
 					<ul class="nav-links">
 						<li>
 							<a href="{{ path('product_index') }}">Produits</a>
@@ -46,6 +48,9 @@
 								<a href="{{ path('app_register') }}">Inscription</a>
 							</li>
 						{% endif %}
+						<li>
+							<a href="{{ path('home') }}">Accueil</a>
+						</li>
 
 						<li class="nav-more">
 							<button aria-label="Plus de liens">…Plus</button>
@@ -59,6 +64,7 @@
 
 			<aside id="mySidenav" class="sidenav" aria-hidden="true">
 				<button class="closebtn" aria-label="Fermer le menu">&times;</button>
+				<a href="{{ path('home') }}">Accueil</a>
 				<a href="{{ path('product_index') }}">Produits</a>
 				<a href="{{ path('cart_index') }}">Panier</a>
 				<a href="{{ path('order_index') }}">Commandes</a>
@@ -86,7 +92,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<footer class="custom-footer">
 				<p>&copy; 2025 Relax CBD Shop - Tous droits réservés.</p>
 				<a href="{{ path('app_contact') }}">Nous contacter</a>

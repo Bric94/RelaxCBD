@@ -22,7 +22,7 @@ security:
 
         main:
             lazy: true
-            provider: users_in_database  # utiliser le bon provider
+            provider: users_in_database 
             entry_point: form_login
             custom_authenticator: App\Security\AppCustomAuthenticator
             form_login:
