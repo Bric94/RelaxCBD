@@ -4,7 +4,7 @@ function isMobile() {
 }
 
 function setupCarousel(containerSelector) {
-    if (!isMobile()) return; // 🚫 On ne fait rien si ce n'est pas mobile
+    if (!isMobile()) return; 
 
     const container = document.querySelector(containerSelector);
     if (!container) return;

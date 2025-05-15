@@ -10,7 +10,7 @@
     }
 
     .feature {
-        background-color: color.scale($white, $alpha: -20%);
+        background-color: rgba($light, $alpha: 0.6);
         padding: 25px;
         border-radius: 5px;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);

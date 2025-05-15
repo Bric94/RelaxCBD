@@ -1,17 +1,17 @@
 @use "sass:color";
 @use "../abstracts/colors" as *;
 
-
 .background-parallax {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 130vh;
-    background-image: url("../../images/background/natural-looking-hemp.webp");
+    background-image: url("../../images/background/bg-newsletter.png");
     background-size: cover;
     background-position: center;
-    z-index: -1; // derrière tout
-    transform: scale(1.2); // zoom de 20%
+    z-index: -1;
+    transform: scale(1.2);
     will-change: transform;
+    filter: blur(10px);
 }
