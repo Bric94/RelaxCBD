@@ -62,6 +62,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: BlogPost::class, mappedBy: 'author')]
     private Collection $blogPosts;
 
+    /**
+     * @var Collection<int, NewsletterSubscriber>
+     */
+    #[ORM\OneToMany(targetEntity: NewsletterSubscriber::class, mappedBy: 'user')]
+    private Collection $newsletterSubscribers;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -87,6 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (empty($this->profilePicture)) {
             $this->profilePicture = $defaultAvatars[array_rand($defaultAvatars)];
         }
+        $this->newsletterSubscribers = new ArrayCollection();
     }
 
 
@@ -293,6 +300,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($blogPost->getAuthor() === $this) {
                 $blogPost->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NewsletterSubscriber>
+     */
+    public function getNewsletterSubscribers(): Collection
+    {
+        return $this->newsletterSubscribers;
+    }
+
+    public function addNewsletterSubscriber(NewsletterSubscriber $newsletterSubscriber): static
+    {
+        if (!$this->newsletterSubscribers->contains($newsletterSubscriber)) {
+            $this->newsletterSubscribers->add($newsletterSubscriber);
+            $newsletterSubscriber->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNewsletterSubscriber(NewsletterSubscriber $newsletterSubscriber): static
+    {
+        if ($this->newsletterSubscribers->removeElement($newsletterSubscriber)) {
+            // set the owning side to null (unless already changed)
+            if ($newsletterSubscriber->getUser() === $this) {
+                $newsletterSubscriber->setUser(null);
             }
         }
 

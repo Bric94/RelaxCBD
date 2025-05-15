@@ -26,62 +26,66 @@
         padding: 2rem;
         border-radius: 0.5rem;
         box-shadow: 0 6px 24px rgba($dark, 0.2);
-        z-index: 2001;
-        width: 90%;
         max-width: 400px;
+        width: 90%;
         text-align: center;
+        z-index: 2001;
 
-        h2,
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: $dark;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-
-            input[type="email"] {
-                padding: 0.75rem;
-                border: 1px solid $primary;
-                border-radius: 0.25rem;
-                background: $white;
-                color: $dark;
-            }
-
-            button,
-            input[type="submit"] {
-                @extend .btn-primary;
-            }
-        }
-
-        .modal-close {
+        .close-btn {
             position: absolute;
             top: 0.5rem;
             right: 0.5rem;
             background: none;
             border: none;
             font-size: 1.5rem;
+            color: $dark;
             cursor: pointer;
+        }
+
+        .newsletter-title {
+            margin-bottom: 0.5rem;
+            color: $dark;
+            font-size: 1.5rem;
+        }
+
+        .newsletter-desc {
+            margin-bottom: 1.5rem;
             color: $dark;
         }
 
-        // Actions pour utilisateurs connectés
-        .newsletter-actions {
+        .newsletter-form {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
+            gap: 1rem;
+            margin-bottom: 1rem;
 
-            .btn-subscribe {
-                @extend .btn-primary;
+            input[type="email"] {
+                padding: 0.75rem;
+                border: 1px solid $primary;
+                border-radius: 0.25rem;
             }
 
-            .btn-remind-later,
-            .btn-dismiss-forever {
+            button {
+                @extend .btn-primary;
+            }
+        }
+
+        .newsletter-user-email {
+            display: none;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: $dark;
+        }
+
+        .newsletter-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+
+            .btn-remind,
+            .btn-never {
                 @extend .btn-secondary;
+                flex: 1;
             }
         }
     }

@@ -100,30 +100,29 @@
 
 
 	{# Modal Newsletter #}
-	<div id="newsletter-modal" class="newsletter-modal">
+	<div id="newsletter-modal" class="newsletter-modal" data-user-email="{{ app.user ? app.user.email : '' }}">
 		<div class="modal-backdrop"></div>
 		<div class="modal-dialog">
-			<button type="button" class="modal-close">&times;</button>
+			<button type="button" class="close-btn" aria-label="Fermer la popup">&times;</button>
 			<div class="newsletter-content">
-				<h3 class="section-title">Inscrivez-vous à la Newsletter</h3>
-				<p class="lead">
+				<h3 class="newsletter-title">Inscrivez-vous à la Newsletter</h3>
+				<p class="newsletter-desc">
 					Recevez nos offres exclusives et conseils bien-être directement dans votre boîte mail.
 				</p>
 
-				{{ form_start(newsletterForm, { attr: { class: 'product-form' } }) }}
-				{{ form_row(newsletterForm.email) }}
-				<div class="form-actions">
-					{{ form_row(newsletterForm.submit) }}
-				</div>
-				{{ form_end(newsletterForm) }}
+				{# Formulaire pour les invités #}
+				<form id="newsletter-form" action="{{ path('newsletter_subscribe') }}" method="POST" class="newsletter-form" novalidate>
+					<input id="newsletter-email" name="email" type="email" placeholder="Votre e-mail" required>
+					<button type="submit" class="btn-primary">S'inscrire</button>
+				</form>
 
-				{% if app.user %}
-					<div class="newsletter-actions">
-						<button type="button" class="btn-subscribe">S'inscrire</button>
-						<button type="button" class="btn-remind-later">Me le rappeler plus tard</button>
-						<button type="button" class="btn-dismiss-forever">Ne plus afficher</button>
-					</div>
-				{% endif %}
+				{# Affiche l’email si l’utilisateur est connecté #}
+				<p id="newsletter-user-email" class="newsletter-user-email"></p>
+
+				<div class="newsletter-actions">
+					<button type="button" class="btn-secondary btn-remind">Me le rappeler plus tard</button>
+					<button type="button" class="btn-secondary btn-never">Ne plus afficher</button>
+				</div>
 			</div>
 		</div>
 	</div>
