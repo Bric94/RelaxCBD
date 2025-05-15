@@ -8,7 +8,7 @@
 	<header class="banner">
 		<div class="banner-content">
 			<h1>Bienvenue chez Relax CBD Shop</h1>
-			<p>Découvrez nos produits à base de CBD, 100 % naturels et certifiés.</p>
+			<h2>Découvrez nos produits à base de CBD, 100 % naturels et certifiés.</h2>
 			<a href="{{ path('product_index') }}" class="btn-primary">Explorer nos Produits</a>
 		</div>
 	</header>
@@ -88,55 +88,45 @@
 		</div>
 	</div>
 
-	{# Modal Newsletter #}
-	<div id="newsletter-modal" class="modal">
-		<div class="modal-backdrop"></div>
-		<div class="modal-dialog">
-			<section class="feature newsletter-popup" style="background-image: url('{{ asset('images/background/bg-newsletter.png') }}');">
-				<button type="button" class="modal-close">&times;</button>
-				<div class="newsletter-content">
-					<h3 class="section-title">Inscrivez-vous à la Newsletter</h3>
-					<p class="lead">
-						Recevez nos offres exclusives et conseils bien-être directement dans votre boîte mail.
-					</p>
-					{{ form_start(newsletterForm, { attr: { class: 'product-form' } }) }}
-					{{ form_row(newsletterForm.email) }}
-					<div class="form-actions">
-						{{ form_row(newsletterForm.submit) }}
-					</div>
-					{{ form_end(newsletterForm) }}
-				</div>
-			</section>
+	<div class="container shop-section">
+		<div class="map-container" id="map"></div>
+		<div class="shop-info">
+			<h3>Notre boutique à Golfe Juan</h3>
+			<img src="{{ asset('images/shop/photo-shop.png') }}" alt="Boutique Relax CBD Shop" class="shop-photo">
+			<p>Adresse : Votre adresse ici, Golfe Juan</p>
+			<a href="https://www.google.com/maps/place/Votre+adresse" target="_blank" class="btn-primary">Voir sur Google Maps</a>
 		</div>
 	</div>
 
 
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-const modal = document.getElementById('newsletter-modal');
-const backdrop = modal.querySelector('.modal-backdrop');
-const closeBtn = modal.querySelector('.modal-close');
-const form = modal.querySelector('form');
-const dismissed = localStorage.getItem('newsletterDismissed') === 'true';
-const subscribed = localStorage.getItem('newsletterSubscribed') === 'true';
+	{# Modal Newsletter #}
+	<div id="newsletter-modal" class="newsletter-modal">
+		<div class="modal-backdrop"></div>
+		<div class="modal-dialog">
+			<button type="button" class="modal-close">&times;</button>
+			<div class="newsletter-content">
+				<h3 class="section-title">Inscrivez-vous à la Newsletter</h3>
+				<p class="lead">
+					Recevez nos offres exclusives et conseils bien-être directement dans votre boîte mail.
+				</p>
 
-// Si déjà fermé ou inscrit, on n'affiche pas
-if (! dismissed && ! subscribed) {
-modal.classList.add('open');
-}
+				{{ form_start(newsletterForm, { attr: { class: 'product-form' } }) }}
+				{{ form_row(newsletterForm.email) }}
+				<div class="form-actions">
+					{{ form_row(newsletterForm.submit) }}
+				</div>
+				{{ form_end(newsletterForm) }}
 
-// Au clic sur la croix ou le fond
-function closeModal() {
-modal.classList.remove('open');
-localStorage.setItem('newsletterDismissed', 'true');
-}
-closeBtn.addEventListener('click', closeModal);
-backdrop.addEventListener('click', closeModal);
+				{% if app.user %}
+					<div class="newsletter-actions">
+						<button type="button" class="btn-subscribe">S'inscrire</button>
+						<button type="button" class="btn-remind-later">Me le rappeler plus tard</button>
+						<button type="button" class="btn-dismiss-forever">Ne plus afficher</button>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 
-// Lors de la soumission, on marque "inscrit"
-form.addEventListener('submit', function () {
-localStorage.setItem('newsletterSubscribed', 'true');
-});
-});
-	</script>
+
 {% endblock %}

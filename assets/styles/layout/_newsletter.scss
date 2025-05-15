@@ -21,6 +21,7 @@
     }
 
     .modal-dialog {
+        position: relative;
         background-color: $light;
         padding: 2rem;
         border-radius: 0.5rem;
@@ -30,7 +31,8 @@
         max-width: 400px;
         text-align: center;
 
-        h2 {
+        h2,
+        .section-title {
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: $dark;
@@ -49,18 +51,9 @@
                 color: $dark;
             }
 
-            button {
-                padding: 0.75rem;
-                background: $primary;
-                color: $white;
-                border: none;
-                border-radius: 0.25rem;
-                cursor: pointer;
-                font-weight: bold;
-
-                &:hover {
-                    background: rgba($primary, $alpha: 0.9);
-                }
+            button,
+            input[type="submit"] {
+                @extend .btn-primary;
             }
         }
 
@@ -73,6 +66,23 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: $dark;
+        }
+
+        // Actions pour utilisateurs connectés
+        .newsletter-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+
+            .btn-subscribe {
+                @extend .btn-primary;
+            }
+
+            .btn-remind-later,
+            .btn-dismiss-forever {
+                @extend .btn-secondary;
+            }
         }
     }
 }

@@ -66,7 +66,7 @@
 								{% if product.isWeightBased and product.getPriceByWeight() is not empty %}
 									<select name="selectedWeight" id="selectedWeight_{{ product.id }}" class="weight-select" required>
 										{% for weight, price in product.getPriceByWeight() %}
-											<option value="{{ weight }}">
+											<option value="{{ weight }}"> 
 												{{ weight }}
 												g -
 												{{ price|number_format(2, ',', ' ') }}
@@ -96,5 +96,17 @@
 				<p class="no-products">Aucun produit disponible.</p>
 			{% endfor %}
 		</div>
+
+		<div class="cart-popup" id="js-cart-popup">
+			<div class="cart-popup__backdrop"></div>
+			<div class="cart-popup__dialog">
+				<p id="js-cart-popup-message"></p>
+				<div class="cart-popup__actions">
+					<button class="btn-secondary" id="js-cart-popup-continue">Continuer mes achats</button>
+					<button class="btn-primary" id="js-cart-popup-view">Voir mon panier</button>
+				</div>
+			</div>
+		</div>
+
 	</section>
 {% endblock %}

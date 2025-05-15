@@ -20,14 +20,13 @@ class CartService
     {
         $cart = $this->session->get('cart', []);
 
-        // Générer une clé unique pour les produits au poids
         $key = $weight ? "{$productId}_{$weight}" : (string)$productId;
 
         if (!isset($cart[$key])) {
             $cart[$key] = 0;
         }
 
-        $cart[$key] += max(1, $quantity); // Ajout du grammage directement
+        $cart[$key] += max(1, $quantity); 
 
         $this->session->set('cart', $cart);
     }
@@ -64,11 +63,9 @@ class CartService
                 continue;
             }
 
-            // Récupération du prix du grammage sélectionné
             $prices = $product->getPriceByWeight();
             $selectedPrice = $prices[$weight] ?? $product->getPrice();
 
-            // Comparaison avec le prix de 1g pour calculer la "réduction" réelle
             $pricePerGram = $prices[1] ?? $product->getPrice();
             $discount = 0;
 

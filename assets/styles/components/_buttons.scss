@@ -8,7 +8,9 @@
     padding: 0.75rem 1.5rem;
     border-radius: 0.25rem;
     font-weight: 600;
+    text-decoration: none;
     transition: background 0.2s;
+    margin-top: 1.5rem;
 
     &:hover {
         background: color.adjust($primary, $lightness: -10%);

@@ -76,7 +76,7 @@ class ContactType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Nous contacter',
                 'attr'  => [
-                    'class' => 'btn-primary w-100',
+                    'class' => 'btn-primary',
                 ],
             ])
         ;

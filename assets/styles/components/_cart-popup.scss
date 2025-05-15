@@ -2,61 +2,121 @@
 @use "../abstracts/colors" as *;
 
 .cart-popup {
-    // 1. make it a full‐screen flex container
     position: fixed;
     inset: 0;
-    display: none; // hidden by default
+    display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
 
     &.hidden {
-        display: none;
+        visibility: hidden;
+        opacity: 0;
     }
 
     &.open {
-        display: block;
+        visibility: visible;
+        opacity: 1;
     }
 
     &__backdrop {
         position: absolute;
         inset: 0;
-        background: rgba($black, 0.4);
+        background: rgba($dark, 0.5);
+        backdrop-filter: blur(6px);
+        transition: opacity 0.4s ease;
     }
 
     &__dialog {
         position: relative;
-        background: $white;
-        padding: 1.5rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 8px 16px rgba($black, 0.2);
-        max-width: 90%;
-        width: 320px;
+        background: $light;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 12px 24px rgba($black, 0.2);
+        max-width: 85%;
+        width: clamp(500px, 50vw, 700px);
         text-align: center;
+        transform: translateY(-30px);
+        opacity: 0;
+        animation: fadeInSlide 0.4s forwards;
+        overflow: hidden;
 
         p {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             color: $dark;
+            font-weight: 600;
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: $dark;
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s;
+
+            &:hover {
+                color: $primary;
+                transform: scale(1.1);
+            }
         }
     }
 
     &__actions {
         display: flex;
-        gap: 0.5rem;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1rem;
+
+        .btn-secondary,
+        .btn-primary {
+            flex: 1;
+            padding: clamp(0.75rem, 2vw, 1.5rem);
+            font-weight: 600;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            border-radius: 0.75rem;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
+        }
 
         .btn-secondary {
-            flex: 1;
             background: none;
-            border: 1px solid $dark;
+            border: 2px solid $dark;
             color: $dark;
 
             &:hover {
-                background: $light;
+                background: $dark;
+                color: $light;
+                transform: translateY(-2px);
             }
         }
 
         .btn-primary {
-            flex: 1;
+            background: $primary;
+            color: $white;
+
+            &:hover {
+                background: color.scale($primary, $lightness: -15%);
+                transform: translateY(-2px);
+            }
         }
+    }
+}
+
+@keyframes fadeInSlide {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
     }
 }

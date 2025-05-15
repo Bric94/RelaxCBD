@@ -4,6 +4,12 @@ let lastScrollY = 0;
 let ticking = false;
 
 function updateParallax() {
+
+    if (window.innerWidth <= 768) {
+        // Désactive le parallaxe sur mobile
+        parallax.style.transform = 'none';
+        return;
+    }
     const docHeight = document.body.scrollHeight - window.innerHeight;
     const scrollPercent = lastScrollY / docHeight;
     const maxTranslate = 100;
@@ -24,3 +30,7 @@ window.addEventListener('scroll', () => {
         ticking = true;
     }
 });
+
+window.addEventListener('resize', updateParallax);
+
+updateParallax();

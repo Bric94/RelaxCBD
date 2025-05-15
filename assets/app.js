@@ -3,7 +3,10 @@ import './styles/app.scss';
 import './js/carousel.js';
 import './js/flashMessage.js';
 import './js/home.js';
+import './js/map.js';
 import './js/menuBurger.js';
+import './js/navOverflow.js';
+import './js/newsletter.js';
 import './js/parallaxe.js';
 import './js/searchProduct.js';
 

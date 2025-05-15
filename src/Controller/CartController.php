@@ -45,7 +45,6 @@ final class CartController extends AbstractController
 
         $cartUrl = $this->generateUrl('cart_index');
 
-        // Si appel AJAX : on renvoie un JSON
         if ($request->isXmlHttpRequest()) {
             return $this->json([
                 'message' => sprintf('« %s » a été ajouté à votre panier.', $product->getName()),
@@ -53,7 +52,6 @@ final class CartController extends AbstractController
             ]);
         }
 
-        // Sinon redirection classique
         return $this->redirect($request->headers->get('referer') ?? $cartUrl);
     }
 

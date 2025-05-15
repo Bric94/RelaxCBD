@@ -2,11 +2,17 @@
 @use "./reset";
 @use "./general";
 @use "./alert";
+
+
 @use "../abstracts/colors" as *;
 @use "../abstracts/responsive";
+
+
 @use "../layout/sidebar";
 @use "../layout/footer";
 @use "../layout/navbar";
+
+
 @use "../components/buttons";
 @use "../components/forms";
 @use "../components/auth";
@@ -18,6 +24,8 @@
 @use "../components/tables";
 @use "../components/flash";
 @use "../components/cart-popup";
+
+
 @use "../pages/cart";
 @use "../pages/home";
 @use "../pages/order-show";
