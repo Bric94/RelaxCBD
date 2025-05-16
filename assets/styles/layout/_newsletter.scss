@@ -4,89 +4,92 @@
 .newsletter-modal {
     position: fixed;
     inset: 0;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2000;
+    background: rgba(0, 0, 0, 0.55);
+
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, visibility 0.3s;
 
     &.open {
-        display: flex;
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
     }
 
-    .modal-backdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 2000;
-    }
-
-    .modal-dialog {
+    .newsletter-modal__dialog {
         position: relative;
-        background-color: $light;
-        padding: 2rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 6px 24px rgba($dark, 0.2);
+        background: $light;
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 8px 32px rgba($dark, 0.15);
         max-width: 400px;
         width: 90%;
         text-align: center;
-        z-index: 2001;
+        z-index: 1;
+    }
 
-        .close-btn {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: $dark;
-            cursor: pointer;
+    .newsletter-modal__close {
+        position: absolute;
+        top: 0.6rem;
+        right: 0.6rem;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: $dark;
+        cursor: pointer;
+        z-index: 2;
+        transition: color 0.2s;
+
+        &:hover {
+            color: $primary;
         }
+    }
 
-        .newsletter-title {
-            margin-bottom: 0.5rem;
-            color: $dark;
-            font-size: 1.5rem;
+    .newsletter-modal__title {
+        margin-bottom: 0.5rem;
+        color: $primary;
+        font-size: 1.4rem;
+        font-weight: bold;
+    }
+
+    .newsletter-modal__desc {
+        margin-bottom: 1.3rem;
+        color: $dark;
+        font-size: 1.1rem;
+    }
+
+    .newsletter-modal__form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        input[type="email"] {
+            padding: 0.75rem;
+            border: 1px solid $primary;
+            border-radius: 0.3rem;
+            font-size: 1rem;
         }
+    }
 
-        .newsletter-desc {
-            margin-bottom: 1.5rem;
-            color: $dark;
-        }
+    .newsletter-modal__user-email {
+        display: none;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        color: $dark;
+    }
 
-        .newsletter-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 1rem;
+    .newsletter-modal__actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
 
-            input[type="email"] {
-                padding: 0.75rem;
-                border: 1px solid $primary;
-                border-radius: 0.25rem;
-            }
-
-            button {
-                @extend .btn-primary;
-            }
-        }
-
-        .newsletter-user-email {
-            display: none;
-            margin-bottom: 1rem;
-            font-weight: 600;
-            color: $dark;
-        }
-
-        .newsletter-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-
-            .btn-remind,
-            .btn-never {
-                @extend .btn-secondary;
-                flex: 1;
-            }
+        .btn-secondary {
+            flex: 1;
         }
     }
 }

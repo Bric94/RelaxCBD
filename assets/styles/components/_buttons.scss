@@ -85,23 +85,56 @@
     }
 }
 
+.btn-small-filter {
+    flex: none;
+    padding: 0.75rem 1.5rem;
+    background: $primary;
+    color: $white;
+    border: 2px solid $primary;
+    border-radius: 0 5px 5px 0;
+    border-left: none;
+    font-weight: bold;
+    font-size: large;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.2s;
+
+    &:hover {
+        filter: brightness(0.9);
+    }
+}
+
 .btn-empty-center {
-    display: flex;
-    max-width: 30%;
+    display: inline-block;
+    padding: 10px 18px;
     align-items: center;
     justify-content: center;
-    background: rgba($secondary, $alpha: 0.9);
+    background: rgba($secondary, $alpha: 0.1);
     border: solid $error 1px;
     border-radius: 5px;
     color: $danger;
     font-weight: 600;
-    padding: 0.6rem 1rem;
     text-decoration: none;
     transition: color 0.2s, text-decoration 0.2s;
 
     &:hover,
     &:focus {
         color: $error;
+        background-color: rgba($error, $alpha: 0.5);
         text-decoration: underline;
+    }
+}
+
+.bottom-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 2rem;
+}
+
+@media (max-width: 1250px) {
+    .btn-small-filter {
+        grid-column: 1 / -1;
+        width: 100%;
+        border-radius: 5px;
+        margin-top: 0; // l’espacement vient du row-gap du grid
     }
 }

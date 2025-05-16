@@ -45,7 +45,7 @@ window.initMap = async function () {
 // Création d'un marqueur personnalisé (icône cannabis)
 function createCustomMarker() {
     const img = document.createElement('img');
-    img.src = '/images/icons/cannabis-leaf.png';
+    img.src = '../images/icons/leaf-icon.png';
     img.style.width = '40px';
     img.style.height = '40px';
     img.alt = 'Relax CBD Shop';

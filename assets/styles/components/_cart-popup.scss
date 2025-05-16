@@ -27,7 +27,6 @@
         inset: 0;
         background: rgba($dark, 0.5);
         backdrop-filter: blur(6px);
-        transition: opacity 0.4s ease;
     }
 
     &__dialog {
@@ -50,62 +49,12 @@
             font-weight: 600;
             font-size: clamp(1.2rem, 2.5vw, 2rem);
         }
-
-        .close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: $dark;
-            font-size: clamp(1.5rem, 2.5vw, 2rem);
-            cursor: pointer;
-            transition: color 0.3s ease, transform 0.3s;
-
-            &:hover {
-                color: $primary;
-                transform: scale(1.1);
-            }
-        }
     }
 
     &__actions {
         display: flex;
-        gap: 1rem;
-        justify-content: center;
-        margin-top: 1rem;
-
-        .btn-secondary,
-        .btn-primary {
-            flex: 1;
-            padding: clamp(0.75rem, 2vw, 1.5rem);
-            font-weight: 600;
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            border-radius: 0.75rem;
-            transition: background-color 0.3s, color 0.3s, transform 0.3s;
-        }
-
-        .btn-secondary {
-            background: none;
-            border: 2px solid $dark;
-            color: $dark;
-
-            &:hover {
-                background: $dark;
-                color: $light;
-                transform: translateY(-2px);
-            }
-        }
-
-        .btn-primary {
-            background: $primary;
-            color: $white;
-
-            &:hover {
-                background: color.scale($primary, $lightness: -15%);
-                transform: translateY(-2px);
-            }
-        }
+        justify-content: space-between;
+        margin: 1rem 2rem;
     }
 }
 

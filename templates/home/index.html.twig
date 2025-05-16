@@ -101,31 +101,24 @@
 
 	{# Modal Newsletter #}
 	<div id="newsletter-modal" class="newsletter-modal" data-user-email="{{ app.user ? app.user.email : '' }}">
-		<div class="modal-backdrop"></div>
-		<div class="modal-dialog">
-			<button type="button" class="close-btn" aria-label="Fermer la popup">&times;</button>
-			<div class="newsletter-content">
-				<h3 class="newsletter-title">Inscrivez-vous à la Newsletter</h3>
-				<p class="newsletter-desc">
-					Recevez nos offres exclusives et conseils bien-être directement dans votre boîte mail.
-				</p>
+		<div class="newsletter-modal__dialog">
+			<button type="button" class="newsletter-modal__close" aria-label="Fermer la popup">&times;</button>
+			<h3 class="newsletter-modal__title">Inscrivez-vous à la Newsletter</h3>
+			<p class="newsletter-modal__desc">
+				Recevez nos offres exclusives et conseils bien-être directement dans votre boîte mail.
+			</p>
 
-				{# Formulaire pour les invités #}
-				<form id="newsletter-form" action="{{ path('newsletter_subscribe') }}" method="POST" class="newsletter-form" novalidate>
-					<input id="newsletter-email" name="email" type="email" placeholder="Votre e-mail" required>
-					<button type="submit" class="btn-primary">S'inscrire</button>
-				</form>
+			<form id="newsletter-form" action="{{ path('newsletter_subscribe') }}" method="POST" class="newsletter-modal__form" novalidate>
+				<input id="newsletter-email" name="email" type="email" placeholder="Votre e-mail" required>
+				<button type="submit" class="btn-primary">S'inscrire</button>
+			</form>
 
-				{# Affiche l’email si l’utilisateur est connecté #}
-				<p id="newsletter-user-email" class="newsletter-user-email"></p>
+			<p id="newsletter-user-email" class="newsletter-modal__user-email"></p>
 
-				<div class="newsletter-actions">
-					<button type="button" class="btn-secondary btn-remind">Me le rappeler plus tard</button>
-					<button type="button" class="btn-secondary btn-never">Ne plus afficher</button>
-				</div>
+			<div class="newsletter-modal__actions">
+				<button type="button" class="btn-secondary btn-remind">Me le rappeler plus tard</button>
+				<button type="button" class="btn-secondary btn-never">Ne plus afficher</button>
 			</div>
 		</div>
 	</div>
-
-
 {% endblock %}

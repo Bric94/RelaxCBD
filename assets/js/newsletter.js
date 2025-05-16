@@ -5,61 +5,97 @@ document.addEventListener('DOMContentLoaded', () => {
     const userEmail = modal.dataset.userEmail || '';
     const form = document.getElementById('newsletter-form');
     const emailInput = document.getElementById('newsletter-email');
-    const emailDisplay = document.getElementById('newsletter-user-email');
-    const backdrop = modal.querySelector('.modal-backdrop');
-    const closeBtn = modal.querySelector('.close-btn');
+    const emailDisp = document.getElementById('newsletter-user-email');
+    const closeBtn = modal.querySelector('.newsletter-modal__close');
     const remindBtn = modal.querySelector('.btn-remind');
     const neverBtn = modal.querySelector('.btn-never');
+    const msgBox = document.createElement('div'); // Ajouté pour feedback
 
-    const storageKey = 'relaxCBD-newsletter';
-    const state = JSON.parse(localStorage.getItem(storageKey)) || {};
+    msgBox.style.marginTop = "0.75rem";
+    msgBox.style.minHeight = "1.2em";
+    msgBox.style.fontWeight = "bold";
+    msgBox.style.fontSize = "1rem";
+    msgBox.style.color = "#c33";
+
+    // Place le message juste avant le bloc d'actions
+    const actions = modal.querySelector('.newsletter-modal__actions');
+    if (actions) {
+        actions.parentNode.insertBefore(msgBox, actions);
+    }
+
+    const KEY = 'relaxCBD-newsletter';
     const SIX_MONTHS = 1000 * 60 * 60 * 24 * 180;
+    const state = JSON.parse(localStorage.getItem(KEY)) || {};
 
-    const openModal = () => modal.classList.add('open');
-    const closeModal = () => modal.classList.remove('open');
-    const saveState = () => localStorage.setItem(storageKey, JSON.stringify(state));
+    const open = () => modal.classList.add('open');
+    const close = () => modal.classList.remove('open');
+    const save = () => localStorage.setItem(KEY, JSON.stringify(state));
 
-    // Décide si on affiche la popup
     const shouldShow = () => {
         const now = Date.now();
         if (state.subscribed || state.dismissForever) return false;
         if (state.dismissedUntil && state.dismissedUntil > now) return false;
-        return !state.shownOnce;
+        return true;
     };
 
     if (shouldShow()) {
         setTimeout(() => {
             if (userEmail) {
                 form.style.display = 'none';
-                emailDisplay.textContent = `Votre e-mail : ${userEmail}`;
-                emailDisplay.style.display = 'block';
+                emailDisp.textContent = `Votre e-mail : ${userEmail}`;
+                emailDisp.style.display = 'block';
             }
-            openModal();
-            state.shownOnce = true;
-            saveState();
+            open();
         }, 2000);
     }
 
-    const dismissSixMonths = () => {
+    const dismiss6 = () => {
         state.dismissedUntil = Date.now() + SIX_MONTHS;
-        saveState();
-        closeModal();
+        save();
+        close();
     };
     const dismissForever = () => {
         state.dismissForever = true;
-        saveState();
-        closeModal();
+        save();
+        close();
     };
 
-    backdrop.addEventListener('click', dismissSixMonths);
-    closeBtn.addEventListener('click', dismissSixMonths);
-    remindBtn.addEventListener('click', dismissSixMonths);
-    neverBtn.addEventListener('click', dismissForever);
-
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
-        state.subscribed = true;
-        saveState();
-        form.submit();
+
+        msgBox.textContent = "";
+        form.querySelector('[type="submit"]').disabled = true;
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `email=${encodeURIComponent(emailInput.value)}`
+        })
+            .then(async res => {
+                form.querySelector('[type="submit"]').disabled = false;
+                const data = await res.json();
+                if (res.ok) {
+                    msgBox.style.color = "#2c8c46"; // vert
+                    msgBox.textContent = data.message || "Inscription réussie !";
+                    state.subscribed = true;
+                    save();
+                    setTimeout(close, 1500);
+                } else {
+                    msgBox.style.color = "#c33";
+                    msgBox.textContent = data.message || "Erreur.";
+                }
+            })
+            .catch(() => {
+                form.querySelector('[type="submit"]').disabled = false;
+                msgBox.style.color = "#c33";
+                msgBox.textContent = "Erreur lors de l'inscription. Réessayez.";
+            });
     });
+
+    closeBtn.addEventListener('click', dismiss6);
+    remindBtn.addEventListener('click', dismiss6);
+    neverBtn.addEventListener('click', dismissForever);
 });

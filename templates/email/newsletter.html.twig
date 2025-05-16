@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{{ subject }}</title>
+	</head>
+	<body>
+		<h1>{{ subject }}</h1>
+		<p>Bonjour
+			{{ subscriber.email }},</p>
+		<div>
+			{{ content|raw }}
+		</div>
+		<hr>
+		<p>©
+			{{ "now"|date("Y") }}
+			Relax CBD Shop</p>
+	</body>
+</html>

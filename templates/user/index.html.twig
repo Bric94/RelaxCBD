@@ -12,9 +12,9 @@
   ] %}
 
 	{# 
-	    Si l’utilisateur a uploadé une photo (et qu’elle n’est pas dans la liste par défaut),
-	    on l’affiche. Sinon on mélange la liste et on prend le premier élément. 
-	  #}
+		    Si l’utilisateur a uploadé une photo (et qu’elle n’est pas dans la liste par défaut),
+		    on l’affiche. Sinon on mélange la liste et on prend le premier élément. 
+		  #}
 	{% if user.profilePicture and user.profilePicture not in defaultAvatars %}
 		{% set src = 'images/profiles/' ~ user.profilePicture %}
 	{% else %}
@@ -82,8 +82,8 @@
 										<td>{{ order.totalPrice|number_format(2, ',', ' ') }}
 											€</td>
 										<td>
-											<a href="{{ path('order_show', { id: order.id }) }}" class="btn-secondary">
-												Voir
+											<a href="{{ path('order_show', { id: order.id }) }}">
+												Voir les détails
 											</a>
 										</td>
 									</tr>
@@ -94,12 +94,13 @@
 				</div>
 			</div>
 		</section>
-
-		<div>
-			<a href="{{ path('product_index') }}" class="btn-secondary">Retour à l'accueil</a>
-		</div>
-		<div>
-			<a href="{{ path('app_logout') }}" class="btn-empty-center">Déconnexion</a>
+		<div class="bottom-buttons">
+			<div>
+				<a href="{{ path('product_index') }}" class="btn-secondary">← Retour à l'accueil</a>
+			</div>
+			<div>
+				<a href="{{ path('app_logout') }}" class="btn-empty-center">Déconnexion</a>
+			</div>
 		</div>
 	</div>
 {% endblock %}

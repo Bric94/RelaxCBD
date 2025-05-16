@@ -8,22 +8,23 @@
 @use "../abstracts/responsive";
 
 
-@use "../layout/sidebar";
+@use "../components/auth";
+@use "../components/buttons";
+@use "../components/carousel";
+@use "../components/cart-popup";
+@use "../components/features";
+@use "../components/flash";
+@use "../components/forms";
+@use "../components/pagination";
+@use "../components/parallaxe";
+/* @use "../components/popup"; */
+@use "../components/tables";
+
+
 @use "../layout/footer";
 @use "../layout/navbar";
-
-
-@use "../components/buttons";
-@use "../components/forms";
-@use "../components/auth";
-@use "../components/pagination";
-@use "../components/features";
-@use "../components/parallaxe";
-@use "../components/carousel";
-@use "../components/popup";
-@use "../components/tables";
-@use "../components/flash";
-@use "../components/cart-popup";
+@use "../layout/newsletter";
+@use "../layout/sidebar";
 
 
 @use "../pages/cart";
