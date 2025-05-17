@@ -8,7 +8,6 @@
 {% block body %}
 	<div class="container table-container">
 		<h1 class="section-title text-center">Mon Panier</h1>
-
 		{% if cartItems is empty %}
 			<p class="empty-cart text-center">Votre panier est vide.</p>
 			<div class="cart-buttons">
@@ -32,12 +31,12 @@
 					<tbody>
 						{% for item in cartItems %}
 							{% if item.product.isWeightBased %}
-								{% set prices    = item.product.getPriceByWeight() %}
-								{% set unitPrice = prices[item.quantity] ?? item.product.getPrice() %}
-								{% set base1g    = prices['1'] ?? item.product.getPrice() %}
-								{% set baseTotal = base1g * item.quantity %}
-								{% set finalTotal= unitPrice * item.quantity %}
-								{% set discount  = baseTotal - finalTotal %}
+								{% set unitPrice = item.product.getPriceForWeight(item.quantity) ?? item.product.getPrice() %}
+								{% set baseUnitPrice = item.product.getPriceForWeight(1) %}
+								{% set basePrice = item.product.getPrice() %}
+								{% set baseTotal = baseUnitPrice * item.quantity %}
+								{% set finalTotal = unitPrice * item.quantity %}
+								{% set discount = baseTotal - finalTotal %}
 							{% endif %}
 							<tr>
 								<td>{{ item.product.name }}</td>
@@ -51,11 +50,19 @@
 								</td>
 								<td>
 									{% if item.product.isWeightBased %}
-										{{ unitPrice|number_format(2, ',', ' ') }}
-										€/g
+										{% if unitPrice < baseUnitPrice %}
+											<span class="strikethrough">{{ baseUnitPrice|number_format(2, ',', ' ') }}
+												€/g</span>
+											<span>{{ unitPrice|number_format(2, ',', ' ') }}
+												€/g</span>
+										{% else %}
+											<span>{{ unitPrice|number_format(2, ',', ' ') }}
+												€/g</span>
+										{% endif %}
 									{% else %}
-										{{ item.price|number_format(2, ',', ' ') }}
-										€
+										<span>
+											{{ item.price|number_format(2, ',', ' ') }}
+											€</span>
 									{% endif %}
 								</td>
 								<td>
@@ -69,11 +76,19 @@
 								<td>
 									<strong>
 										{% if item.product.isWeightBased %}
-											{{ finalTotal|number_format(2, ',', ' ') }}
+											{% if finalTotal < baseTotal %}
+												<span class="strikethrough">{{ baseTotal|number_format(2, ',', ' ') }}
+													€</span>
+												<span>{{ finalTotal|number_format(2, ',', ' ') }}
+													€</span>
+											{% else %}
+												<span>{{ finalTotal|number_format(2, ',', ' ') }}
+													€</span>
+											{% endif %}
 										{% else %}
-											{{ (item.price * item.quantity)|number_format(2, ',', ' ') }}
+											<span>{{ (item.price * item.quantity)|number_format(2, ',', ' ') }}
+												€</span>
 										{% endif %}
-										€
 									</strong>
 								</td>
 								<td>
@@ -84,6 +99,7 @@
 							</tr>
 						{% endfor %}
 					</tbody>
+
 				</table>
 			</div>
 

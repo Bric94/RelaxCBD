@@ -27,6 +27,7 @@
         inset: 0;
         background: rgba($dark, 0.5);
         backdrop-filter: blur(6px);
+        cursor: pointer;
     }
 
     &__dialog {
@@ -48,6 +49,23 @@
             color: $dark;
             font-weight: 600;
             font-size: clamp(1.2rem, 2.5vw, 2rem);
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: $dark;
+        cursor: pointer;
+        z-index: 2;
+        transition: color 0.2s;
+
+        &:hover {
+            color: $primary;
         }
     }
 

@@ -70,7 +70,7 @@
             font-weight: 600;
             text-decoration: none;
             transition: color 0.2s, text-decoration 0.2s;
-    
+
             &:hover,
             &:focus {
                 color: $error;
@@ -113,7 +113,15 @@
         }
     }
 
-    // ********** Boutons d’action **********
+    .strikethrough {
+        text-decoration: line-through;
+        color: $error;
+    }
+
+    .success {
+        color: $success;
+    }
+
     .cart-buttons {
         display: flex;
         justify-content: space-between;

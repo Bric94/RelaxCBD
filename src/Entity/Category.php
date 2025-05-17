@@ -121,6 +121,6 @@ class Category
 
     public function __toString(): string
     {
-        return $this->name; // Assure-toi que la propriété `name` existe dans ta classe Category
+        return $this->name; 
     }
 }

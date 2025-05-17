@@ -125,9 +125,6 @@ class ProductController extends AbstractController
         ]);
     }
 
-    /**
-     * Recherche de produits en AJAX
-     */
     #[Route('/search', name: 'search')]
     public function search(Request $request): JsonResponse
     {
@@ -139,15 +136,47 @@ class ProductController extends AbstractController
 
         $products = $this->productRepository->searchProducts($query, null, 1, 10);
 
-        $results = array_map(function ($product) {
+        $results = array_map(function (Product $product) {
+            $priceLabel = '';
+            if ($product->isWeightBased() && $product->getPriceByWeight()) {
+                $priceByWeight = $product->getPriceByWeight();
+
+                if (isset($priceByWeight[0]) && is_array($priceByWeight[0]) && isset($priceByWeight[0]['price'])) {
+
+                    $minPrice = null;
+                    foreach ($priceByWeight as $range) {
+                        if (!isset($range['price'])) continue;
+                        if ($minPrice === null || $range['price'] < $minPrice) {
+                            $minPrice = $range['price'];
+                        }
+                    }
+                    $priceLabel = $minPrice !== null
+                        ? 'À partir de ' . number_format($minPrice, 2, ',', ' ') . '€/g'
+                        : 'Prix variable';
+                }
+
+                else {
+                    $minPrice = null;
+                    foreach ($priceByWeight as $stepPrice) {
+                        if ($minPrice === null || $stepPrice < $minPrice) {
+                            $minPrice = $stepPrice;
+                        }
+                    }
+                    $priceLabel = $minPrice !== null
+                        ? 'À partir de ' . number_format($minPrice, 2, ',', ' ') . '€/g'
+                        : 'Prix variable';
+                }
+            } else {
+                $priceLabel = number_format($product->getPrice(), 2, ',', ' ') . '€';
+            }
+
             return [
-                'id' => $product->getId(),
-                'name' => $product->getName(),
-                'image' => $product->getImage() ?? '/images/default-product.jpg',
-                'price' => $product->getPrice(),
+                'id'    => $product->getId(),
+                'name'  => $product->getName(),
+                'image' => $product->getImage() ? '/uploads/products/' . $product->getImage() : '/images/default-product.jpg',
+                'price' => $priceLabel,
             ];
         }, $products);
-
 
         return new JsonResponse($results);
     }

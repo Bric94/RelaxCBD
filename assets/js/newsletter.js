@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     msgBox.style.minHeight = "1.2em";
     msgBox.style.fontWeight = "bold";
     msgBox.style.fontSize = "1rem";
-    msgBox.style.color = "#c33";
+    msgBox.style.color = "#bd2a2a";
+    msgBox.style.display = "none";
 
     // Place le message juste avant le bloc d'actions
     const actions = modal.querySelector('.newsletter-modal__actions');
@@ -28,7 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const state = JSON.parse(localStorage.getItem(KEY)) || {};
 
     const open = () => modal.classList.add('open');
-    const close = () => modal.classList.remove('open');
+    const close = () => {
+        modal.classList.remove('open');
+        msgBox.style.display = "none";
+    }
+
     const save = () => localStorage.setItem(KEY, JSON.stringify(state));
 
     const shouldShow = () => {
@@ -41,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (shouldShow()) {
         setTimeout(() => {
             if (userEmail) {
-                form.style.display = 'none';
                 emailDisp.textContent = `Votre e-mail : ${userEmail}`;
                 emailDisp.style.display = 'block';
             }
@@ -64,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         msgBox.textContent = "";
+        msgBox.style.display = "none";
         form.querySelector('[type="submit"]').disabled = true;
 
         fetch(form.action, {
@@ -77,20 +82,22 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(async res => {
                 form.querySelector('[type="submit"]').disabled = false;
                 const data = await res.json();
+                msgBox.style.display = "";
                 if (res.ok) {
-                    msgBox.style.color = "#2c8c46"; // vert
+                    msgBox.style.color = "#28a745"; // vert $success
                     msgBox.textContent = data.message || "Inscription réussie !";
                     state.subscribed = true;
                     save();
                     setTimeout(close, 1500);
                 } else {
-                    msgBox.style.color = "#c33";
+                    msgBox.style.color = "#bd2a2a"; // rouge $danger
                     msgBox.textContent = data.message || "Erreur.";
                 }
             })
             .catch(() => {
                 form.querySelector('[type="submit"]').disabled = false;
-                msgBox.style.color = "#c33";
+                msgBox.style.display = "";
+                msgBox.style.color = "#bd2a2a"; // rouge $danger
                 msgBox.textContent = "Erreur lors de l'inscription. Réessayez.";
             });
     });

@@ -1,6 +1,9 @@
 {# templates/product/show.html.twig #}
 {% extends 'base.html.twig' %}
 
+{% block body_class %}page-product-show
+{% endblock %}
+
 {% block title %}
 	{{ product.name }}
 	- Relax CBD Shop
@@ -18,10 +21,18 @@
 			{# — Infos — #}
 			<div class="product-detail__info">
 				<h1 class="product-detail__title">{{ product.name }}</h1>
+				{% set minPrice = null %}
+				{% for range in product.priceByWeight %}
+					{% if minPrice is null or range.price < minPrice %}
+						{% set minPrice = range.price %}
+					{% endif %}
+				{% endfor %}
+
 				<p class="product-detail__price">
-					{% if product.isWeightBased and selectedWeight %}
-						{{ product.calculateDiscountedPrice(selectedWeight)|number_format(2, ',', ' ') }}
-						€
+					{% if product.isWeightBased and product.priceByWeight is not empty %}
+						À partir de
+						{{ minPrice|number_format(2, ',', ' ') }}
+						€/g
 					{% else %}
 						{{ product.price|number_format(2, ',', ' ') }}
 						€
@@ -34,33 +45,43 @@
 
 				<form action="{{ path('cart_add', {id: product.id}) }}" method="post" class="product-detail__form js-add-to-cart">
 					{% if product.isWeightBased %}
-						<div class="form-group">
-							<label for="weight_{{ product.id }}">Poids</label>
-							<select id="weight_{{ product.id }}" name="selectedWeight" required>
-								{% for weight, price in product.priceByWeight %}
-									<option value="{{ weight }}">
-										{{ weight }}
-										g -
-										{{ price|number_format(2, ',', ' ') }}
-										€/g
-									</option>
-								{% endfor %}
-							</select>
+						<div class="form-group form-group--row">
+							<label for="weight_{{ product.id }}">Quantité en grammes (g)</label>
+							<div class="input-and-btn">
+								<div class="select-chevron">
+									<select id="weight_{{ product.id }}" name="selectedWeight" class="weight-select" required>
+										{% for range in product.priceByWeight %}
+											{% for g in range.min..range.max %}
+												<option value="{{ g }}">
+													{{ g }}
+													g -
+													{{ range.price|number_format(2, ',', ' ') }}
+													€/g
+												</option>
+											{% endfor %}
+										{% endfor %}
+									</select>
+								</div>
+								<button type="submit" class="btn-add-light">
+									Ajouter
+								</button>
+							</div>
 						</div>
 					{% else %}
-						<div class="form-group">
+						<div class="form-group form-group--row">
 							<label for="quantity_{{ product.id }}">Quantité</label>
-							<input id="quantity_{{ product.id }}" name="quantity" type="number" min="1" max="{{ product.stock }}" value="1">
+							<div class="input-and-btn">
+								<input id="quantity_{{ product.id }}" name="quantity" type="number" min="1" max="{{ product.stock }}" value="1">
+								<button type="submit" class="btn-add-light">
+									Ajouter
+								</button>
+							</div>
 						</div>
 					{% endif %}
-
 					<div class="product-detail__actions">
-						<a href="{{ path('product_index') }}" class="btn-secondary">
+						<a href="{{ path('product_index') }}" class="btn-return">
 							← Retour
 						</a>
-						<button type="submit" class="btn-secondary">
-							Ajouter
-						</button>
 					</div>
 				</form>
 			</div>
@@ -69,6 +90,7 @@
 		<div class="cart-popup" id="js-cart-popup">
 			<div class="cart-popup__backdrop"></div>
 			<div class="cart-popup__dialog">
+				<button type="button" class="cart-popup__close" aria-label="Fermer la popup">&times;</button>
 				<p id="js-cart-popup-message"></p>
 				<div class="cart-popup__actions">
 					<button class="btn-secondary" id="js-cart-popup-continue">Continuer mes achats</button>
@@ -76,6 +98,5 @@
 				</div>
 			</div>
 		</div>
-		
 	</section>
 {% endblock %}

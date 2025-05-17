@@ -26,7 +26,7 @@ class CartService
             $cart[$key] = 0;
         }
 
-        $cart[$key] += max(1, $quantity); 
+        $cart[$key] += max(1, $quantity);
 
         $this->session->set('cart', $cart);
     }
@@ -38,7 +38,7 @@ class CartService
         $key = $weight ? "{$productId}_{$weight}" : (string)$productId;
 
         if (isset($cart[$key])) {
-            unset($cart[$key]); // Supprime seulement l'entrée correspondante
+            unset($cart[$key]);
         }
 
         $this->session->set('cart', $cart);
@@ -63,13 +63,11 @@ class CartService
                 continue;
             }
 
-            $prices = $product->getPriceByWeight();
-            $selectedPrice = $prices[$weight] ?? $product->getPrice();
-
-            $pricePerGram = $prices[1] ?? $product->getPrice();
+            $selectedPrice = $weight ? $product->calculateDiscountedPrice((int)$weight) : $product->getPrice();
+            $pricePerGram = $product->calculateDiscountedPrice(1);
             $discount = 0;
 
-            if ($weight && isset($prices[$weight]) && $pricePerGram > 0) {
+            if ($weight && $product->isWeightBased() && $pricePerGram > 0) {
                 $discount = round((($pricePerGram - $selectedPrice) / $pricePerGram) * 100, 2);
             }
 

@@ -1,14 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
     const forms = document.querySelectorAll('.js-add-to-cart');
-
     if (!forms.length) return;
 
     const popup = document.getElementById('js-cart-popup');
     if (!popup) return;
 
+    const closeBtn = popup.querySelector('.cart-popup__close');
+    const backdrop = popup.querySelector('.cart-popup__backdrop');
+    
     const msgEl = document.getElementById('js-cart-popup-message');
     const btnView = document.getElementById('js-cart-popup-view');
     const btnCont = document.getElementById('js-cart-popup-continue');
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            popup.classList.remove('open');
+        });
+    }
+
+    if (backdrop) {
+        backdrop.addEventListener('click', () => {
+            popup.classList.remove('open');
+        });
+    }
 
     forms.forEach((form) => {
         form.addEventListener('submit', async (e) => {

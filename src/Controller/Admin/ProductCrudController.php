@@ -2,27 +2,23 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Category;
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProductCrudController extends AbstractCrudController
 {
-
     public function __construct(private SluggerInterface $slugger) {}
 
     public static function getEntityFqcn(): string
@@ -30,69 +26,87 @@ class ProductCrudController extends AbstractCrudController
         return Product::class;
     }
 
-
-
     public function configureFields(string $pageName): iterable
     {
         $fields = [
-            TextField::new('name', 'Nom du produit'),
-            MoneyField::new('price', 'Prix')->setStoredAsCents(false)->setCurrency('EUR'),
-            AssociationField::new('category', 'Catégorie')->setRequired(true),
-            TextareaField::new('description', 'Description'),
-            BooleanField::new('isWeightBased', "Basé sur le poids <br> (en grammes)"), // Ajout du switch pour activer/désactiver le mode poids
-            IntegerField::new('stock', 'Stock'),
-
-            // Champ pour l'upload
-            ImageField::new('image', 'Image')
-                ->setBasePath('/uploads/products') // Chemin pour afficher l'image
-                ->setUploadDir('public/uploads/products') // Chemin de stockage
-                ->setUploadedFileNamePattern('[randomhash].[extension]') // Nom de fichier unique
+            yield TextField::new('name', 'Nom du produit'),
+            yield MoneyField::new('price', 'Prix')
+                ->setStoredAsCents(false)
+                ->setCurrency('EUR'),
+            yield AssociationField::new('category', 'Catégorie')
+                ->setRequired(true),
+            yield TextareaField::new('description')
+                ->setFormType(CKEditorType::class),
+            yield BooleanField::new('isWeightBased', "Basé sur le poids"),
+            yield IntegerField::new('stock', 'Stock'),
+            yield ImageField::new('image', 'Image')
+                ->setBasePath('/uploads/products')
+                ->setUploadDir('public/uploads/products')
+                ->setUploadedFileNamePattern('[randomhash].[extension]')
                 ->setRequired(false),
         ];
 
-        // 🔥 Ajouter discountByWeight seulement si c'est un produit au poids
-        if ($pageName === 'edit' || $pageName === 'new') {
-            $fields[] = ArrayField::new('priceByWeight', 'Prix par poids (JSON)')
-                ->setHelp('Ex: {"1": 10, "5": 9, "10": 8}');
+        // Ajout du VirtualField pour l'affichage
+        if ($pageName === 'index') {
+            yield TextField::new('priceByWeightDisplay', 'Prix par poids');
         }
-
-
-        return $fields;
+        if ($pageName === 'detail') {
+            yield TextareaField::new('priceByWeightDisplay', 'Prix par poids');
+        }
+        if ($pageName === 'new' || $pageName === 'edit') {
+            yield \EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField::new('priceByWeight', 'Prix par poids')
+                ->setEntryType(\App\Form\PriceByWeightItemType::class)
+                ->allowAdd()
+                ->allowDelete()
+                ->setHelp('Ajoutez des plages (ex : 1-4g:10€/g, 5-9g:9€/g...)');
+        }
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        $product = $entityInstance;
-        
-        if ($entityInstance instanceof Product) {
-            $priceByWeight = $entityInstance->getPriceByWeight();
+        $this->processPriceByWeight($entityInstance);
+        $this->handleImageUpload($entityInstance);
+        parent::persistEntity($entityManager, $entityInstance);
+    }
 
-            // Assurer que les données sont bien encodées et propres
-            if (is_array($priceByWeight)) {
-                $entityInstance->setPriceByWeight(array_map('floatval', $priceByWeight));
-            }
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $this->processPriceByWeight($entityInstance);
+        $this->handleImageUpload($entityInstance);
+        parent::updateEntity($entityManager, $entityInstance);
+    }
 
-            // Si c'est une chaîne JSON stockée dans un tableau, corriger
-            if (is_array($priceByWeight) && isset($priceByWeight[0]) && is_string($priceByWeight[0])) {
-                $decoded = json_decode($priceByWeight[0], true);
-                if (json_last_error() === JSON_ERROR_NONE) {
-                    $entityInstance->setPriceByWeight(array_map('floatval', $decoded));
+    private function processPriceByWeight($product): void
+    {
+        if ($product instanceof Product) {
+            $priceData = $product->getPriceByWeight();
+            $cleanedData = [];
+
+            if (is_array($priceData)) {
+                foreach ($priceData as $range) {
+                    if (isset($range['min'], $range['max'], $range['price'])) {
+                        $cleanedData[] = [
+                            'min' => (int)$range['min'],
+                            'max' => (int)$range['max'],
+                            'price' => (float)$range['price']
+                        ];
+                    }
                 }
             }
-        }
 
-        // Gestion de l'upload d'image
+            $product->setPriceByWeight($cleanedData);
+        }
+    }
+
+    private function handleImageUpload(Product $product): void
+    {
         $imageFile = $this->getContext()->getRequest()->files->get('Product')['imageFile'] ?? null;
+
         if ($imageFile instanceof UploadedFile) {
             $newFilename = $this->uploadImage($imageFile);
             $product->setImage($newFilename);
         }
-
-
-        $entityManager->persist($product);
-        $entityManager->flush();
     }
-
 
     private function uploadImage(UploadedFile $file): string
     {

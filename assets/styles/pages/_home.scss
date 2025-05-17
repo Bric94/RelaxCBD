@@ -11,11 +11,13 @@
     color: $dark;
     padding: 2rem 0;
     margin-bottom: 2rem;
+    margin-top: 2rem;
     width: 100%;
 
     .banner-content {
         background: rgba($light , 0.6);
         padding: 2rem 4%;
+        margin-bottom: 2rem;
         border-radius: 0.5rem;
         text-align: center;
         width: 90%;
