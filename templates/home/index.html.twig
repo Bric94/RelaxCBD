@@ -69,12 +69,12 @@
 				{% endif %}
 			</div>
 
-			<div class="feature profile-feature">
+			<div class="feature">
 				<h3>Mon Compte</h3>
 				{% if app.user %}
 					<div class="profile-container">
 						<img src="{{ asset(profilePicture) }}" alt="Photo de profil" class="profile-image">
-						<p class="profile-name">Bienvenue,
+						<p class="profile-name">Bienvenue
 							<strong>{{ app.user.firstName }}</strong>
 							!</p>
 						<p class="profile-email">{{ app.user.email }}</p>
@@ -91,10 +91,10 @@
 	<div class="container shop-section">
 		<div class="map-container" id="map"></div>
 		<div class="shop-info">
-			<h3>Notre boutique à Golfe Juan</h3>
+			<h3>Relax CBD Shop vous accueil</h3>
 			<img src="{{ asset('images/shop/photo-shop.png') }}" alt="Boutique Relax CBD Shop" class="shop-photo">
-			<p>Adresse : Votre adresse ici, Golfe Juan</p>
-			<a href="https://www.google.com/maps/place/Votre+adresse" target="_blank" class="btn-primary">Voir sur Google Maps</a>
+			<p>5 avenue du Midi, Golfe-Juan 06220</p>
+			<a href="https://maps.app.goo.gl/yimMDdtT8deH2BRR8" target="_blank" class="btn-primary">Voir sur Google Maps</a>
 		</div>
 	</div>
 

@@ -1,6 +1,4 @@
-// map.js
 
-// Chargement dynamique optimisé de l'API Maps JavaScript
 (function loadGoogleMapsAPI() {
     const API_KEY = "AIzaSyAb4uYhJvp77lHUK5-u_oATgxXLZe_WOK4";
     const MAP_ID = "613b2c5b037d794c74796c29";
@@ -15,7 +13,6 @@
     document.head.appendChild(script);
 })();
 
-// Initialisation de la carte avec async/await (fonction globale)
 window.initMap = async function () {
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
@@ -42,12 +39,13 @@ window.initMap = async function () {
     });
 };
 
-// Création d'un marqueur personnalisé (icône cannabis)
 function createCustomMarker() {
     const img = document.createElement('img');
     img.src = '../images/icons/leaf-icon.png';
     img.style.width = '40px';
     img.style.height = '40px';
+    img.style.background = 'transparent';
+    img.style.border = 'none';
     img.alt = 'Relax CBD Shop';
     return img;
 }

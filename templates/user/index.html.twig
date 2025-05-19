@@ -5,16 +5,12 @@
 {% endblock %}
 
 {% block body %}
-	{# Liste des avatars par défaut #}
+
 	{% set defaultAvatars = [
     'Avatar1.webp', 'Avatar2.webp', 'Avatar3.webp', 'Avatar4.webp', 'Avatar5.webp',
     'Avatar6.webp', 'Avatar7.webp', 'Avatar8.webp', 'Avatar9.webp', 'Avatar10.webp'
   ] %}
 
-	{# 
-		    Si l’utilisateur a uploadé une photo (et qu’elle n’est pas dans la liste par défaut),
-		    on l’affiche. Sinon on mélange la liste et on prend le premier élément. 
-		  #}
 	{% if user.profilePicture and user.profilePicture not in defaultAvatars %}
 		{% set src = 'images/profiles/' ~ user.profilePicture %}
 	{% else %}

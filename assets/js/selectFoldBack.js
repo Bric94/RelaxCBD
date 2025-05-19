@@ -11,4 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
         select.addEventListener('focus', () => { opened = true; });
         select.addEventListener('blur', () => { opened = false; });
     });
+
+    document.addEventListener('scroll', function () {
+        // On vérifie si un .weight-select est focus, et on blur si besoin
+        const active = document.activeElement;
+        if (active && active.classList && active.classList.contains('weight-select')) {
+            active.blur();
+        }
+    }, true);
 });

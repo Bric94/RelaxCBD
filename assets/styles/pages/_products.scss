@@ -12,14 +12,12 @@
         margin: 1rem auto 2rem;
         box-shadow: 0 4px 10px rgba($dark, 0.08);
 
-        // version segmentée
         .filter-bar {
             display: flex;
             align-items: stretch;
             margin: 0;
-            gap: 0; // pas d'écart, on joue sur les bordures
+            gap: 0;
 
-            // Champ de recherche
             .search-input {
                 flex: 3;
                 padding: 0.75rem 1rem;
@@ -40,7 +38,6 @@
                 }
             }
 
-            // Sélecteurs
             .filter-select {
                 flex: 1;
                 padding: 0.75rem 1rem;
@@ -50,16 +47,14 @@
                 background: $light;
                 color: $dark;
                 font-size: large;
-                appearance: none; // on enlève la flèche native
+                appearance: none;
 
-                // **>> ajout de la flèche custom <<**
                 background: url('../../images/ui/chevron-down.svg') no-repeat right 1rem center;
                 background-size: 1em auto;
                 padding-right: 2rem;
 
                 &.open::after,
                 &:focus::after {
-                    /* en “open” ou au focus on le remet à l’orientation d’origine (bas) */
                     transform: translateY(-50%) rotate(0deg);
                 }
 
@@ -72,8 +67,60 @@
 
     }
 
+    .select-chevron {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        max-width: 10rem;
+        min-width: 120px;
 
-    // Grille des produits
+        .filter-select,
+        .weight-select {
+            width: 100%;
+            padding: 0.7em 1em;
+            font-size: 1.06em;
+            border: 1.5px solid $primary;
+            color: $dark;
+            appearance: none;
+            cursor: pointer;
+            background: $light;
+            padding-right: 2.4em;
+            transition: border-color 0.18s, box-shadow 0.18s;
+            z-index: 1;
+
+            &:focus {
+                border-color: color.adjust($primary, $lightness: -10%);
+                box-shadow: 0 0 6px $primary;
+                outline: none;
+            }
+
+            &:hover {
+                background: rgba($primary, 0.1);
+            }
+        }
+
+        &::after {
+            content: '';
+            pointer-events: none;
+            display: block;
+            position: absolute;
+            right: 1em;
+            top: 50%;
+            width: 1em;
+            height: 1em;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%232e7d32" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat center center / contain;
+            transform: translateY(-50%) rotate(-90deg);
+            transition: transform 0.22s cubic-bezier(0.4, 0.2, 0.3, 1);
+            z-index: 2;
+        }
+
+        &:focus-within::after {
+            transform: translateY(-50%) rotate(0deg);
+        }
+    }
+
+
     .product-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -93,7 +140,6 @@
             justify-content: center;
             align-items: center;
             min-height: 200px;
-            border-radius: 5px;
         }
     }
 
@@ -106,7 +152,6 @@
         align-items: center;
         text-align: center;
         box-shadow: 10px 4px 10px rgba($gray, 0.3);
-        border-radius: 5px;
         transition: transform 0.3s;
 
         &:hover {
@@ -117,7 +162,6 @@
     .product-image img {
         width: 100%;
         height: 200px;
-        border-radius: 2px;
         object-fit: cover;
         border-bottom: 2px solid $primary;
         box-shadow: 10px 4px 10px rgba($dark, 0.3);
@@ -150,29 +194,24 @@
 
     @media (max-width: 1250px) {
         .filter-container {
-            border-radius: 5px;
-
+            border-radius: 0;
             .filter-bar {
                 display: grid;
-                grid-template-columns: repeat(2, 1fr); // 2 colonnes égales
+                grid-template-columns: repeat(2, 1fr); 
                 row-gap: 0.75rem;
                 column-gap: 0.75rem;
             }
 
-            // 1) La barre de recherche occupe la ligne entière (2 colonnes)
             .search-input {
                 grid-column: 1 / -1;
                 width: 100%;
                 border: 2px solid $primary !important;
-                border-radius: 5px !important;
+                border-radius: 0 !important;
             }
 
-            // 2) Les deux .filter-select tomberont automatiquement
-            //    l’un en colonne 1, l’autre en colonne 2
             .filter-select {
                 width: 100%;
                 border: 2px solid $primary !important;
-                border-radius: 5px !important;
             }
         }
     }

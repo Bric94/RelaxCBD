@@ -2,15 +2,11 @@
 @use "../abstracts/colors" as *;
 
 .table-container {
+    max-width: 70rem;
     margin: 3rem auto;
-    background: rgba($light, 0.8);
-    padding: 2rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 10px rgba($dark, 0.1);
-
-    .text-center {
-        margin-top: 1rem;
-    }
+    background: rgba($light, $alpha: 0.6);
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba($black, 0.1);
 }
 
 .orders-table-wrapper {
@@ -40,8 +36,7 @@
         }
     }
 
-    tbody
-    tr {
+    tbody tr {
         transition: background 0.2s;
 
         &:hover {
@@ -53,13 +48,13 @@
             text-decoration: none;
             border-bottom: 2px solid transparent;
             transition: color 0.2s, border-color 0.2s;
-      
+
             &:hover,
             &:focus {
-              color: $primary;
-              border-bottom-color: $primary;
-              outline: none;
+                color: $primary;
+                border-bottom-color: $primary;
+                outline: none;
             }
-          }
+        }
     }
 }

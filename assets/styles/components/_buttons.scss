@@ -6,7 +6,7 @@
     color: $white;
     border: none;
     padding: 0.75rem 1.5rem;
-    border-radius: 0.25rem;
+    // border-radius: 0.25rem;
     font-weight: 600;
     text-decoration: none;
     transition: background 0.2s;
@@ -24,7 +24,7 @@
     background: linear-gradient(135deg, color.adjust($primary, $lightness: -10%), $primary);
     color: $white;
     font-weight: bold;
-    border-radius: 5px;
+    // border-radius: 5px;
     text-decoration: none;
     border: none;
     transition: transform 0.2s, box-shadow 0.2s;
@@ -45,7 +45,7 @@
     color: $white;
     padding: 12px;
     border: none;
-    border-radius: 5px;
+    // border-radius: 5px;
     cursor: pointer;
     margin-top: 20px;
     transition: 0.3s;
@@ -55,18 +55,18 @@
     }
 }
 
-.btn-add {
+/* .btn-add {
     @extend .btn-secondary;
     flex: 3;
     text-align: center;
-}
+} */
 
 .btn-add-light {
     flex: 1 1 110px;
     background: $primary;
     color: $white;
     border: none;
-    border-radius: 0.3em;
+    // border-radius: 0.3em;
     padding: 0.65em 1.2em;
     margin-left: 0.5em;
     align-self: stretch;
@@ -88,14 +88,14 @@
 }
 
 
-.btn-info {
-    flex: 1; // 1 part sur 4
+/* .btn-info {
+    flex: 1; 
     display: flex;
     align-items: center;
     justify-content: center;
     background: transparent;
     border: 2px solid $primary;
-    border-radius: 0.25rem;
+    // border-radius: 0.25rem;
     padding: 0.5rem;
     color: $primary;
     transition: background 0.2s, color 0.2s, border-color 0.2s;
@@ -112,7 +112,7 @@
         color: $white;
         border-color: color.adjust($primary, $lightness: -40%);
     }
-}
+} */
 
 .btn-small-filter {
     flex: none;
@@ -120,7 +120,7 @@
     background: $primary;
     color: $white;
     border: 2px solid $primary;
-    border-radius: 0 5px 5px 0;
+    // border-radius: 0 5px 5px 0;
     border-left: none;
     font-weight: bold;
     font-size: large;
@@ -140,35 +140,37 @@
     border: 1.5px solid $primary;
     color: $primary;
     font-weight: 600;
-    border-radius: 8px;
+    // border-radius: 8px;
     padding: 0.45em 1.2em;
     font-size: 1.07em;
     box-shadow: none;
     cursor: pointer;
     text-decoration: none;
     transition:
-        background 0.18s,
-        color 0.18s,
-        border-color 0.18s,
+        background 0.2s,
+        color 0.2s,
+        border-color 0.2s,
         box-shadow 0.2s;
-
-    &:hover,
-    &:focus {
-        background: rgba($primary, 0.06);
-        color: $dark;
-        border-color: color.adjust($primary, $lightness: -10%);
-        text-decoration: underline;
-        box-shadow: 0 2px 8px rgba($primary, 0.08);
-    }
 
     svg,
     .icon {
+        transition: transform 0.18s cubic-bezier(0.5, 0.2, 0.2, 1), color 0.2s;
         font-size: 1.1em;
         margin-right: 0.5em;
         display: inline-block;
         vertical-align: middle;
     }
+
+    &:hover svg,
+    &:focus svg,
+    &:hover .icon,
+    &:focus .icon {
+        transform: scale(1.2);
+        color: $error;
+        text-decoration: underline;
+    }
 }
+
 
 
 .btn-empty-center {
@@ -178,7 +180,7 @@
     justify-content: center;
     background: rgba($secondary, $alpha: 0.1);
     border: solid $error 1px;
-    border-radius: 5px;
+    // border-radius: 5px;
     color: $danger;
     font-weight: 600;
     text-decoration: none;
@@ -194,16 +196,100 @@
 
 .bottom-buttons {
     display: flex;
-    /* justify-content: space-between; */
     gap: 1rem;
     margin: 1rem 2rem;
+    justify-content: space-around;
+    align-items: center;
 }
+
+.actions {
+    display: flex;
+    gap: 0.25rem;
+    width: 100%;
+    max-width: 10rem;
+
+    .btn-add {
+        @extend .btn-secondary;
+        flex: 3 1 0%;
+        min-width: 0;
+        max-width: 75%;
+        text-align: center;
+    }
+
+    .btn-info {
+        flex: 1 1 0%;
+        min-width: 0;
+        max-width: 25%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        padding: 0.5rem 0.7rem;
+        margin-left: auto;
+        position: relative;
+
+        svg {
+            width: 2rem;
+            height: 2rem;
+            color: $primary;
+            display: block;
+            transition: color 0.2s;
+
+            &:hover,
+            &:focus {
+                color: $error;
+                text-decoration: underline;
+            }
+        }
+
+        .tooltip-info {
+            display: block;
+            position: absolute;
+            left: 50%;
+            top: 110%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            background: $light;
+            color: $dark;
+            padding: 0.4em 1em;
+            // border-radius: 6px;
+            box-shadow: 0 2px 8px rgba($dark, 0.15);
+            font-size: 0.95em;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.18s, transform 0.18s;
+            z-index: 10;
+            margin-top: 0.35em;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -7px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-left: 7px solid transparent;
+                border-right: 7px solid transparent;
+                border-bottom: 7px solid $dark;
+                width: 0;
+                height: 0;
+            }
+        }
+
+        &:hover .tooltip-info,
+        &:focus .tooltip-info,
+        svg:focus+.tooltip-info {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(2px) scale(1.03);
+        }
+    }
+}
+
 
 @media (max-width: 1250px) {
     .btn-small-filter {
         grid-column: 1 / -1;
         width: 100%;
-        border-radius: 5px;
-        margin-top: 0; // l’espacement vient du row-gap du grid
+        // border-radius: 5px;
+        margin-top: 0;
     }
 }

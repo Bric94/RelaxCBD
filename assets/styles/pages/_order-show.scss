@@ -7,7 +7,7 @@
         margin: 3rem auto;
         background: $white;
         padding: 2rem;
-        border-radius: 0.5rem;
+        // border-radius: 0.5rem;
         box-shadow: 0 4px 10px rgba($dark, 0.1);
 
         .section-title {
@@ -76,7 +76,7 @@
                 background: linear-gradient(135deg, color.adjust($primary, $lightness: -10%), $primary);
                 color: $white;
                 font-weight: bold;
-                border-radius: 5px;
+                // border-radius: 5px;
                 text-decoration: none;
                 border: none;
                 transition: transform 0.2s, box-shadow 0.2s;

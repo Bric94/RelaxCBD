@@ -3,20 +3,11 @@
 /////////////// 800px 
 /// 
 /////////////////////
-@media screen and (max-height: 800px) {
-    .feature {
-        margin: 10px 0;
-        padding: 10px;
-    }
+@media screen and (max-height: 1000px) {
 
     .carousel-container {
         max-height: 60vh;
         overflow-y: auto;
-    }
-
-    .banner {
-        min-height: 50vh;
-        padding: 50vh 10vw;
     }
 
     .banner-content {
