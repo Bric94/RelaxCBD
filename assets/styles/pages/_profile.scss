@@ -41,10 +41,12 @@
 }
 
 .profile-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border: 2px solid $primary;
+    display: block;
+    width: 100%; 
+    max-width: 150px; 
+    aspect-ratio: 1 / 1; 
+    object-fit: cover; 
+    border: 2px solid $secondary;
 }
 
 .profile-section {

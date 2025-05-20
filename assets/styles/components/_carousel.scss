@@ -1,27 +1,25 @@
 @use "sass:color";
 @use "../abstracts/colors" as *;
 
-// Comportement par défaut : grille
 .carousel-container {
-    @media screen and (min-width: 769px) {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
 
-        .carousel-wrapper {
-            display: contents;
-        }
-
-        .carousel-item {
-            flex: unset;
-            margin: 0;
-        }
-
-        .prev,
-        .next {
-            display: none;
-        }
+    .carousel-wrapper {
+        display: contents;
     }
+
+    .carousel-item {
+        flex: unset;
+        margin: 0;
+    }
+
+    .prev,
+    .next {
+        display: none;
+    }
+
 
     @media screen and (max-width: 768px) {
         display: block;
