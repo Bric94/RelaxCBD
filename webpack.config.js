@@ -44,6 +44,11 @@ Encore
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
+    .copyFiles({
+      from: './assets/images',
+      to: 'images/[path][name]-[hash:8].[ext]'
+    })
+
     .configureBabel((config) => {
         config.plugins.push('@babel/plugin-transform-class-properties');
     })

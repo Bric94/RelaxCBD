@@ -56,11 +56,11 @@ function openMapsApp(shopPosition) {
     let url;
 
     if (/iphone|ipad|ipod/.test(ua)) {
-        url = `http://maps.apple.com/?q=${shopPosition.lat},${shopPosition.lng}`;
+        url = `https://maps.app.goo.gl/yimMDdtT8deH2BRR8`;
     } else if (/android/.test(ua)) {
-        url = `geo:${shopPosition.lat},${shopPosition.lng}?q=${shopPosition.lat},${shopPosition.lng}`;
+        url = `https://maps.app.goo.gl/yimMDdtT8deH2BRR8`;
     } else {
-        url = `https://www.google.com/maps?q=${shopPosition.lat},${shopPosition.lng}`;
+        url = `https://maps.app.goo.gl/yimMDdtT8deH2BRR8`;
     }
 
     window.open(url, '_blank');

@@ -21,7 +21,8 @@
 					<div class="carousel-container product-slider-container">
 						<button class="prev">‹</button>
 						<div class="carousel-wrapper">
-							{% for product in randomProducts %}
+							{% set maxProducts = 5 %}
+							{% for product in randomProducts|slice(0, maxProducts) %}
 								<div class="carousel-item">
 									<img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}" class="carousel-img">
 									<h4>{{ product.name }}</h4>
@@ -92,7 +93,7 @@
 		<div class="map-container" id="map"></div>
 		<div class="shop-info">
 			<h3>Relax CBD Shop vous accueil</h3>
-			<img src="{{ asset('images/shop/photo-shop.png') }}" alt="Boutique Relax CBD Shop" class="shop-photo">
+			<img src="{{ asset('/images/shop/photo-shop.png') }}" alt="Boutique Relax CBD Shop" class="shop-photo">
 			<p>5 avenue du Midi, Golfe-Juan 06220</p>
 			<a href="https://maps.app.goo.gl/yimMDdtT8deH2BRR8" target="_blank" class="btn-primary">Voir sur Google Maps</a>
 		</div>

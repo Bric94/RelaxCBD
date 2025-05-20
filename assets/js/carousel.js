@@ -1,4 +1,3 @@
-/*** 🖼️ CARROUSELS PRODUITS ET PANIER ***/
 function isMobile() {
     return window.innerWidth <= 768;
 }
