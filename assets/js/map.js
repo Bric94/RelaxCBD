@@ -42,8 +42,8 @@ window.initMap = async function () {
 function createCustomMarker() {
     const img = document.createElement('img');
     img.src = '../images/icons/leaf-icon.png';
-    img.style.width = '40px';
-    img.style.height = '40px';
+    img.style.width = '60px';
+    img.style.height = '60px';
     img.style.background = 'transparent';
     img.style.border = 'none';
     img.alt = 'Relax CBD Shop';

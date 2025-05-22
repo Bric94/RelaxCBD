@@ -39,7 +39,7 @@
   .nav-links {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
     margin-left: auto;
     list-style: none;
     padding: 0;
@@ -58,7 +58,7 @@
       padding: 0.75rem 0;
       color: $dark;
       font-size: large;
-      font-weight: normal;
+      font-weight: bold;
       text-decoration: none;
       background: none;
       border: none;

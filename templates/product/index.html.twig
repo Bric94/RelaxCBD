@@ -39,20 +39,27 @@
 			{% for product in products %}
 				<div class="product-card">
 					<div class="product-image">
-						<img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}">
+						<a href="{{ path('product_show', { id: product.id }) }}">
+							<img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}" class="carousel-img">
+						</a>
 					</div>
 
 					<div class="product-details">
-						<h2 class="product-title">{{ product.name }}</h2>
+						<h2 class="product-title">
+							<a href="{{ path('product_show', { id: product.id }) }}">
+								{{ product.name }}
+							</a>
+						</h2>
 						<p class="product-price">
 							{% if product.isWeightBased and product.priceByWeight is not empty %}
-								À partir de<br>
-								{% set firstWeight = product.priceByWeight|keys|last %}
-								{{ product.calculateDiscountedPrice(firstWeight)|number_format(2, ',', ' ') }}
-								€/g
+								À partir de
+								<span>{% set firstWeight = product.priceByWeight|keys|last %}
+									{{ product.calculateDiscountedPrice(firstWeight)|number_format(2, ',', ' ') }}
+									€/g</span>
 							{% else %}
-								{{ product.price|number_format(2, ',', ' ') }}
-								€
+								L'unité à
+								<span>{{ product.price|number_format(2, ',', ' ') }}
+									€</span>
 							{% endif %}
 						</p>
 
@@ -62,23 +69,29 @@
 									<div class="select-chevron">
 										<select name="selectedWeight" id="selectedWeight_{{ product.id }}" class="weight-select" required>
 											{% for range in product.priceByWeight %}
-												{% for g in range.min..range.max %}
-													<option value="{{ g }}">
-														{{ g }}
-														g -
-														{{ range.price|number_format(2, ',', ' ') }}
-														€/g
-													</option>
-												{% endfor %}
+												<optgroup label="{{ range.price|number_format(2, ',', ' ') }} €/g">
+													{% for g in range.min..range.max %}
+														<option value="{{ g }}">
+															{{ g }}
+															g -
+															{{ range.price|number_format(2, ',', ' ') }}
+															€/g
+														</option>
+													{% endfor %}
+												</optgroup>
 											{% endfor %}
 										</select>
 									</div>
 								{% else %}
-									<input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" class="quantity-input">
+									<div class="quantity-wrapper">
+										<button type="button" class="quantity-btn decrement">−</button>
+										<input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" class="quantity-input">
+										<button type="button" class="quantity-btn increment">+</button>
+									</div>
 								{% endif %}
 
 								<div class="actions">
-									<button type="submit" class="btn-add">Ajouter au panier</button>
+									<button type="submit" class="btn-add">Ajouter</button>
 									<a href="{{ path('product_show', { id: product.id }) }}" class="btn-info" aria-label="Plus d'informations">
 										<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewbox="0 0 24 24" fill="none">
 											<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>

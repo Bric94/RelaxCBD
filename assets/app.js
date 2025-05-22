@@ -10,6 +10,7 @@ import './js/newsletter.js';
 import './js/parallaxe.js';
 import './js/searchProduct.js';
 import './js/selectFoldBack.js';
+import './js/setInputRange.js';
 
 import { initNavOverflow } from './js/navOverflow.js';
 console.log("JavaScript chargé");

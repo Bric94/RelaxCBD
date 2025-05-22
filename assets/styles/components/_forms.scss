@@ -13,18 +13,3 @@
 .product-form label {
     font-weight: bold;
 }
-
-/* .product-form select, */
-.product-form input[type="number"] {
-    padding: 0.5rem;
-    width: 100%;
-    border: 1px solid color.adjust($primary, $lightness: 20%);
-    // border-radius: 0.25rem;
-    background: $white;
-    transition: border-color 0.2s;
-
-    &:focus {
-        outline: none;
-        border-color: $primary;
-    }
-}

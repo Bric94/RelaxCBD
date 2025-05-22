@@ -51,14 +51,16 @@
 								<div class="select-chevron">
 									<select id="weight_{{ product.id }}" name="selectedWeight" class="weight-select" required>
 										{% for range in product.priceByWeight %}
-											{% for g in range.min..range.max %}
-												<option value="{{ g }}">
-													{{ g }}
-													g -
-													{{ range.price|number_format(2, ',', ' ') }}
-													€/g
-												</option>
-											{% endfor %}
+											<optgroup label="{{ range.price|number_format(2, ',', ' ') }} €/g">
+												{% for g in range.min..range.max %}
+													<option value="{{ g }}">
+														{{ g }}
+														g -
+														{{ range.price|number_format(2, ',', ' ') }}
+														€/g
+													</option>
+												{% endfor %}
+											</optgroup>
 										{% endfor %}
 									</select>
 								</div>
@@ -83,7 +85,6 @@
 							<span class="icon">←</span>
 							Retour
 						</a>
-
 					</div>
 				</form>
 			</div>

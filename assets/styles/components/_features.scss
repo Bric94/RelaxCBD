@@ -11,9 +11,9 @@
     }
 
     .feature {
-        background-color: rgba($light, $alpha: 0.6);
+        background-color: rgba($light, 0.6);
         padding: 25px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 6px 12px rgba($black , 0.1);
         text-align: center;
         flex: 1 1 300px;
         margin: 10px;
@@ -25,9 +25,12 @@
         }
 
         h3 {
-            margin-top: 10px;
+            margin-bottom: 2rem;
             color: $dark;
             font-size: 1.4rem;
+            padding: 1rem 0 1rem 0;
+            border-bottom: 3px solid $dark;
+            border-top: 1px solid $dark;
         }
     }
 }
