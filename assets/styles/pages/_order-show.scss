@@ -1,82 +1,122 @@
+// assets/styles/order-show.scss
+
 @use "sass:color";
 @use "../abstracts/colors" as *;
 
 .page-order-show {
-    .order-container {
+
+    // On réutilise la même classe que pour le panier (.table-container)
+    .table-container {
         max-width: 70rem;
         margin: 3rem auto;
-        background: $white;
+        background: rgba($light, 0.6);
         padding: 2rem;
-        box-shadow: 0 4px 10px rgba($dark, 0.1);
+        box-shadow: 0 4px 10px rgba($black, 0.1);
+    }
 
-        .section-title {
-            margin-bottom: 1.5rem;
+    // Titre et date
+    .section-title {
+        text-align: center;
+        font-size: 2rem;
+        color: $primary;
+        margin-bottom: 1rem;
+    }
+
+    .order-date {
+        text-align: center;
+        font-size: 0.9rem;
+        color: $dark;
+        margin-bottom: 2rem;
+    }
+
+    // Tableau de la commande
+    .orders-table-wrapper {
+        overflow-x: auto;
+        margin-bottom: 1.5rem;
+    }
+
+    .orders-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba($dark, 0.2);
+            text-align: left;
         }
 
-        .order-header {
-            margin-bottom: 2rem;
-            font-size: 1rem;
+        thead th {
+            background: rgba($light, 0.9);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: rgba($primary, 0.05);
+        }
+    }
+
+    .strikethrough {
+        text-decoration: line-through;
+        color: $error;
+    }
+
+    // Résumé du total
+    .cart-summary {
+        text-align: right;
+        margin: 1.5rem 0;
+        font-weight: 600;
+
+        h3 {
+            margin: 0;
+            font-size: 1.5rem;
 
             strong {
                 color: $primary;
             }
         }
+    }
 
-        .orders-table-wrapper {
-            overflow-x: auto;
-            margin-bottom: 1.5rem;
-        }
+    // Boutons « Retour » / « Continuer »
+    .cart-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
 
-        .orders-table {
-            width: 100%;
-            border-collapse: collapse;
-
-            th,
-            td {
-                padding: 0.75rem 1rem;
-                border-bottom: 1px solid rgba($dark, 0.2);
-                text-align: left;
-            }
-
-            thead th {
-                background: rgba($light, 0.9);
-                font-weight: 600;
-                text-transform: uppercase;
-                font-size: 0.9rem;
-            }
-
-            tbody tr:last-child td {
-                border-bottom: none;
-            }
-        }
-
-        .order-summary {
-            text-align: right;
-            margin-top: 1.5rem;
-
-            h3 {
-                margin: 0;
-                font-size: 1.25rem;
-
-                strong {
-                    color: $primary;
-                }
-            }
-        }
-
-        .order-actions {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 2rem;
+        .btn-return,
+        .btn-secondary {
+            margin-top: 0; // on gère déjà via buttons.scss
         }
     }
 
+    // Wrapper bouton facture, en-dehors du container
+    .invoice-download-wrapper {
+        max-width: 70rem;
+        margin: 3rem auto 1rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+
     @media (max-width: 576px) {
-        .order-container {
+        .order-details-container {
             padding: 1rem;
 
             .order-actions {
-                justify-content: center;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                a {
+                    width: 100%;
+                }
             }
         }
     }

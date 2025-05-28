@@ -36,7 +36,8 @@
         "symfony/messenger": "^7.2",
         "symfony/notifier": "^7.2",
         "symfony/twig-pack": "^1.0",
-        "friendsofsymfony/ckeditor-bundle": "^2.6"
+        "friendsofsymfony/ckeditor-bundle": "^2.6",
+        "dompdf/dompdf": "^3.1"
     },
     "config": {
         "allow-plugins": {

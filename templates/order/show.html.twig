@@ -1,3 +1,4 @@
+{# templates/order/show.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Détails de la commande #{{ order.orderNumber }}
@@ -7,49 +8,124 @@
 {% endblock %}
 
 {% block body %}
-	<section class="order-details-container">
-		<h1 class="section-title">Commande #{{ order.orderNumber }}</h1>
-		<p class="order-date">Passée le
+	<div class="container table-container">
+		<h1 class="section-title text-center">Commande #{{ order.orderNumber }}</h1>
+		<p class="order-date text-center">Passée le
 			{{ order.createdAt|date('d/m/Y H:i') }}</p>
-		<div class="order-items-wrapper">
-			<table class="order-items-table">
-				<thead>
-					<tr>
-						<th>Produit</th>
-						<th>Quantité</th>
-						<th>Prix unitaire</th>
-						<th>Total</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for item in order.orderItems %}
+
+		{% if order.orderItems|length > 0 %}
+			<div class="orders-table-wrapper">
+				<table class="orders-table">
+					<thead>
 						<tr>
-							<td>{{ item.product.name }}</td>
-							<td>{{ item.quantity }}</td>
-							<td>
-								{{ item.price|number_format(2, ',', ' ') }}
-								€
-								{% if item.product.isWeightBased %}
-									/g
-								{% endif %}
-							</td>
-							<td>{{ (item.price * item.quantity)|number_format(2, ',', ' ') }}
-								€</td>
+							<th>Produit</th>
+							<th>Quantité</th>
+							<th>Prix unitaire</th>
+							<th>Réduction</th>
+							<th>Sous-total</th>
 						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
+					</thead>
+					<tbody>
+						{% for item in order.orderItems %}
+							{% if item.product.isWeightBased %}
+								{% set qty            = item.quantity %}
+								{% set unitPrice      = item.product.getPriceForWeight(qty) ?? item.product.getPrice() %}
+								{% set baseUnitPrice  = item.product.getPriceForWeight(1) %}
+								{% set baseTotal      = baseUnitPrice * qty %}
+								{% set finalTotal     = unitPrice * qty %}
+								{% set discountAmount = (baseTotal - finalTotal)|round(2) %}
+							{% endif %}
 
-		<div class="order-summary">
-			<span class="summary-label">Total :</span>
-			<span class="summary-value">{{ order.totalPrice|number_format(2, ',', ' ') }}
-				€</span>
-		</div>
+							<tr>
+								<td>{{ item.product.name }}</td>
+								<td>
+									{{ item.quantity }}
+									{% if item.product.isWeightBased %}
+										g
+									{% endif %}
+								</td>
+								<td>
+									{% if item.product.isWeightBased %}
+										{% if unitPrice < baseUnitPrice %}
+											<span class="strikethrough">
+												{{ baseUnitPrice|number_format(2, ',', ' ') }}
+												€/g
+											</span>
+										{% endif %}
+										<span>{{ unitPrice|number_format(2, ',', ' ') }}
+											€/g</span>
+									{% else %}
+										{{ item.price|number_format(2, ',', ' ') }}
+										€
+									{% endif %}
+								</td>
+								<td>
+									{% if item.product.isWeightBased and discountAmount > 0 %}
+										-{{ discountAmount|number_format(2, ',', ' ') }}
+										€
+									{% else %}
+										&ndash;
+									{% endif %}
+								</td>
+								<td>
+									<strong>
+										{% if item.product.isWeightBased %}
+											{{ finalTotal|number_format(2, ',', ' ') }}
+											€
+										{% else %}
+											{{ (item.price * item.quantity)|number_format(2, ',', ' ') }}
+											€
+										{% endif %}
+									</strong>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 
-		<div class="order-actions">
-			<a href="{{ path('order_index') }}" class="btn-secondary">← Retour aux commandes</a>
-			<a href="{{ path('product_index') }}" class="btn-primary">Continuer mes achats</a>
-		</div>
-	</section>
+			{% set total = 0 %}
+			{% for item in order.orderItems %}
+				{% if item.product.isWeightBased %}
+					{% set unitPrice = item.product.getPriceForWeight(item.quantity) ?? item.product.getPrice() %}
+					{% set lineTotal = unitPrice * item.quantity %}
+				{% else %}
+					{% set lineTotal = item.price * item.quantity %}
+				{% endif %}
+				{% set total = total + lineTotal %}
+			{% endfor %}
+
+			<div class="cart-summary">
+				<h3 class="text-right">
+					Total :
+					<strong>{{ total|number_format(2, ',', ' ') }}
+						€</strong>
+				</h3>
+			</div>
+
+			<div class="cart-buttons">
+				<a href="{{ path('order_index') }}" class="btn-return">
+					<span class="icon">⮐</span>
+					Retour aux commandes
+				</a>
+				<a href="{{ path('product_index') }}" class="btn-secondary">Voir d'autres produits</a>
+			</div>
+		{% else %}
+			<p class="empty-cart text-center">Cette commande ne contient aucun article.</p>
+			<div class="cart-buttons text-center">
+				<a href="{{ path('product_index') }}" class="btn-primary">Découvrir nos produits</a>
+			</div>
+		{% endif %}
+	</div>
+	<div class="invoice-download-wrapper">
+		<a href="{{ path('order_invoice', { id: order.id }) }}" class="btn-download">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewbox="0 0 24 24">
+				<path d="M12 4v12"/>
+				<path d="M8 12l4 4 4-4"/>
+				<path d="M5 20h14"/>
+			</svg>
+			Télécharger la facture
+		</a>
+	</div>
+
 {% endblock %}

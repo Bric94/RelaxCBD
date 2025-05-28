@@ -2,8 +2,6 @@
 @use "../abstracts/colors" as *;
 
 .page-cart {
-
-    // ********** Conteneur principal **********
     .cart-container,
     .table-container {
         max-width: 70rem;
@@ -13,7 +11,6 @@
         box-shadow: 0 4px 10px rgba($black, 0.1);
     }
 
-    // ********** Titre de la page **********
     .cart-title,
     .section-title {
         text-align: center;
@@ -22,7 +19,6 @@
         margin-bottom: 1.5rem;
     }
 
-    // ********** Panier vide **********
     .empty-cart {
         text-align: center;
         font-size: 1.25rem;
@@ -30,14 +26,12 @@
         margin-bottom: 2rem;
     }
 
-    // ********** Wrapper scrollable de la table **********
     .orders-table-wrapper,
     .orders-table-wrapper {
         overflow-x: auto;
         margin-bottom: 1.5rem;
     }
 
-    // ********** Table des articles **********
     .orders-table,
     .orders-table {
         width: 100%;
@@ -64,7 +58,6 @@
         .btn-delete {
             background: none;
             border: none;
-            // border-radius: 5px;
             color: $danger;
             font-weight: 600;
             text-decoration: none;
@@ -78,8 +71,6 @@
         }
     }
 
-
-    // ********** Résumé du total **********
     .cart-summary {
         text-align: right;
         margin-top: 1rem;
@@ -102,7 +93,6 @@
         padding: .25rem .5rem;
         background: $primary;
         color: $white;
-        // border-radius: .25rem;
         text-decoration: none;
         font-weight: 600;
         transition: background .2s;
@@ -134,7 +124,6 @@
             color: $white;
             border: none;
             padding: 0.75rem 1.5rem;
-            // border-radius: 0.25rem;
             font-weight: 600;
             transition: background 0.2s;
 
@@ -147,7 +136,6 @@
         .btn-empty {
             background: none;
             border: solid $danger 1px;
-            // border-radius: 5px;
             color: $danger;
             font-weight: 600;
             padding: 0.75rem 1.5rem;
@@ -165,7 +153,6 @@
             background: $primary;
             color: $white;
             padding: 0.75rem 1.5rem;
-            // border-radius: 0.25rem;
             text-decoration: none;
             text-align: center;
             font-size: 1rem;
@@ -176,13 +163,12 @@
             }
         }
 
-        // Responsive small
         @media (max-width: 576px) {
             flex-direction: column;
             align-items: stretch;
 
             .btn-secondary {
-                width: 100%; // full width on mobile
+                width: 100%;
             }
         }
     }
