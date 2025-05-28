@@ -66,17 +66,19 @@ Encore
         };
     }) */
     .enableSassLoader(
-        // 1er argument = options pour sass-loader
-        {
-            sourceMap: !Encore.isProduction(),
-            sassOptions: {
+        (sassLoaderOptions) => {
+            // active les sourcemaps en dev
+            sassLoaderOptions.sourceMap = !Encore.isProduction();
+            // ajoute vos dossiers pour @use/@import et la résolution de url()
+            sassLoaderOptions.sassOptions = {
                 includePaths: [
                     'assets/styles',
                     'assets/images'
-                ],
-            }
+                ]
+            };
         },
         {
+            // active le resolve-url-loader pour que url("../../images/...") fonctionne
             resolveUrlLoader: true
         }
     )
