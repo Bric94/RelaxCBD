@@ -107,8 +107,7 @@
 						<button class="prev">‹</button>
 						<div class="carousel-wrapper">
 							{% for item in cartItems %}
-								<div
-									class="carousel-item">
+								<div class="carousel-item">
 									<a href="{{ path('product_show', { id: item.product.id }) }}">
 										<img src="{{ asset('uploads/products/' ~ item.product.image) }}" alt="{{ item.product.name }}" class="carousel-img">
 									</a>
@@ -173,9 +172,21 @@
 			<h3>Relax CBD Shop vous accueil</h3>
 			<img src="/images/shop/photo-shop.png" alt="Boutique Relax CBD Shop" class="shop-photo">
 			<p>5 avenue du Midi, Golfe-Juan 06220</p>
+
+			<div class="phone-block">
+				<span class="phone-label">Téléphone :</span>
+				<a href="tel:+33483283330" class="contact-shop js-copy-phone" data-phone="+33483283330" aria-label="Appeler ou copier le numéro">
+					+33 4 83 28 33 30 🗇
+					<span class="tooltip">Copier</span>
+				</a>
+			</div>
+
+			{# <a href="tel:+33612345678" class="contact-shop js-copy-phone" data-phone="+33483283330">🗇</a> #}
+
+			<a href="{{ path('app_contact') }}" class="btn-contact-form">Nous écrire</a>
 			<a href="https://maps.app.goo.gl/yimMDdtT8deH2BRR8" target="_blank" class="btn-primary">Voir sur Google Maps</a>
 		</div>
-	</div>
+	</div>🖋
 
 	{# Modal Newsletter #}
 	<div id="newsletter-modal" class="newsletter-modal" data-user-email="{{ app.user ? app.user.email : '' }}">

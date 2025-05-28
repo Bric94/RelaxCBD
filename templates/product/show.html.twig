@@ -28,23 +28,23 @@
 					{% endif %}
 				{% endfor %}
 
-				<p class="product-detail__price">
-					{% if product.isWeightBased and product.priceByWeight is not empty %}
-						À partir de
-						{{ minPrice|number_format(2, ',', ' ') }}
-						€/g
-					{% else %}
-						{{ product.price|number_format(2, ',', ' ') }}
-						€
-					{% endif %}
-				</p>
-
 				<div class="product-detail__description">
 					{{ product.description|raw }}
 				</div>
 
 				<form action="{{ path('cart_add', {id: product.id}) }}" method="post" class="product-detail__form js-add-to-cart">
 					{% if product.isWeightBased %}
+						<p class="product-detail__price">
+							{% if product.isWeightBased and product.priceByWeight is not empty %}
+								À partir de
+								{{ minPrice|number_format(2, ',', ' ') }}
+								€/g
+							{% else %}
+								L'unité à
+								{{ product.price|number_format(2, ',', ' ') }}
+								€
+							{% endif %}
+						</p>
 						<div class="form-group form-group--row">
 							<label for="weight_{{ product.id }}">Quantité en grammes (g)</label>
 							<div class="input-and-btn">
@@ -102,4 +102,12 @@
 			</div>
 		</div>
 	</section>
+	
+	<div id="image-modal" class="image-modal">
+		<div class="image-modal__content">
+			<span class="image-modal__close">&times;</span>
+			<img src="" alt="Agrandissement produit" class="image-modal__img">
+		</div>
+	</div>
+
 {% endblock %}

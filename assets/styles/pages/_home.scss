@@ -78,8 +78,6 @@
 
 }
 
-// GOOGLE MAPS 
-
 .shop-section {
     width: 100%;
     max-width: 1600px;
@@ -128,13 +126,25 @@
         }
 
         h3 {
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             color: $dark;
             font-size: 1.4rem;
         }
 
+        /* .contact-shop {
+            color: $primary;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 1rem;
+
+            &:hover {
+
+                color: $secondary;
+                text-decoration: underline;
+                }
+                } */
+
         p {
-            margin-bottom: 1.2rem;
             text-align: center;
             font-size: 1.13rem;
         }
@@ -142,6 +152,68 @@
         .btn-primary {
             margin: 0 auto;
             display: block;
+        }
+
+        .btn-contact-form {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            color: $light;
+            font-weight: bold;
+            text-align: center;
+            color: $primary;            text-decoration: none;
+            transition: background 0.3s ease;
+
+            &:hover {
+                color: $secondary
+            }
+
+            &::before {
+                content: "🖋 ";
+                margin-right: 0.3rem;
+            }
+        }
+
+        .contact-shop {
+            position: relative;
+            color: $primary;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+
+            &:hover .tooltip {
+                opacity: 1;
+                transform: translateY(-1.5rem);
+            }
+        }
+
+        .phone-block {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            position: relative;
+
+            .phone-label {
+                font-weight: bold;
+                color: $dark;
+            }
+
+
+            .tooltip {
+                position: absolute;
+                top: -1rem;
+                left: 50%;
+                transform: translateX(-50%) translateY(0);
+                background: $primary;
+                color: $light;
+                padding: 0.3rem 0.6rem;
+                border-radius: 0.3rem;
+                font-size: 0.75rem;
+                opacity: 0;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                pointer-events: none;
+                white-space: nowrap;
+            }
         }
     }
 

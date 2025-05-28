@@ -1,5 +1,8 @@
-
 (function loadGoogleMapsAPI() {
+
+    const mapElement = document.getElementById('map');
+    if (!mapElement) return;
+
     const API_KEY = "AIzaSyAb4uYhJvp77lHUK5-u_oATgxXLZe_WOK4";
     const MAP_ID = "613b2c5b037d794c74796c29";
     const CALLBACK_NAME = "initMap";
