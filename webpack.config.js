@@ -46,7 +46,7 @@ Encore
 
     .copyFiles({
         from: './assets/images/background',
-        to: '/images/background/[name].[ext]'
+        to: 'images/background/[name].[ext]'
     })
 
     // 2) Toutes les autres images (hashées)
