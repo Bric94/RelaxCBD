@@ -46,11 +46,10 @@ Encore
 
     .copyFiles({
         from: './assets/images/background',
-        to: 'images/background/[name].[ext]',
-        // n’oubliez pas de matcher uniquement ce dossier
-        pattern: /\.(png|jpe?g|svg)$/
+        to: 'images/background/[name].[ext]'
     })
 
+    // 2) Toutes les autres images (hashées)
     .copyFiles({
         from: './assets/images',
         to: 'images/[path][name]-[hash:8].[ext]'
