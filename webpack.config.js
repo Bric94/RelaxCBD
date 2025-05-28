@@ -67,9 +67,6 @@ Encore
     }) */
     .enableSassLoader(
         (sassLoaderOptions) => {
-            // active les sourcemaps en dev
-            sassLoaderOptions.sourceMap = !Encore.isProduction();
-            // ajoute vos dossiers pour @use/@import et la résolution de url()
             sassLoaderOptions.sassOptions = {
                 includePaths: [
                     'assets/styles',
