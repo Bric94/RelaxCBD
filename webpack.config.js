@@ -45,8 +45,8 @@ Encore
     .enableVersioning(Encore.isProduction())
 
     .copyFiles({
-      from: './assets/images',
-      to: 'images/[path][name]-[hash:8].[ext]'
+        from: './assets/images',
+        to: 'images/[path][name]-[hash:8].[ext]'
     })
 
     .configureBabel((config) => {
@@ -60,11 +60,24 @@ Encore
     })
 
     // enables Sass/SCSS support
-    .enableSassLoader(options => {
+    /* .enableSassLoader(options => {
         options.sassOptions = {
             includePaths: ['assets/styles'],
         };
-    })
+    }) */
+    .enableSassLoader(
+        // 1er argument = options pour sass-loader
+        {
+            sourceMap: !Encore.isProduction(),
+            sassOptions: {
+                includePaths: ['assets/styles'],
+                includePaths: ['assets/images']
+            }
+        },
+        {
+            resolveUrlLoader: true
+        }
+    )
     .enablePostCssLoader()
 
     // uncomment if you use TypeScript
