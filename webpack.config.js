@@ -70,8 +70,10 @@ Encore
         {
             sourceMap: !Encore.isProduction(),
             sassOptions: {
-                includePaths: ['assets/styles'],
-                includePaths: ['assets/images']
+                includePaths: [
+                    'assets/styles',
+                    'assets/images'
+                ],
             }
         },
         {
