@@ -9,17 +9,18 @@
     justify-content: center;
     text-align: center;
     color: $dark;
-    padding: 2rem 0;
-    margin-bottom: 2rem;
-    margin-top: 2rem;
+    margin: 2rem 0;
     width: 100%;
+    padding: 0 1rem;
 
     .banner-content {
-        background: rgba($light , 0.6);
-        padding: 2rem 4%;
-        margin-bottom: 2rem;
+        background: rgba($light, 0.6);
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        box-sizing: border-box;
         text-align: center;
-        max-width: 90%;
 
         h1 {
             font-size: 2.5rem;
@@ -51,9 +52,10 @@
         }
 
         .home-collection {
-            max-width: 1280px;
+            max-width: 1600px;
             margin: 60px auto;
-            padding: 0 20px;
+            padding: 0 1rem;
+            box-sizing: border-box;
 
             .product-grid {
                 display: grid;
@@ -73,14 +75,14 @@
 .cart-summary-home {
     text-align: center;
     margin-top: 1rem;
-    
+
 }
 
 // GOOGLE MAPS 
 
 .shop-section {
     width: 100%;
-    max-width: auto;
+    max-width: 1600px;
     margin: 2.5rem auto;
     padding: 0 1.5rem;
     display: flex;

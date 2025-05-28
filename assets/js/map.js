@@ -21,7 +21,7 @@ window.initMap = async function () {
 
     const map = new Map(document.getElementById('map'), {
         center: shopPosition,
-        zoom: 16,
+        zoom: 18,
         disableDefaultUI: true,
         mapId: '613b2c5b037d794c74796c29',
         styles: [{ featureType: 'poi', stylers: [{ visibility: 'off' }] }]

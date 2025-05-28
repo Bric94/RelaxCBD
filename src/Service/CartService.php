@@ -33,15 +33,18 @@ class CartService
 
     public function remove(int $productId, ?string $weight = null)
     {
-        $cart = $this->session->get('cart', []);
+        $product = $this->productRepository->find($productId);
+        if ($product && ! $product->isWeightBased()) {
+            $weight = null;
+        }
 
+        $cart = $this->session->get('cart', []);
         $key = $weight ? "{$productId}_{$weight}" : (string)$productId;
 
         if (isset($cart[$key])) {
             unset($cart[$key]);
+            $this->session->set('cart', $cart);
         }
-
-        $this->session->set('cart', $cart);
     }
 
 

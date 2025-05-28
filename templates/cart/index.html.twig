@@ -92,7 +92,7 @@
 									</strong>
 								</td>
 								<td>
-									<a href="{{ path('cart_remove', { id: item.product.id, weight: item.quantity }) }}" class="btn-delete">
+									<a href="{{ path('cart_remove', item.product.isWeightBased ? { id: item.product.id, weight: item.quantity } : { id: item.product.id } ) }}" class="btn-delete">
 										Supprimer
 									</a>
 								</td>

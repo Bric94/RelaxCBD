@@ -6,7 +6,6 @@
     color: $white;
     border: none;
     padding: 0.75rem 1.5rem;
-    // border-radius: 0.25rem;
     font-weight: 600;
     text-decoration: none;
     transition: background 0.2s;
@@ -74,9 +73,9 @@
 
     &:hover,
     &:focus {
-        background: color.adjust($primary, $lightness: -8%);
+        background: color.adjust($primary, $lightness: -10%);
         color: $white;
-        box-shadow: 0 3px 14px rgba($primary, 0.13);
+        box-shadow: 0 3px 14px rgba($primary, 0.1);
     }
 }
 
@@ -87,7 +86,6 @@
     background: $primary;
     color: $white;
     border: 2px solid $primary;
-    // border-radius: 0 5px 5px 0;
     border-left: none;
     font-weight: bold;
     font-size: large;
@@ -176,7 +174,7 @@
         flex: 3 1 0;
         min-width: 0;
         max-width: 75%;
-        padding: 0.75rem;
+        padding: 0.5rem;
         text-align: center;
         font-size: large;
     }
@@ -203,7 +201,6 @@
             &:hover,
             &:focus {
                 color: $light;
-                /* text-decoration: underline; */
             }
         }
 

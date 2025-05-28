@@ -2,7 +2,11 @@
 @use "../abstracts/colors" as *;
 
 .features {
-    
+
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 1rem;
+
     .container {
         display: flex;
         justify-content: space-around;
@@ -17,7 +21,7 @@
         text-align: center;
         flex: 1 1 300px;
         margin: 10px;
-        
+
 
         img {
             width: 100%;

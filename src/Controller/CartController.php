@@ -23,12 +23,8 @@ final class CartController extends AbstractController
     }
 
     #[Route('/add/{id}/{weight?}', name: 'add', methods: ['POST'])]
-    public function add(
-        Request $request,
-        CartService $cartService,
-        ProductRepository $productRepository,
-        int $id
-    ): Response {
+    public function add(Request $request, CartService $cartService, ProductRepository $productRepository, int $id): Response
+    {
         $selectedWeight = $request->request->get('selectedWeight');
         $quantity       = (int) $request->request->get('quantity', 1);
 
@@ -56,11 +52,8 @@ final class CartController extends AbstractController
     }
 
     #[Route('/remove/{id}/{weight?}', name: 'remove')]
-    public function remove(
-        CartService $cartService,
-        int $id,
-        ?string $weight = null
-    ): Response {
+    public function remove(CartService $cartService, int $id, ?string $weight = null): Response
+    {
         $cartService->remove($id, $weight);
 
         return $this->redirectToRoute('cart_index');

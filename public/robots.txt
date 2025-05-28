@@ -13,4 +13,4 @@ Allow: /build/*.woff2
 Allow: /build/*.ttf
 Allow: /build/*.svg
 
-Sitemap: https://relax-cbd-shop.eliott-bricout.fr/sitemap.xml 
+Sitemap: https://cbd.eliott-bricout.fr/sitemap.xml 
