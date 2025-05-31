@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="container mt-5">
-    <h1 class="text-center">✏️ Modifier ma photo de profil</h1>
+    <h1 class="text-center">Modifier ma photo de profil</h1>
 
     {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
         <div class="form-group">
@@ -13,7 +13,7 @@
             {{ form_errors(form.profilePicture) }}
         </div>
 
-        <button type="submit" class="btn btn-success mt-3">📸 Mettre à jour</button>
+        <button type="submit" class="btn btn-success mt-3">&#x1F4F8; Mettre à jour</button>
     {{ form_end(form) }}
 </div>
 {% endblock %}
