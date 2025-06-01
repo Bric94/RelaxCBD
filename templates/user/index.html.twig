@@ -27,7 +27,8 @@
 				<h2>Mes Informations</h2>
 				<div class="profile-container">
 					<img id="profile-picture" src="{{ asset(src) ~ '?v=' ~ random() }}" alt="Photo de profil de {{ user.firstName }}" class="profile-image">
-					<div class="profile-name">{{ user.firstName }} {{ user.lastName }}</div>
+					<div class="profile-name">{{ user.firstName }}
+						{{ user.lastName }}</div>
 					<p>
 						<strong>Prénom :</strong>
 						{{ user.firstName }}</p>
@@ -86,7 +87,15 @@
 		<div class="bottom-buttons">
 			<div>
 				<a href="{{ path('home') }}" class="btn-return">
-					<span class="icon">&#x2B90;</span>
+					<span class="icon">
+						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 64 64" width="32" height="32" fill="none" stroke="#2e7d32" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M8 20V52C8 54.2 9.8 56 12 56H52C54.2 56 56 54.2 56 52V24C56 21.8 54.2 20 52 20H32L28 16H12C9.8 16 8 17.8 8 20Z"/>
+							<path d="M32 36H16"/>
+							<path d="M22 30L16 36L22 42"/>
+							<path d="M44 44C44 50 36 52 36 52C36 52 34 44 40 40C42 39 44 41 44 44Z"/>
+							<path d="M36 52C36 52 38 48 42 44"/>
+						</svg>
+					</span>
 					Retour à l'accueil
 				</a>
 			</div>

@@ -144,7 +144,6 @@
         .btn-contact-form {
             display: inline-block;
             padding-bottom: 1.2rem;
-            color: $light;
             font-weight: bold;
             text-align: center;
             color: $primary;
@@ -152,7 +151,8 @@
             transition: background 0.3s ease;
 
             &:hover {
-                color: $secondary
+                color: $primary;
+                transform: scale(1.07);
             }
         }
 
@@ -162,10 +162,24 @@
             text-decoration: none;
             font-weight: bold;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+
+            svg {
+                width: 1.5em;
+                height: 1.5em;
+                stroke: currentColor;
+                vertical-align: middle;
+                transition: transform 0.2s ease;
+            }
+
+            &:hover svg {
+                transform: scale(1.1);
+            }
 
             &:hover .tooltip {
                 opacity: 1;
-                transform: translateY(-1.5rem);
             }
         }
 
@@ -184,9 +198,7 @@
 
             .tooltip {
                 position: absolute;
-                top: -1rem;
-                left: 50%;
-                transform: translateX(-50%) translateY(0);
+                left: 12rem;
                 background: $primary;
                 color: $light;
                 padding: 0.3rem 0.6rem;
