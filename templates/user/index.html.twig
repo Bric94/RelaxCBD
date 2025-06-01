@@ -20,21 +20,14 @@
 	{% endif %}
 
 	<div class="container">
-		<section class="profile-section">
-			<div class="profile-feature">
-				<div class="profile-container">
-					<img id="profile-picture" src="{{ asset(src) ~ '?v=' ~ random() }}" alt="Photo de profil de {{ user.firstName }}" class="profile-image">
-					<div class="profile-name">{{ user.firstName }}
-						{{ user.lastName }}</div>
-					<div class="profile-email">{{ user.email }}</div>
-				</div>
-			</div>
-		</section>
+
 
 		<section class="profile-section">
 			<div class="profile-feature">
 				<h2>Mes Informations</h2>
 				<div class="profile-container">
+					<img id="profile-picture" src="{{ asset(src) ~ '?v=' ~ random() }}" alt="Photo de profil de {{ user.firstName }}" class="profile-image">
+					<div class="profile-name">{{ user.firstName }} {{ user.lastName }}</div>
 					<p>
 						<strong>Prénom :</strong>
 						{{ user.firstName }}</p>
@@ -93,7 +86,7 @@
 		<div class="bottom-buttons">
 			<div>
 				<a href="{{ path('home') }}" class="btn-return">
-					<span class="icon">⮐</span>
+					<span class="icon">&#x2B90;</span>
 					Retour à l'accueil
 				</a>
 			</div>
