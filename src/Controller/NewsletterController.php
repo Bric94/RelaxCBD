@@ -27,7 +27,7 @@ class NewsletterController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        // Vérifier l’existence
+        // Vérifier l'existence
         $repo = $em->getRepository(NewsletterSubscriber::class);
         $existing = $repo->findOneBy(['email' => $email]);
         if ($existing) {

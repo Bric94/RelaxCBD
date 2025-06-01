@@ -10,6 +10,7 @@ import './js/navOverflow.js';
 import './js/newsletter.js';
 import './js/parallaxe.js';
 import './js/photoZoom.js';
+import './js/productToggle.js';
 import './js/searchProduct.js';
 import './js/selectFoldBack.js';
 import './js/setInputRange.js';

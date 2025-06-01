@@ -4,12 +4,13 @@ namespace App\Entity;
 
 use App\Repository\NewsletterSubscriberRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[ORM\Entity(repositoryClass: NewsletterSubscriberRepository::class)]
 #[ORM\Table(
     name: "newsletter_subscriber",
     uniqueConstraints: [
-        new ORM\UniqueConstraint(name: "uniq_newsletter_email", columns: ["email"])
+        new UniqueConstraint(name: "uniq_newsletter_email", columns: ["email"])
     ]
 )]
 class NewsletterSubscriber

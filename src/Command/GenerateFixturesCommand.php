@@ -65,7 +65,7 @@ class GenerateFixturesCommand extends Command
                             // Convertir un tableau en JSON
                             $value = '"' . addslashes(json_encode($value)) . '"';
                         } elseif (is_object($value) && method_exists($value, '__toString')) {
-                            // Si l'objet a une méthode __toString, on l’utilise
+                            // Si l'objet a une méthode __toString, on l\'utilise
                             $value = '"' . addslashes((string) $value) . '"';
                         } elseif (is_null($value)) {
                             $value = 'null';

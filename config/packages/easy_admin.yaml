@@ -1,0 +1,5 @@
+easy_admin:
+    design:
+        assets:
+            js:
+                - build/app.js

@@ -39,7 +39,7 @@ export function initNavOverflow() {
 
     // calcul place dispo
     const available = nav.clientWidth;
-    let used = moreLi.offsetWidth; // on réserve d’entrée la place du bouton
+    let used = moreLi.offsetWidth; // on réserve d'entrée la place du bouton
 
     Array.from(nav.children).forEach(li => {
       if (li === moreLi) return;
@@ -60,7 +60,7 @@ export function initNavOverflow() {
       }
     });
 
-    // n’affiche “…Plus” que s’il y a au moins 1 enfant
+    // n affiche “…Plus” que s'il y a au moins 1 enfant
     moreLi.style.display = moreMenu.children.length ? 'block' : 'none';
   }
 

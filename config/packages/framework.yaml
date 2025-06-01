@@ -4,6 +4,8 @@ framework:
     annotations: false
     http_method_override: false
     handle_all_throwables: true
+    property_info:
+        with_constructor_extractor: true
     assets:
         json_manifest_path: "%kernel.project_dir%/public/build/manifest.json"
 

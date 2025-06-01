@@ -35,7 +35,7 @@ class UserController extends AbstractController
             'Avatar10.webp'
         ];
 
-        // Sélection d’un avatar aléatoire si l’utilisateur n’a pas uploadé de photo
+        // Sélection d'un avatar aléatoire si l'utilisateur n'a pas uploadé de photo
         $randomAvatar = $defaultAvatars[array_rand($defaultAvatars)];
 
         return $this->render('user/index.html.twig', [

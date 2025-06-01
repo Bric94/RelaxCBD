@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -22,7 +24,7 @@ class Product
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $price = null;
 
     #[ORM\Column]
@@ -107,7 +109,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(float $price): static
+    public function setPrice(?float $price): static
     {
         $this->price = $price;
 
@@ -182,7 +184,21 @@ class Product
         return null;
     }
 
+    #[Assert\Callback]
+    public function validatePriceMode(ExecutionContextInterface $context): void
+    {
+        if ($this->isWeightBased && empty($this->priceByWeight)) {
+            $context->buildViolation('Le prix au poids est requis pour les produits vendus au poids.')
+                ->atPath('priceByWeight')
+                ->addViolation();
+        }
 
+        if (!$this->isWeightBased && $this->price === null) {
+            $context->buildViolation('Le prix unitaire est requis pour les produits vendus à l\'unité.')
+                ->atPath('price')
+                ->addViolation();
+        }
+    }
 
 
     /**
@@ -235,7 +251,6 @@ class Product
     public function removeReview(Review $review): static
     {
         if ($this->reviews->removeElement($review)) {
-            // set the owning side to null (unless already changed)
             if ($review->getProduct() === $this) {
                 $review->setProduct(null);
             }
@@ -310,7 +325,7 @@ class Product
         if (isset($this->stockByWeight[$weight])) {
             $this->stockByWeight[$weight] -= $quantity;
             if ($this->stockByWeight[$weight] < 0) {
-                $this->stockByWeight[$weight] = 0; // Évite un stock négatif
+                $this->stockByWeight[$weight] = 0;
             }
         }
         return $this;
@@ -331,35 +346,11 @@ class Product
         return $this->price ?? 0;
     }
 
-
-    /* public function calculateDiscountedPrice(float $weight): float
-    {
-        $prices = $this->getPriceByWeight();
-
-        if (!$this->isWeightBased || empty($prices)) {
-            return (float) $this->price; // ✅ Toujours retourner un float
-        }
-
-        // ✅ S'assurer que la clé de poids est bien en float
-        $weight = floatval($weight);
-
-        // ✅ Vérifie si le poids exact existe dans priceByWeight
-        if (isset($prices[$weight])) {
-            return (float) $prices[$weight];
-        }
-
-        return (float) reset($prices); // ✅ Prendre le premier prix si rien ne correspond
-    } */
-
-
-    // src/Entity/Product.php
-
     public function getPriceByWeightDisplay(): string
     {
         if (empty($this->priceByWeight)) {
             return '-';
         }
-        // Affichage compact :
         return implode(' | ', array_map(function ($tranche) {
             $min = $tranche['min'] ?? '';
             $max = $tranche['max'] ?? '';

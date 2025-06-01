@@ -79,7 +79,7 @@ php bin/console cache:warmup --env=prod --no-debug
 # 5) Base de données
 ###########################
 
-# On lit DATABASE_URL depuis l’environnement (ou .env.local)
+# On lit DATABASE_URL depuis l\'environnement (ou .env.local)
 # Création de la BDD si besoin
 echo "🗄️ Vérification / création de la base de données…"
 if php bin/console doctrine:database:exists --env=prod; then
@@ -97,7 +97,7 @@ php bin/console doctrine:migrations:migrate --no-interaction --env=prod
 ###########################
 
 echo "🔐 Ajustement des permissions cache/logs…"
-# selon ton serveur, adapte l’utilisateur www-data ou autre
+# selon ton serveur, adapte l\'utilisateur www-data ou autre
 HTTP_USER="www-data"
 sudo chown -R $HTTP_USER:$HTTP_USER var/cache var/log
 
