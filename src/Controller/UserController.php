@@ -49,31 +49,42 @@ class UserController extends AbstractController
     public function editProfile(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         /** @var User $user */
-        $user = $this->getUser(); // Récupération de l'utilisateur connecté
+        $user = $this->getUser();
 
         $form = $this->createForm(ProfilePictureType::class, $user);
         $form->handleRequest($request);
 
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('profilePicture')->getData();
+        // if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+            dump('Form submitted'); //
 
-            if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+            if ($form->isValid()) {
+                dump('Form valid'); //
 
-                // Déplace le fichier dans le dossier public/images/profiles/
-                $imageFile->move($this->getParameter('profiles_directory'), $newFilename);
+                $imageFile = $form->get('profilePicture')->getData();
 
-                // Met à jour le profil utilisateur
-                $user->setProfilePicture($newFilename);
+                if ($imageFile) {
+                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+                    $imageFile->move($this->getParameter('profiles_directory'), $newFilename);
+                    $user->setProfilePicture($newFilename);
+                    /////////
+                    dump('Fichier déplacé : ' . $newFilename);
+                    dump('Chemin : ' . $this->getParameter('profiles_directory') . '/' . $newFilename);
+                    dd($user->getProfilePicture()); // maintenant ça doit marcher ✅
+                }
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Photo de profil mise à jour avec succès !');
+                return $this->redirectToRoute('user_index');
+            } else {
+                dump('Form invalid');
             }
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('user_index');
         }
 
         return $this->render('user/edit.html.twig', [

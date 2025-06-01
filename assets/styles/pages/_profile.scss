@@ -36,10 +36,10 @@
 
 .profile-image {
     display: block;
-    width: 100%; 
-    max-width: 150px; 
-    aspect-ratio: 1 / 1; 
-    object-fit: cover; 
+    width: 100%;
+    max-width: 150px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
     border: 2px solid $secondary;
 }
 
@@ -47,13 +47,86 @@
     margin-top: 2rem;
 }
 
+.profile-update {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-label {
+    display: block;
+    margin: 1rem;
+    font-weight: 600;
+    color: $dark;
+}
+
+.profile-image-input {
+    border: 1px solid $secondary;
+    background: $white;
+    color: $dark;
+    width: 100%;
+    max-width: 300px;
+}
+
 .orders-section {
     margin-top: 2rem;
 }
 
 .action-links {
-    margin-top: 2rem;
+    margin-top: 1rem;
     display: flex;
     justify-content: center;
     gap: 1rem;
+}
+
+.profile-image-input {
+    padding-right: 0;
+    border: 1px solid $secondary;
+    background-color: $white;
+    color: $dark;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 400px;
+
+    &::-webkit-file-upload-button {
+        background: $primary;
+        color: $light;
+        padding: 0.5rem 1rem;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    &::-webkit-file-upload-button:hover {
+        background: color.scale($primary, $lightness: -10%);
+    }
+
+    &::file-selector-button {
+        background: $primary;
+        color: $light;
+        padding: 0.5rem 1rem;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    &::file-selector-button:hover {
+        background: color.scale($primary, $lightness: -10%);
+    }
+}
+
+.btn-custom {
+    background-color: $primary;
+    color: $light;
+    padding: 0.7rem 1.5rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &:hover {
+        background-color: color.scale($primary, $lightness: -10%);
+    }
 }

@@ -1,19 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier ma photo de profil{% endblock %}
+{% block title %}Modifier ma photo de profil
+{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1 class="text-center">Modifier ma photo de profil</h1>
+	<div class="profile-feature">
+		<h1 class="profile-name">Modifier ma photo de profil</h1>
 
-    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
-        <div class="form-group">
-            {{ form_label(form.profilePicture) }}
-            {{ form_widget(form.profilePicture, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.profilePicture) }}
-        </div>
 
-        <button type="submit" class="btn btn-success mt-3">&#x1F4F8; Mettre à jour</button>
-    {{ form_end(form) }}
-</div>
+		{{ form_start(form, {'attr': {'enctype': 'multipart/form-data', 'class': 'profile-container'}}) }}
+		<div class="profile-update">
+			{% if app.user and app.user.profilePicture %}
+					<img src="{{ asset('images/profiles/' ~ app.user.profilePicture) }}" alt="Photo de profil actuelle" class="profile-image">
+			{% endif %}
+			{{ form_label(form.profilePicture, null, {'label_attr': {'class': 'profile-label'}}) }}
+			{{ form_widget(form.profilePicture, {'attr': {'class': 'profile-image-input'}}) }}
+			{{ form_errors(form.profilePicture) }}
+		</div>
+
+		<div class="action-links">
+			<button type="submit" class="btn-custom">&#x1F4F8; Mettre à jour</button>
+		</div>
+		{{ form_end(form) }}
+	</div>
 {% endblock %}

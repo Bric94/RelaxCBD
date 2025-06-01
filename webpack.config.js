@@ -65,12 +65,6 @@ Encore
         config.corejs = 3;
     })
 
-    // enables Sass/SCSS support
-    /* .enableSassLoader(options => {
-        options.sassOptions = {
-            includePaths: ['assets/styles'],
-        };
-    }) */
     .enableSassLoader(
         (sassLoaderOptions) => {
             sassLoaderOptions.sassOptions = {
