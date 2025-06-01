@@ -55,13 +55,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
 
-        // if ($form->isSubmitted() && $form->isValid()) {
-        if ($form->isSubmitted()) {
-            dump('Form submitted'); //
-
-            if ($form->isValid()) {
-                dump('Form valid'); //
-
+        if ($form->isSubmitted() && $form->isValid()) {
                 $imageFile = $form->get('profilePicture')->getData();
 
                 if ($imageFile) {
@@ -71,10 +65,6 @@ class UserController extends AbstractController
 
                     $imageFile->move($this->getParameter('profiles_directory'), $newFilename);
                     $user->setProfilePicture($newFilename);
-                    /////////
-                    dump('Fichier déplacé : ' . $newFilename);
-                    dump('Chemin : ' . $this->getParameter('profiles_directory') . '/' . $newFilename);
-                    dd($user->getProfilePicture()); // maintenant ça doit marcher ✅
                 }
 
                 $entityManager->persist($user);
@@ -82,13 +72,10 @@ class UserController extends AbstractController
 
                 $this->addFlash('success', 'Photo de profil mise à jour avec succès !');
                 return $this->redirectToRoute('user_index');
-            } else {
-                dump('Form invalid');
             }
-        }
-
-        return $this->render('user/edit.html.twig', [
-            'form' => $form->createView(),
+            
+            return $this->render('user/edit.html.twig', [
+                'form' => $form->createView(),
         ]);
     }
 }

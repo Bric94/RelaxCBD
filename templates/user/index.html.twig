@@ -23,7 +23,7 @@
 		<section class="profile-section">
 			<div class="profile-feature">
 				<div class="profile-container">
-					<img id="profile-picture" src="{{ asset(src) }}" alt="Photo de profil de {{ user.firstName }}" class="profile-image">
+					<img id="profile-picture" src="{{ asset(src) ~ '?v=' ~ random() }}" alt="Photo de profil de {{ user.firstName }}" class="profile-image">
 					<div class="profile-name">{{ user.firstName }}
 						{{ user.lastName }}</div>
 					<div class="profile-email">{{ user.email }}</div>
