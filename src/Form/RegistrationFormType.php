@@ -81,7 +81,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'label' => 'J\'accepte les conditions générales de Relax CBD Shop 🌿',
+                'label' => 'J\'accepte les conditions générales de Relax CBD Shop',
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue(['message' => 'Vous devez accepter nos conditions pour continuer.']),
